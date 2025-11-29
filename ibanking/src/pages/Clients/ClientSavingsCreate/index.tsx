@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import {
     FaPiggyBank,
     FaCalculator,
-    FaCalendarAlt,
     FaHistory,
     FaCheckCircle,
     FaClock

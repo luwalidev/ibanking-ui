@@ -2,14 +2,9 @@
 import React, { useState } from 'react';
 import {
     FaSearch,
-    FaUserShield,
     FaLock,
     FaUnlock,
-    FaHistory,
     FaFileInvoice,
-    FaCreditCard,
-    FaExchangeAlt,
-    FaChartLine,
     FaBell,
     FaFilter,
     FaDownload,
@@ -20,8 +15,7 @@ import {
     FaCheckCircle,
     FaClock,
     FaBan,
-    FaMoneyCheckAlt,
-    FaDatabase,
+
     FaShieldAlt,
     FaCog,
     FaUsers,

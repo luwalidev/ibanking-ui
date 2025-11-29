@@ -39,14 +39,14 @@ const ClientMultipleTransfers: React.FC = () => {
     });
     const [transfers, setTransfers] = useState<TransferItem[]>([]);
     const [showImportModal, setShowImportModal] = useState(false);
-    const [showEmailModal, setShowEmailModal] = useState(false);
+    const [, setShowEmailModal] = useState(false);
     const [showDocumentModal, setShowDocumentModal] = useState(false);
     const [emailData, setEmailData] = useState({
         email: '',
         subject: 'Extrato de Transferências Múltiplas',
         message: ''
     });
-    const [emailSent, setEmailSent] = useState(false);
+    const [, setEmailSent] = useState(false);
     const [documentOptions, setDocumentOptions] = useState<DocumentOptions>({
         includeConsolidated: true,
         includeIndividual: true,
