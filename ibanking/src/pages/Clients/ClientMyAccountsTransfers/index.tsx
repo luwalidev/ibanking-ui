@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ClientLayout } from '../../../components/ClientLayout';
+import { CiCalendar, CiRepeat } from "react-icons/ci";
 
 interface TransferData {
     fromAccount: string;
@@ -10,9 +11,14 @@ interface TransferData {
     description: string;
     scheduled: boolean;
     scheduleDate: string;
-    repeatTransfer: boolean;
-    repeatFrequency: string;
-    repeatEndDate: string;
+}
+
+interface RecurringSettings {
+    isRecurring: boolean;
+    frequency: 'daily' | 'weekly' | 'monthly' | 'yearly';
+    startDate: string;
+    endDate?: string;
+    numberOfOccurrences?: number;
 }
 
 const ClientMyAccountsTransfers: React.FC = () => {
@@ -25,9 +31,6 @@ const ClientMyAccountsTransfers: React.FC = () => {
         description: '',
         scheduled: false,
         scheduleDate: '',
-        repeatTransfer: false,
-        repeatFrequency: 'monthly',
-        repeatEndDate: ''
     });
     const [showEmailModal, setShowEmailModal] = useState(false);
     const [emailData, setEmailData] = useState({
@@ -36,6 +39,14 @@ const ClientMyAccountsTransfers: React.FC = () => {
         message: ''
     });
     const [, setEmailSent] = useState(false);
+
+    // Estado para configurações recorrentes
+    const [recurringSettings, setRecurringSettings] = useState<RecurringSettings>({
+        isRecurring: false,
+        frequency: 'monthly',
+        startDate: new Date().toISOString().split('T')[0],
+        numberOfOccurrences: 1
+    });
 
     const accounts = [
         { 
@@ -80,15 +91,6 @@ const ClientMyAccountsTransfers: React.FC = () => {
         },
     ];
 
-    // Frequências de repetição
-    const repeatFrequencies = [
-        { value: 'daily', label: 'Diariamente' },
-        { value: 'weekly', label: 'Semanalmente' },
-        { value: 'monthly', label: 'Mensalmente' },
-        { value: 'quarterly', label: 'Trimestralmente' },
-        { value: 'yearly', label: 'Anualmente' },
-    ];
-
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value, type } = e.target;
         setTransferData(prev => ({
@@ -102,6 +104,14 @@ const ClientMyAccountsTransfers: React.FC = () => {
         setEmailData(prev => ({
             ...prev,
             [name]: value
+        }));
+    };
+
+    // Atualizar configurações recorrentes
+    const updateRecurringSettings = (field: keyof RecurringSettings, value: any) => {
+        setRecurringSettings(prev => ({
+            ...prev,
+            [field]: value
         }));
     };
 
@@ -178,15 +188,19 @@ const ClientMyAccountsTransfers: React.FC = () => {
             description: '',
             scheduled: false,
             scheduleDate: '',
-            repeatTransfer: false,
-            repeatFrequency: 'monthly',
-            repeatEndDate: ''
         });
         setEmailSent(false);
         setEmailData({
             email: '',
             subject: 'Comprovativo de Transferência entre Contas',
             message: ''
+        });
+        // Reset das configurações recorrentes
+        setRecurringSettings({
+            isRecurring: false,
+            frequency: 'monthly',
+            startDate: new Date().toISOString().split('T')[0],
+            numberOfOccurrences: 1
         });
     };
 
@@ -195,8 +209,13 @@ const ClientMyAccountsTransfers: React.FC = () => {
     };
 
     const getFrequencyLabel = (value: string) => {
-        const frequency = repeatFrequencies.find(freq => freq.value === value);
-        return frequency ? frequency.label : 'Não repetir';
+        const frequencies = {
+            'daily': 'Diária',
+            'weekly': 'Semanal',
+            'monthly': 'Mensal',
+            'yearly': 'Anual'
+        };
+        return frequencies[value as keyof typeof frequencies] || value;
     };
 
     const downloadPDFExtract = () => {
@@ -241,14 +260,16 @@ const ClientMyAccountsTransfers: React.FC = () => {
             ${new Date(transferData.scheduleDate).toLocaleDateString('pt-PT')}
             ` : ''}
             
-            ${transferData.repeatTransfer ? `
-            REPETIÇÃO:
-            ${getFrequencyLabel(transferData.repeatFrequency)}
-            Até: ${transferData.repeatEndDate ? new Date(transferData.repeatEndDate).toLocaleDateString('pt-PT') : 'Indefinidamente'}
+            ${recurringSettings.isRecurring ? `
+            TRANSFERÊNCIA RECORRENTE:
+            Frequência: ${getFrequencyLabel(recurringSettings.frequency)}
+            Data de Início: ${new Date(recurringSettings.startDate).toLocaleDateString('pt-PT')}
+            ${recurringSettings.numberOfOccurrences ? `Número de Ocorrências: ${recurringSettings.numberOfOccurrences}` : ''}
+            ${recurringSettings.endDate ? `Data de Fim: ${new Date(recurringSettings.endDate).toLocaleDateString('pt-PT')}` : ''}
             ` : ''}
             
             ==========================================
-            Your Bank Business - Luwali Technologies
+            UBA Moçambique Business - Luwali Technologies
         `;
 
         const blob = new Blob([pdfContent], { type: 'application/pdf' });
@@ -359,206 +380,245 @@ const ClientMyAccountsTransfers: React.FC = () => {
                                 <div className="space-y-6">
                                     <h2 className="text-lg font-semibold text-gray-900">Dados da Transferência</h2>
 
-                                    <div className="space-y-4">
-                                        {/* Conta de Origem */}
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                Conta de Origem *
-                                            </label>
-                                            <select
-                                                name="fromAccount"
-                                                value={transferData.fromAccount}
-                                                onChange={handleInputChange}
-                                                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
-                                            >
-                                                <option value="">Selecione a conta de origem</option>
-                                                {accounts.map(account => (
-                                                    <option key={account.id} value={account.id}>
-                                                        {account.name} - {account.currency} {account.balance.toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
-
-                                        {/* Conta de Destino */}
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                Conta de Destino *
-                                            </label>
-                                            <select
-                                                name="toAccount"
-                                                value={transferData.toAccount}
-                                                onChange={handleInputChange}
-                                                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
-                                            >
-                                                <option value="">Selecione a conta de destino</option>
-                                                {accounts
-                                                    .filter(account => account.id !== transferData.fromAccount)
-                                                    .map(account => (
+                                    <div className="space-y-6">
+                                        {/* Formulário Principal */}
+                                        <div className="space-y-4">
+                                            {/* Conta de Origem */}
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                    Conta de Origem *
+                                                </label>
+                                                <select
+                                                    name="fromAccount"
+                                                    value={transferData.fromAccount}
+                                                    onChange={handleInputChange}
+                                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                                                >
+                                                    <option value="">Selecione a conta de origem</option>
+                                                    {accounts.map(account => (
                                                         <option key={account.id} value={account.id}>
                                                             {account.name} - {account.currency} {account.balance.toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
                                                         </option>
-                                                    ))
-                                                }
-                                            </select>
-                                        </div>
-
-                                        {/* Valor */}
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                Valor *
-                                            </label>
-                                            <input
-                                                type="number"
-                                                name="amount"
-                                                value={transferData.amount}
-                                                onChange={handleInputChange}
-                                                placeholder="0,00"
-                                                step="0.01"
-                                                min="0.01"
-                                                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
-                                            />
-                                        </div>
-
-                                        {/* Conversão de Moeda */}
-                                        {transferData.fromAccount && transferData.toAccount && !isSameCurrency() && (
-                                            <div className="bg-blue-50 rounded-xl p-4">
-                                                <div className="flex items-center justify-between">
-                                                    <span className="text-blue-700 font-medium">Conversão de Moeda</span>
-                                                    <span className="text-blue-600 text-sm">
-                                                        {getFromAccount()?.currency} → {getToAccount()?.currency}
-                                                    </span>
-                                                </div>
-                                                <div className="mt-2 text-sm text-blue-600">
-                                                    <div className="flex justify-between">
-                                                        <span>Valor enviado:</span>
-                                                        <span>{getFromAccount()?.currency} {getTotalAmount().toLocaleString('pt-PT', { minimumFractionDigits: 2 })}</span>
-                                                    </div>
-                                                    <div className="flex justify-between font-semibold">
-                                                        <span>Valor recebido:</span>
-                                                        <span>{getToAccount()?.currency} {getConvertedAmount().toLocaleString('pt-PT', { minimumFractionDigits: 2 })}</span>
-                                                    </div>
-                                                    <div className="flex justify-between text-xs mt-1">
-                                                        <span>Taxa de câmbio:</span>
-                                                        <span>1 {getFromAccount()?.currency} = {(getConvertedAmount() / getTotalAmount()).toLocaleString('pt-PT', { minimumFractionDigits: 4 })} {getToAccount()?.currency}</span>
-                                                    </div>
-                                                </div>
+                                                    ))}
+                                                </select>
                                             </div>
-                                        )}
 
-                                        {/* Descrição */}
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                Descrição (Opcional)
-                                            </label>
-                                            <input
-                                                type="text"
-                                                name="description"
-                                                value={transferData.description}
-                                                onChange={handleInputChange}
-                                                placeholder="Ex: Transferência para poupança, Capitalização, etc."
-                                                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
-                                            />
-                                        </div>
-
-                                        {/* Agendamento */}
-                                        <div className="space-y-3 p-4 border border-gray-200 rounded-lg">
-                                            <div className="flex items-center space-x-3">
-                                                <input
-                                                    type="checkbox"
-                                                    name="scheduled"
-                                                    checked={transferData.scheduled}
-                                                    onChange={handleInputChange}
-                                                    className="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500"
-                                                />
-                                                <label className="text-sm font-medium text-gray-700">
-                                                    Programar transferência
+                                            {/* Conta de Destino */}
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                    Conta de Destino *
                                                 </label>
+                                                <select
+                                                    name="toAccount"
+                                                    value={transferData.toAccount}
+                                                    onChange={handleInputChange}
+                                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                                                >
+                                                    <option value="">Selecione a conta de destino</option>
+                                                    {accounts
+                                                        .filter(account => account.id !== transferData.fromAccount)
+                                                        .map(account => (
+                                                            <option key={account.id} value={account.id}>
+                                                                {account.name} - {account.currency} {account.balance.toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
+                                                            </option>
+                                                        ))
+                                                    }
+                                                </select>
                                             </div>
 
-                                            {transferData.scheduled && (
-                                                <div>
-                                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                        Data de Execução
-                                                    </label>
-                                                    <input
-                                                        type="date"
-                                                        name="scheduleDate"
-                                                        value={transferData.scheduleDate}
-                                                        onChange={handleInputChange}
-                                                        min={new Date().toISOString().split('T')[0]}
-                                                        className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
-                                                    />
+                                            {/* Valor */}
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                    Valor *
+                                                </label>
+                                                <input
+                                                    type="number"
+                                                    name="amount"
+                                                    value={transferData.amount}
+                                                    onChange={handleInputChange}
+                                                    placeholder="0,00"
+                                                    step="0.01"
+                                                    min="0.01"
+                                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                                                />
+                                            </div>
+
+                                            {/* Conversão de Moeda */}
+                                            {transferData.fromAccount && transferData.toAccount && !isSameCurrency() && (
+                                                <div className="bg-blue-50 rounded-xl p-4">
+                                                    <div className="flex items-center justify-between">
+                                                        <span className="text-blue-700 font-medium">Conversão de Moeda</span>
+                                                        <span className="text-blue-600 text-sm">
+                                                            {getFromAccount()?.currency} → {getToAccount()?.currency}
+                                                        </span>
+                                                    </div>
+                                                    <div className="mt-2 text-sm text-blue-600">
+                                                        <div className="flex justify-between">
+                                                            <span>Valor enviado:</span>
+                                                            <span>{getFromAccount()?.currency} {getTotalAmount().toLocaleString('pt-PT', { minimumFractionDigits: 2 })}</span>
+                                                        </div>
+                                                        <div className="flex justify-between font-semibold">
+                                                            <span>Valor recebido:</span>
+                                                            <span>{getToAccount()?.currency} {getConvertedAmount().toLocaleString('pt-PT', { minimumFractionDigits: 2 })}</span>
+                                                        </div>
+                                                        <div className="flex justify-between text-xs mt-1">
+                                                            <span>Taxa de câmbio:</span>
+                                                            <span>1 {getFromAccount()?.currency} = {(getConvertedAmount() / getTotalAmount()).toLocaleString('pt-PT', { minimumFractionDigits: 4 })} {getToAccount()?.currency}</span>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             )}
-                                        </div>
 
-                                        {/* Repetição */}
-                                        <div className="space-y-3 p-4 border border-gray-200 rounded-lg">
-                                            <div className="flex items-center space-x-3">
-                                                <input
-                                                    type="checkbox"
-                                                    name="repeatTransfer"
-                                                    checked={transferData.repeatTransfer}
-                                                    onChange={handleInputChange}
-                                                    className="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500"
-                                                />
-                                                <label className="text-sm font-medium text-gray-700">
-                                                    Repetir esta transferência
+                                            {/* Descrição */}
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                    Descrição (Opcional)
                                                 </label>
+                                                <input
+                                                    type="text"
+                                                    name="description"
+                                                    value={transferData.description}
+                                                    onChange={handleInputChange}
+                                                    placeholder="Ex: Transferência para poupança, Capitalização, etc."
+                                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                                                />
                                             </div>
 
-                                            {transferData.repeatTransfer && (
-                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            {/* Agendamento */}
+                                            <div className="space-y-3 p-4 border border-gray-200 rounded-lg">
+                                                <div className="flex items-center space-x-3">
+                                                    <input
+                                                        type="checkbox"
+                                                        name="scheduled"
+                                                        checked={transferData.scheduled}
+                                                        onChange={handleInputChange}
+                                                        className="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500"
+                                                    />
+                                                    <label className="text-sm font-medium text-gray-700">
+                                                        Programar transferência
+                                                    </label>
+                                                </div>
+
+                                                {transferData.scheduled && (
                                                     <div>
                                                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                            Frequência
-                                                        </label>
-                                                        <select
-                                                            name="repeatFrequency"
-                                                            value={transferData.repeatFrequency}
-                                                            onChange={handleInputChange}
-                                                            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
-                                                        >
-                                                            {repeatFrequencies.map(freq => (
-                                                                <option key={freq.value} value={freq.value}>
-                                                                    {freq.label}
-                                                                </option>
-                                                            ))}
-                                                        </select>
-                                                    </div>
-                                                    <div>
-                                                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                            Data de Término
+                                                            Data de Execução
                                                         </label>
                                                         <input
                                                             type="date"
-                                                            name="repeatEndDate"
-                                                            value={transferData.repeatEndDate}
+                                                            name="scheduleDate"
+                                                            value={transferData.scheduleDate}
                                                             onChange={handleInputChange}
-                                                            min={transferData.scheduleDate || new Date().toISOString().split('T')[0]}
+                                                            min={new Date().toISOString().split('T')[0]}
                                                             className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
                                                         />
                                                     </div>
-                                                </div>
-                                            )}
+                                                )}
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div className="flex space-x-4 pt-6 border-t border-gray-200">
-                                        <button
-                                            onClick={() => navigate('/panel')}
-                                            className="flex-1 bg-gray-200 text-gray-700 py-3 px-4 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
-                                        >
-                                            Cancelar
-                                        </button>
-                                        <button
-                                            onClick={handleNext}
-                                            disabled={!validateStep1()}
-                                            className="flex-1 bg-red-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-red-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
-                                        >
-                                            Continuar
-                                        </button>
+                                        {/* Transferência Recorrente - POSICIONADA AQUI, APÓS O FORMULÁRIO */}
+                                        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                                            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                                <CiRepeat className="mr-2 text-red-600" size={20} />
+                                                Transferência Recorrente
+                                            </h3>
+
+                                            <div className="space-y-4">
+                                                <label className="flex items-center space-x-3 cursor-pointer">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={recurringSettings.isRecurring}
+                                                        onChange={(e) => updateRecurringSettings('isRecurring', e.target.checked)}
+                                                        className="w-4 h-4 text-red-600 rounded focus:ring-red-500"
+                                                    />
+                                                    <span className="font-medium text-gray-900">Tornar esta transferência recorrente</span>
+                                                </label>
+
+                                                {recurringSettings.isRecurring && (
+                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                                        <div>
+                                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                                Frequência *
+                                                            </label>
+                                                            <select
+                                                                value={recurringSettings.frequency}
+                                                                onChange={(e) => updateRecurringSettings('frequency', e.target.value)}
+                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                                                            >
+                                                                <option value="daily">Diária</option>
+                                                                <option value="weekly">Semanal</option>
+                                                                <option value="monthly">Mensal</option>
+                                                                <option value="yearly">Anual</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div>
+                                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                                Data de Início *
+                                                            </label>
+                                                            <div className="relative">
+                                                                <CiCalendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
+                                                                <input
+                                                                    type="date"
+                                                                    value={recurringSettings.startDate}
+                                                                    onChange={(e) => updateRecurringSettings('startDate', e.target.value)}
+                                                                    min={new Date().toISOString().split('T')[0]}
+                                                                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                                                                />
+                                                            </div>
+                                                        </div>
+
+                                                        <div>
+                                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                                Número de Ocorrências
+                                                            </label>
+                                                            <input
+                                                                type="number"
+                                                                value={recurringSettings.numberOfOccurrences}
+                                                                onChange={(e) => updateRecurringSettings('numberOfOccurrences', parseInt(e.target.value) || 1)}
+                                                                min="1"
+                                                                max="365"
+                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                                                            />
+                                                        </div>
+
+                                                        <div>
+                                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                                Data de Fim
+                                                            </label>
+                                                            <div className="relative">
+                                                                <CiCalendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
+                                                                <input
+                                                                    type="date"
+                                                                    value={recurringSettings.endDate || ''}
+                                                                    onChange={(e) => updateRecurringSettings('endDate', e.target.value)}
+                                                                    min={recurringSettings.startDate}
+                                                                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        {/* Botões de Navegação */}
+                                        <div className="flex space-x-4 pt-6 border-t border-gray-200">
+                                            <button
+                                                onClick={() => navigate('/panel')}
+                                                className="flex-1 bg-gray-200 text-gray-700 py-3 px-4 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
+                                            >
+                                                Cancelar
+                                            </button>
+                                            <button
+                                                onClick={handleNext}
+                                                disabled={!validateStep1()}
+                                                className="flex-1 bg-red-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-red-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+                                            >
+                                                Continuar
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             )}
@@ -607,13 +667,22 @@ const ClientMyAccountsTransfers: React.FC = () => {
                                                 </span>
                                             </div>
                                         )}
-                                        {transferData.repeatTransfer && (
-                                            <div className="flex justify-between items-center">
-                                                <span className="text-gray-600">Repetição:</span>
-                                                <span className="font-semibold">
-                                                    {getFrequencyLabel(transferData.repeatFrequency)}
-                                                    {transferData.repeatEndDate && ` até ${new Date(transferData.repeatEndDate).toLocaleDateString('pt-PT')}`}
-                                                </span>
+                                        {recurringSettings.isRecurring && (
+                                            <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
+                                                <div className="flex items-center text-orange-800 mb-2">
+                                                    <CiRepeat className="mr-2" size={16} />
+                                                    <span className="font-medium">Transferência Recorrente</span>
+                                                </div>
+                                                <div className="text-sm text-orange-700 space-y-1">
+                                                    <div>Frequência: {getFrequencyLabel(recurringSettings.frequency)}</div>
+                                                    <div>Data de Início: {new Date(recurringSettings.startDate).toLocaleDateString('pt-PT')}</div>
+                                                    {recurringSettings.numberOfOccurrences && (
+                                                        <div>Número de Ocorrências: {recurringSettings.numberOfOccurrences}</div>
+                                                    )}
+                                                    {recurringSettings.endDate && (
+                                                        <div>Data de Fim: {new Date(recurringSettings.endDate).toLocaleDateString('pt-PT')}</div>
+                                                    )}
+                                                </div>
                                             </div>
                                         )}
                                     </div>
@@ -651,6 +720,14 @@ const ClientMyAccountsTransfers: React.FC = () => {
                                             da conta <strong>{getFromAccount()?.name}</strong> para a conta{' '}
                                             <strong>{getToAccount()?.name}</strong> foi processada com sucesso.
                                         </p>
+                                        {recurringSettings.isRecurring && (
+                                            <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 mt-3 inline-block">
+                                                <div className="flex items-center text-orange-800">
+                                                    <CiRepeat className="mr-2" size={16} />
+                                                    <span className="font-medium">Transferência Recorrente Configurada</span>
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
 
                                     <div className="bg-gray-50 rounded-xl p-4 space-y-2 text-sm">
@@ -672,6 +749,12 @@ const ClientMyAccountsTransfers: React.FC = () => {
                                             <div className="flex justify-between">
                                                 <span className="text-gray-600">Tipo:</span>
                                                 <span>Transferência Programada</span>
+                                            </div>
+                                        )}
+                                        {recurringSettings.isRecurring && (
+                                            <div className="flex justify-between">
+                                                <span className="text-gray-600">Próxima Execução:</span>
+                                                <span>{new Date(recurringSettings.startDate).toLocaleDateString('pt-PT')}</span>
                                             </div>
                                         )}
                                     </div>
@@ -765,6 +848,13 @@ const ClientMyAccountsTransfers: React.FC = () => {
                                             <span className="font-semibold">
                                                 {getToAccount()?.currency} {getConvertedAmount().toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
                                             </span>
+                                        </div>
+                                    )}
+                                    {recurringSettings.isRecurring && (
+                                        <div className="bg-orange-50 border border-orange-200 rounded-lg p-2">
+                                            <div className="text-xs text-orange-800 text-center">
+                                                Transferência Recorrente
+                                            </div>
                                         </div>
                                     )}
                                     <div className="flex justify-between">

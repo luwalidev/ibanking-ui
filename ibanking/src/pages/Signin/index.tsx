@@ -116,7 +116,7 @@ export function SignIn() {
                                                     <span className="text-white font-bold text-md">YB</span>
                                                 </div>
                                                 <div className="text-left">
-                                                    <div className="text-white font-bold text-lg">Your Bank</div>
+                                                    <div className="text-white font-bold text-lg">UBA Moçambique</div>
                                                     <div className="text-gray-300 text-xs">{language === 'PT' ? 'Banking Digital' : 'Digital Banking'}</div>
                                                 </div>
                                             </div>

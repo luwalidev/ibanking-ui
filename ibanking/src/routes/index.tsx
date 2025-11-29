@@ -42,6 +42,13 @@ import ClientInternationalTransfers from '../pages/Clients/ClientInternationalTr
 import ClientMyAccountsTransfers from '../pages/Clients/ClientMyAccountsTransfers';
 import BusinessSameBankTransfers from '../pages/Business/BusinessSameBankTransfers';
 import ClientSameBankTransfers from '../pages/Clients/ClientSameBankTransfers';
+import ClientBeneficiaries from '../pages/Clients/ClientBeneficiaries';
+import BackOfficeDashboard from '../pages/Business/BackOfficeDashboard';
+import ClientSavingsCreate from '../pages/Clients/ClientSavingsCreate';
+import ClientFixedDeposit from '../pages/Clients/ClientFixedDeposit';
+import ClientTravelInsurance from '../pages/Clients/ClientTravelInsurance';
+import ClientThirdPartyInsurance from '../pages/Clients/ClientThirdPartyInsurance';
+import ClientOtherInsurance from '../pages/Clients/ClientOtherInsurance';
 
 const AppRoutes: React.FC = () => {
     return (
@@ -93,6 +100,7 @@ const AppRoutes: React.FC = () => {
                 <Route path="/client/extract" element={<ClientExtract language="PT" />} />
                 <Route path="/business/extract" element={<BusinessExtract language="PT" />} />
 
+
                 {/* Movimentos e Extratos */}
                 <Route path="/client/movements" element={<ClientMovements language="PT" />} />
                 <Route path="/business/movements" element={<BusinessMovements language="PT" />} />
@@ -101,6 +109,21 @@ const AppRoutes: React.FC = () => {
                 <Route path="/client/profile" element={<ClientGenericPage language="PT" />} />
                 <Route path="/client/security" element={<ClientGenericPage language="PT" />} />
                 <Route path="/client/settings" element={<ClientGenericPage language="PT" />} />
+
+                {/* Seguros */}
+                <Route path="/client/insurance/travel" element={<ClientTravelInsurance language="PT" />} />
+                <Route path="/client/insurance/third-party" element={<ClientThirdPartyInsurance language="PT" />} />
+                <Route path="/client/insurance/other" element={<ClientOtherInsurance language="PT" />} />
+
+                {/* Poupança */}
+                <Route path="/client/savings/create" element={<ClientSavingsCreate language="PT" />} />
+                <Route path="/client/savings/fixed-deposit" element={<ClientFixedDeposit language="PT" />} />
+
+                {/* Beneficiario */}
+                <Route path="/client/beneficiaries" element={<ClientBeneficiaries language="PT" />} />
+
+                {/* BackOffs */}
+                <Route path="/business/backOffs" element={<BackOfficeDashboard language="PT" />} />
 
                 {/* =========================================== */}
                 {/* ROTAS DO BUSINESS */}

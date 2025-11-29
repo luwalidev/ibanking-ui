@@ -95,7 +95,7 @@ const ClientMovements: React.FC<ClientMovementsProps> = ({ language }) => {
         },
         EN: {
             title: "Account Movements",
-            subtitle: "Check and generate your bank statement",
+            subtitle: "Check and generate UBA Moçambique statement",
             searchPlaceholder: "Search by description or reference...",
             date: "Date MOV",
             reference: "Reference",

@@ -84,8 +84,8 @@ const ClientGenericPage: React.FC<ClientGenericPageProps> = ({ language }) => {
         'Scheduled Operations': 'Check and manage your scheduled operations',
         'Service Payments': 'Make service payments using entity and reference',
         'Prepaid Cards': 'Manage your prepaid cards',
-        'Share Statement': 'Share your bank statement with third parties securely',
-        'Accounts': 'Manage your bank accounts',
+        'Share Statement': 'Share UBA Moçambique statement with third parties securely',
+        'Accounts': 'Manage UBA Moçambique accounts',
         'Cards': 'Manage your debit and credit cards',
         'Recharges': 'Top up your phone, electricity and other services',
         'Loans': 'Check your loan options',
@@ -94,8 +94,8 @@ const ClientGenericPage: React.FC<ClientGenericPageProps> = ({ language }) => {
         'Profile': 'Manage your user profile',
         'Security': 'Account security settings',
         'Settings': 'General account settings',
-        'Movements': 'Check and generate your bank statement',
-        'Dashboard': 'Overview of your bank account'
+        'Movements': 'Check and generate UBA Moçambique statement',
+        'Dashboard': 'Overview of UBA Moçambique account'
       }
     };
 

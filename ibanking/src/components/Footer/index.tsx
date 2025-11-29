@@ -23,8 +23,8 @@ const Footer: React.FC<FooterProps> = ({ language }) => {
           {/* Brand Column */}
           <div className="col-span-1 lg:col-span-1">
             <div className="flex items-center mb-4">
-              <img className="h-8 w-auto mr-3" src="/bank-logo.png" alt="Your Bank" />
-              <span className="text-xl font-bold text-red-400">{currentTexts.company}</span>
+              <img className="h-8 w-auto mr-3" src="/bank-logo.png" alt="UBA Moçambique" />
+              {/* <span className="text-xl font-bold text-red-400">{currentTexts.company}</span> */}
             </div>
             <p className="text-gray-300 text-sm mb-6 leading-relaxed">
               {currentFooterTexts.description}
@@ -170,7 +170,7 @@ const Footer: React.FC<FooterProps> = ({ language }) => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-center md:text-left mb-4 md:mb-0">
               <p className="text-gray-400 text-xs">
-                &copy; {new Date().getFullYear()} Your Bank. {currentFooterTexts.rights}
+                &copy; {new Date().getFullYear()} UBA Moçambique. {currentFooterTexts.rights}
               </p>
               <p className="text-gray-500 text-xs mt-1">
                 {currentFooterTexts.licensed}

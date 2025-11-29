@@ -95,7 +95,7 @@ const BusinessMovements: React.FC<BusinessMovementsProps> = ({ language }) => {
         },
         EN: {
             title: "Account Movements",
-            subtitle: "Check and generate your bank statement",
+            subtitle: "Check and generate Uba statement",
             searchPlaceholder: "Search by description or reference...",
             date: "Date MOV",
             reference: "Reference",

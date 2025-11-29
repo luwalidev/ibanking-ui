@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { BsPiggyBank } from "react-icons/bs";
 import { useNavigate, useLocation } from 'react-router-dom';
-import { 
-  CiLogout, 
-  CiUser, 
+import {
+  CiLogout,
+  CiUser,
   CiSettings,
   CiCreditCard1,
   CiBank,
@@ -15,7 +15,7 @@ import {
 } from "react-icons/ci";
 import { IoStatsChart, IoCardOutline } from "react-icons/io5";
 import { TbTransfer } from "react-icons/tb";
-import { FaWallet, FaMoneyCheckAlt, FaMobileAlt, FaFileInvoice } from "react-icons/fa";
+import { FaWallet, FaMoneyCheckAlt, FaMobileAlt, FaFileInvoice, FaUserFriends, FaUmbrellaBeach, FaCar, FaShieldAlt } from "react-icons/fa";
 import { MdOutlinePayments } from "react-icons/md";
 import { navbarTexts } from '../../translations/navbarTexts';
 import { clientTexts } from '../../translations/clientNavbar';
@@ -30,10 +30,10 @@ interface ClientNavbarProps {
   userAccount?: string;
 }
 
-const ClientNavbar: React.FC<ClientNavbarProps> = ({ 
-  language, 
-  toggleLanguage, 
-  isOpen, 
+const ClientNavbar: React.FC<ClientNavbarProps> = ({
+  language,
+  toggleLanguage,
+  isOpen,
   onToggle,
   userName = "Darken Machava",
   userAccount = "PT50 0000 0000 0000 0000 0000"
@@ -44,6 +44,8 @@ const ClientNavbar: React.FC<ClientNavbarProps> = ({
   const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({
     transferencias: false,
     pagamentos: false,
+    seguros: false,
+    poupanca: false,
     outrosServicos: false
   });
 
@@ -75,11 +77,10 @@ const ClientNavbar: React.FC<ClientNavbarProps> = ({
     { path: '/client/cards', icon: CiCreditCard1, label: currentClientTexts.cards },
     { path: '/client/recharges', icon: FaMobileAlt, label: currentClientTexts.recharges },
     { path: '/client/loans', icon: IoCardOutline, label: currentClientTexts.loans },
-    { path: '/client/investments', icon: BsPiggyBank, label: currentClientTexts.investments },
-    { path: '/client/insurance', icon: IoStatsChart, label: currentClientTexts.insurance },
+    { path: '/client/investments', icon: IoStatsChart, label: currentClientTexts.investments },
   ];
 
-  // Menu Transferências (com dropdown) - ATUALIZADO COM NOVOS LINKS
+  // Menu Transferências (com dropdown)
   const transferItems = [
     { path: '/client/transfers/national', icon: FaMoneyCheckAlt, label: currentClientTexts.nationalTransfers },
     { path: '/client/transfers/international', icon: TbTransfer, label: language === 'PT' ? 'Internacionais' : 'International' },
@@ -97,9 +98,23 @@ const ClientNavbar: React.FC<ClientNavbarProps> = ({
     { path: '/client/recharges', icon: MdOutlinePayments, label: currentClientTexts.recharges },
   ];
 
-  // Outros Serviços (com dropdown) - ADICIONADO PARTILHAR EXTRACTO
+  // Menu Seguros (novo)
+  const insuranceItems = [
+    { path: '/client/insurance/travel', icon: FaUmbrellaBeach, label: language === 'PT' ? 'Seguro de Viagens' : 'Travel Insurance' },
+    { path: '/client/insurance/third-party', icon: FaCar, label: language === 'PT' ? 'Seguro de Terceiros' : 'Third Party Insurance' },
+    { path: '/client/insurance/other', icon: FaShieldAlt, label: language === 'PT' ? 'Outros Seguros' : 'Other Insurance' },
+  ];
+
+  // Menu Poupança (novo)
+  const savingsItems = [
+    { path: '/client/savings/create', icon: BsPiggyBank, label: language === 'PT' ? 'Fazer Poupança' : 'Create Savings' },
+    { path: '/client/savings/fixed-deposit', icon: BsPiggyBank, label: language === 'PT' ? 'Depósito a Prazo' : 'Fixed Deposit' },
+  ];
+
+  // Outros Serviços (com dropdown)
   const otherServicesItems = [
     { path: '/client/prepaid-cards', icon: MdOutlinePayments, label: currentClientTexts.prepaidCards },
+    { path: '/client/beneficiaries', icon: FaUserFriends, label: language === 'PT' ? 'Beneficiários' : 'Beneficiaries' },
     { path: '/client/extract', icon: CiShare1, label: currentClientTexts.shareExtract || 'Partilhar Extracto' },
   ];
 
@@ -114,7 +129,7 @@ const ClientNavbar: React.FC<ClientNavbarProps> = ({
     <>
       {/* Overlay para mobile */}
       {isOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
           onClick={onToggle}
         />
@@ -127,20 +142,20 @@ const ClientNavbar: React.FC<ClientNavbarProps> = ({
         ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         w-80 flex flex-col
       `}>
-        
+
         {/* Header com logo e toggle */}
         <div className="flex items-center justify-between p-6 border-b border-gray-100">
           <div className="flex items-center space-x-3">
-            <img 
-              className="h-6 w-auto" 
-              src="/bank-logo.png" 
-              alt="Your Bank" 
+            <img
+              className="h-7 w-auto"
+              src="/bank-logo.png"
+              alt="UBA Moçambique"
             />
             <span className="text-lg font-bold text-red-600">
-              Your Bank
+              Moçambique
             </span>
           </div>
-          
+
           {/* Botão para fechar no mobile */}
           <button
             onClick={onToggle}
@@ -169,7 +184,7 @@ const ClientNavbar: React.FC<ClientNavbarProps> = ({
               </p>
             </div>
           </div>
-          
+
           <div className="flex space-x-2">
             <button
               onClick={() => handleNavigation('/client/profile')}
@@ -177,7 +192,7 @@ const ClientNavbar: React.FC<ClientNavbarProps> = ({
             >
               {currentClientTexts.viewProfile}
             </button>
-            
+
             <button
               onClick={() => setNotificationsOpen(!notificationsOpen)}
               className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors relative"
@@ -195,19 +210,19 @@ const ClientNavbar: React.FC<ClientNavbarProps> = ({
             <p className="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
               {currentClientTexts.quickAccess}
             </p>
-            
+
             {quickActionsItems.map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname === item.path;
-              
+
               return (
                 <button
                   key={item.path}
                   onClick={() => handleNavigation(item.path)}
                   className={`
                     flex items-center space-x-3 w-full px-3 py-3 rounded-lg text-sm font-medium transition-all duration-200 text-left
-                    ${isActive 
-                      ? 'bg-red-50 text-red-600' 
+                    ${isActive
+                      ? 'bg-red-50 text-red-600'
                       : 'text-gray-700 hover:bg-red-50 hover:text-red-600'
                     }
                   `}
@@ -313,6 +328,100 @@ const ClientNavbar: React.FC<ClientNavbarProps> = ({
             )}
           </div>
 
+          {/* Seguros (NOVO) */}
+          <div className="border-t border-gray-100">
+            <button
+              onClick={() => toggleSection('seguros')}
+              className="flex items-center justify-between w-full px-3 py-3 text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 transition-all duration-200"
+            >
+              <div className="flex items-center space-x-3">
+                <FaShieldAlt size={20} />
+                <span>{currentClientTexts.insurance}</span>
+              </div>
+              <svg
+                className={`w-4 h-4 transition-transform duration-200 ${expandedSections.seguros ? 'rotate-180' : ''}`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            {expandedSections.seguros && (
+              <div className="pl-8 pr-3 pb-2 space-y-1">
+                {insuranceItems.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = location.pathname === item.path;
+
+                  return (
+                    <button
+                      key={item.path}
+                      onClick={() => handleNavigation(item.path)}
+                      className={`
+                        flex items-center space-x-3 w-full px-3 py-2 rounded-lg text-sm transition-all duration-200 text-left
+                        ${isActive
+                          ? 'bg-red-50 text-red-600'
+                          : 'text-gray-600 hover:bg-red-50 hover:text-red-600'
+                        }
+                      `}
+                    >
+                      <Icon size={16} />
+                      <span className="text-xs">{item.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          {/* Poupança (NOVO) */}
+          <div className="border-t border-gray-100">
+            <button
+              onClick={() => toggleSection('poupanca')}
+              className="flex items-center justify-between w-full px-3 py-3 text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 transition-all duration-200"
+            >
+              <div className="flex items-center space-x-3">
+                <BsPiggyBank size={20} />
+                <span>{language === 'PT' ? 'Poupança' : 'Savings'}</span>
+              </div>
+              <svg
+                className={`w-4 h-4 transition-transform duration-200 ${expandedSections.poupanca ? 'rotate-180' : ''}`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            {expandedSections.poupanca && (
+              <div className="pl-8 pr-3 pb-2 space-y-1">
+                {savingsItems.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = location.pathname === item.path;
+
+                  return (
+                    <button
+                      key={item.path}
+                      onClick={() => handleNavigation(item.path)}
+                      className={`
+                        flex items-center space-x-3 w-full px-3 py-2 rounded-lg text-sm transition-all duration-200 text-left
+                        ${isActive
+                          ? 'bg-red-50 text-red-600'
+                          : 'text-gray-600 hover:bg-red-50 hover:text-red-600'
+                        }
+                      `}
+                    >
+                      <Icon size={16} />
+                      <span className="text-xs">{item.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
           {/* Outros Serviços */}
           <div className="border-t border-gray-100">
             <button
@@ -365,19 +474,19 @@ const ClientNavbar: React.FC<ClientNavbarProps> = ({
             <p className="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
               {currentTexts.settings}
             </p>
-            
+
             {settingsItems.map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname === item.path;
-              
+
               return (
                 <button
                   key={item.path}
                   onClick={() => handleNavigation(item.path)}
                   className={`
                     flex items-center space-x-3 w-full px-3 py-3 rounded-lg text-sm font-medium transition-all duration-200 text-left
-                    ${isActive 
-                      ? 'bg-red-50 text-red-600' 
+                    ${isActive
+                      ? 'bg-red-50 text-red-600'
                       : 'text-gray-700 hover:bg-red-50 hover:text-red-600'
                     }
                   `}

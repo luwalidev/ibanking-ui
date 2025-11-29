@@ -7,8 +7,8 @@ import { navbarTexts } from '../../translations/navbarTexts';
 
 // Interface para as props
 interface NavbarProps {
-    language: 'PT' | 'EN' | 'ES' | 'FR' | 'DE' | 'IT' | 'NL';
-    setLanguage: (language: 'PT' | 'EN' | 'ES' | 'FR' | 'DE' | 'IT' | 'NL') => void;
+    language: 'PT' | 'EN' | 'ES' | 'FR' | 'DE' | 'IT' | 'NL' | 'ZH' | 'AR';
+    setLanguage: (language: 'PT' | 'EN' | 'ES' | 'FR' | 'DE' | 'IT' | 'NL' | 'ZH' | 'AR') => void;
 }
 
 const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
@@ -16,14 +16,17 @@ const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false);
     const [themeDropdownOpen, setThemeDropdownOpen] = useState(false);
-    
+    const [countryDropdownOpen, setCountryDropdownOpen] = useState(false);
+
     const languageDropdownRef = useRef<HTMLDivElement>(null);
     const themeDropdownRef = useRef<HTMLDivElement>(null);
+    const countryDropdownRef = useRef<HTMLDivElement>(null);
 
     const handleRedirect = () => navigate('/signin');
     const toggleMenu = () => setMenuOpen(!menuOpen);
     const toggleLanguageDropdown = () => setLanguageDropdownOpen(!languageDropdownOpen);
     const toggleThemeDropdown = () => setThemeDropdownOpen(!themeDropdownOpen);
+    const toggleCountryDropdown = () => setCountryDropdownOpen(!countryDropdownOpen);
 
     const currentTexts = navbarTexts[language];
 
@@ -34,8 +37,40 @@ const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
         { code: 'FR' as const, name: 'Français', flag: '🇫🇷' },
         { code: 'DE' as const, name: 'Deutsch', flag: '🇩🇪' },
         { code: 'IT' as const, name: 'Italiano', flag: '🇮🇹' },
-        { code: 'NL' as const, name: 'Nederlands', flag: '🇳🇱' }
+        { code: 'NL' as const, name: 'Nederlands', flag: '🇳🇱' },
+        { code: 'ZH' as const, name: '中文 (Chinês)', flag: '🇨🇳' },
+        { code: 'AR' as const, name: 'العربية (Árabe)', flag: '🇸🇦' }
     ];
+
+    const countries = [
+        { code: 'BJ', name: 'Benin', flag: '🇧🇯' },
+        { code: 'BF', name: 'Burkina Faso', flag: '🇧🇫' },
+        { code: 'CM', name: 'Cameroon', flag: '🇨🇲' },
+        { code: 'TD', name: 'Chad', flag: '🇹🇩' },
+        { code: 'CG', name: 'Congo Brazzaville', flag: '🇨🇬' },
+        { code: 'CD', name: 'Congo DRC', flag: '🇨🇩' },
+        { code: 'CI', name: 'Cote d\'Ivoire', flag: '🇨🇮' },
+        { code: 'GA', name: 'Gabon', flag: '🇬🇦' },
+        { code: 'GH', name: 'Ghana', flag: '🇬🇭' },
+        { code: 'GN', name: 'Guinea', flag: '🇬🇳' },
+        { code: 'KE', name: 'Kenya', flag: '🇰🇪' },
+        { code: 'LR', name: 'Liberia', flag: '🇱🇷' },
+        { code: 'MZ', name: 'Mozambique', flag: '🇲🇿' },
+        { code: 'NG', name: 'Nigeria', flag: '🇳🇬' },
+        { code: 'SN', name: 'Senegal', flag: '🇸🇳' },
+        { code: 'SL', name: 'Sierra Leone', flag: '🇸🇱' },
+        { code: 'TZ', name: 'Tanzania', flag: '🇹🇿' },
+        { code: 'UG', name: 'Uganda', flag: '🇺🇬' },
+        { code: 'ZM', name: 'Zambia', flag: '🇿🇲' }
+    ];
+
+    // Estado para o país selecionado
+    const [selectedCountry, setSelectedCountry] = useState('MZ');
+
+    const handleCountrySelect = (countryCode: string) => {
+        setSelectedCountry(countryCode);
+        setCountryDropdownOpen(false);
+    };
 
     // Estado para o tema - inicializar com base no localStorage ou preferência do sistema
     const [theme, setTheme] = useState<'light' | 'dark' | 'auto'>(() => {
@@ -46,13 +81,14 @@ const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
         return 'light';
     });
 
-    const themes = [
+    // Usar useMemo para recalcular os temas quando o idioma mudar
+    const themes = React.useMemo(() => [
         { id: 'light' as const, name: currentTexts.light, icon: <IoSunnyOutline size={16} /> },
         { id: 'dark' as const, name: currentTexts.dark, icon: <IoMoonOutline size={16} /> },
         { id: 'auto' as const, name: currentTexts.auto, icon: <div className="w-4 h-4 bg-gradient-to-r from-yellow-400 to-gray-600 rounded-full" /> }
-    ];
+    ], [currentTexts]);
 
-    const handleLanguageSelect = (langCode: 'PT' | 'EN' | 'ES' | 'FR' | 'DE' | 'IT' | 'NL') => {
+    const handleLanguageSelect = (langCode: 'PT' | 'EN' | 'ES' | 'FR' | 'DE' | 'IT' | 'NL' | 'ZH' | 'AR') => {
         setLanguage(langCode);
         setLanguageDropdownOpen(false);
     };
@@ -60,7 +96,7 @@ const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
     // Função para aplicar o tema
     const applyTheme = (themeId: 'light' | 'dark' | 'auto') => {
         const html = document.documentElement;
-        
+
         if (themeId === 'dark') {
             html.classList.add('dark');
             localStorage.setItem('theme', 'dark');
@@ -111,6 +147,9 @@ const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
             if (themeDropdownRef.current && !themeDropdownRef.current.contains(event.target as Node)) {
                 setThemeDropdownOpen(false);
             }
+            if (countryDropdownRef.current && !countryDropdownRef.current.contains(event.target as Node)) {
+                setCountryDropdownOpen(false);
+            }
         };
 
         document.addEventListener('mousedown', handleClickOutside);
@@ -126,20 +165,65 @@ const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
                     {/* Top Bar */}
                     <div className="flex justify-end items-center h-8 bg-gray-100 dark:bg-gray-800 px-4 rounded-b-2xl">
                         <div className="flex items-center space-x-4 text-xs">
+                            {/* Country Dropdown */}
+                            <div className="relative" ref={countryDropdownRef}>
+                                <button
+                                    onClick={toggleCountryDropdown}
+                                    className="flex items-center gap-1 text-gray-600 dark:text-gray-300 hover:text-red-400 dark:hover:text-red-400 transition-colors duration-300"
+                                >
+                                    <span className="text-sm">{countries.find(c => c.code === selectedCountry)?.flag}</span>
+                                    <span className="font-medium">{countries.find(c => c.code === selectedCountry)?.name}</span>
+                                    <svg
+                                        className={`w-3 h-3 ml-1 transition-transform duration-200 ${countryDropdownOpen ? 'rotate-180' : ''}`}
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+
+                                {/* Country Dropdown Menu */}
+                                {countryDropdownOpen && (
+                                    <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 shadow-2xl border border-gray-200 dark:border-gray-700 rounded-lg z-50 max-h-80 overflow-y-auto">
+                                        <div className="py-2">
+                                            {countries.map((country) => (
+                                                <button
+                                                    key={country.code}
+                                                    onClick={() => handleCountrySelect(country.code)}
+                                                    className={`flex items-center gap-3 w-full px-4 py-2 text-sm text-left transition-colors duration-200 ${selectedCountry === country.code
+                                                            ? 'bg-red-50 dark:bg-red-900/20 text-red-400'
+                                                            : 'text-gray-700 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-red-900/10 hover:text-red-400'
+                                                        }`}
+                                                >
+                                                    <span className="text-base">{country.flag}</span>
+                                                    <span>{country.name}</span>
+                                                    {selectedCountry === country.code && (
+                                                        <svg className="w-4 h-4 ml-auto text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                                                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                                        </svg>
+                                                    )}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
                             {/* Theme Dropdown */}
                             <div className="relative" ref={themeDropdownRef}>
                                 <button
                                     onClick={toggleThemeDropdown}
                                     className="flex items-center gap-1 text-gray-600 dark:text-gray-300 hover:text-red-400 dark:hover:text-red-400 transition-colors duration-300"
                                 >
-                                    {theme === 'light' ? <IoSunnyOutline size={14} /> : 
-                                     theme === 'dark' ? <IoMoonOutline size={14} /> : 
-                                     <div className="w-3 h-3 bg-gradient-to-r from-yellow-400 to-gray-600 rounded-full" />}
+                                    {theme === 'light' ? <IoSunnyOutline size={14} /> :
+                                        theme === 'dark' ? <IoMoonOutline size={14} /> :
+                                            <div className="w-3 h-3 bg-gradient-to-r from-yellow-400 to-gray-600 rounded-full" />}
                                     <span className="font-medium">{themes.find(t => t.id === theme)?.name}</span>
-                                    <svg 
-                                        className={`w-3 h-3 ml-1 transition-transform duration-200 ${themeDropdownOpen ? 'rotate-180' : ''}`} 
-                                        fill="none" 
-                                        stroke="currentColor" 
+                                    <svg
+                                        className={`w-3 h-3 ml-1 transition-transform duration-200 ${themeDropdownOpen ? 'rotate-180' : ''}`}
+                                        fill="none"
+                                        stroke="currentColor"
                                         viewBox="0 0 24 24"
                                     >
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -154,11 +238,10 @@ const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
                                                 <button
                                                     key={themeOption.id}
                                                     onClick={() => handleThemeSelect(themeOption.id)}
-                                                    className={`flex items-center gap-3 w-full px-4 py-2 text-sm text-left transition-colors duration-200 ${
-                                                        theme === themeOption.id 
-                                                            ? 'bg-red-50 dark:bg-red-900/20 text-red-400' 
+                                                    className={`flex items-center gap-3 w-full px-4 py-2 text-sm text-left transition-colors duration-200 ${theme === themeOption.id
+                                                            ? 'bg-red-50 dark:bg-red-900/20 text-red-400'
                                                             : 'text-gray-700 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-red-900/10 hover:text-red-400'
-                                                    }`}
+                                                        }`}
                                                 >
                                                     {themeOption.icon}
                                                     <span>{themeOption.name}</span>
@@ -182,10 +265,10 @@ const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
                                 >
                                     <IoLanguage size={14} />
                                     <span className="font-medium">{currentTexts.language}</span>
-                                    <svg 
-                                        className={`w-3 h-3 ml-1 transition-transform duration-200 ${languageDropdownOpen ? 'rotate-180' : ''}`} 
-                                        fill="none" 
-                                        stroke="currentColor" 
+                                    <svg
+                                        className={`w-3 h-3 ml-1 transition-transform duration-200 ${languageDropdownOpen ? 'rotate-180' : ''}`}
+                                        fill="none"
+                                        stroke="currentColor"
                                         viewBox="0 0 24 24"
                                     >
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -194,17 +277,16 @@ const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
 
                                 {/* Language Dropdown Menu */}
                                 {languageDropdownOpen && (
-                                    <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-2xl border border-gray-200 dark:border-gray-700 rounded-lg z-50">
+                                    <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-2xl border border-gray-200 dark:border-gray-700 rounded-lg z-50 max-h-80 overflow-y-auto">
                                         <div className="py-2">
                                             {languages.map((lang) => (
                                                 <button
                                                     key={lang.code}
                                                     onClick={() => handleLanguageSelect(lang.code)}
-                                                    className={`flex items-center gap-3 w-full px-4 py-2 text-sm text-left transition-colors duration-200 ${
-                                                        language === lang.code 
-                                                            ? 'bg-red-50 dark:bg-red-900/20 text-red-400' 
+                                                    className={`flex items-center gap-3 w-full px-4 py-2 text-sm text-left transition-colors duration-200 ${language === lang.code
+                                                            ? 'bg-red-50 dark:bg-red-900/20 text-red-400'
                                                             : 'text-gray-700 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-red-900/10 hover:text-red-400'
-                                                    }`}
+                                                        }`}
                                                 >
                                                     <span className="text-base">{lang.flag}</span>
                                                     <span>{lang.name}</span>
@@ -227,15 +309,12 @@ const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
                     </div>
 
                     {/* Main Navigation */}
-                    <div className="relative flex h-20 items-center justify-between">
+                    <div className="relative px-9 flex h-20 items-center justify-between">
                         {/* Logo */}
                         <div className="flex flex-1 items-center justify-start">
                             <a href='/' className="flex items-center">
                                 <div className="flex shrink-0 items-center">
-                                    <img className="h-5 w-auto mb-1" src="/bank-logo.png" alt="Your Bank" />
-                                    <span className='ml-3 block text-xl font-bold text-red-400 dark:text-red-300 whitespace-nowrap'>
-                                        {currentTexts.company}
-                                    </span>
+                                    <img className="h-9 w-auto mb-1" src="/bank-logo.png" alt="UBA Moçambique" />
                                 </div>
                             </a>
                         </div>
@@ -364,6 +443,29 @@ const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
                 {menuOpen && (
                     <div className="lg:hidden border-t border-red-200 dark:border-red-800 bg-white dark:bg-gray-900" id="mobile-menu">
                         <div className="px-2 pb-3 pt-2 space-y-1">
+                            {/* Country Selection in Mobile Menu */}
+                            <div className="px-3 py-2 border-b border-gray-200 dark:border-gray-700">
+                                <div className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2">País / Country</div>
+                                <div className="grid grid-cols-2 gap-2 max-h-60 overflow-y-auto">
+                                    {countries.map((country) => (
+                                        <button
+                                            key={country.code}
+                                            onClick={() => {
+                                                handleCountrySelect(country.code);
+                                                setMenuOpen(false);
+                                            }}
+                                            className={`flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-colors duration-200 ${selectedCountry === country.code
+                                                    ? 'bg-red-500 text-white'
+                                                    : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-red-900/10 hover:text-red-400'
+                                                }`}
+                                        >
+                                            <span>{country.flag}</span>
+                                            <span className="text-xs">{country.name}</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
                             {/* Theme Selection in Mobile Menu */}
                             <div className="px-3 py-2 border-b border-gray-200 dark:border-gray-700">
                                 <div className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2">{currentTexts.theme}</div>
@@ -375,11 +477,10 @@ const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
                                                 handleThemeSelect(themeOption.id);
                                                 setMenuOpen(false);
                                             }}
-                                            className={`flex flex-col items-center gap-1 px-3 py-2 text-sm rounded-lg transition-colors duration-200 ${
-                                                theme === themeOption.id 
-                                                    ? 'bg-red-500 text-white' 
+                                            className={`flex flex-col items-center gap-1 px-3 py-2 text-sm rounded-lg transition-colors duration-200 ${theme === themeOption.id
+                                                    ? 'bg-red-500 text-white'
                                                     : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-red-900/10 hover:text-red-400'
-                                            }`}
+                                                }`}
                                         >
                                             {themeOption.icon}
                                             <span className="text-xs">{themeOption.name}</span>
@@ -391,22 +492,21 @@ const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
                             {/* Language Selection in Mobile Menu */}
                             <div className="px-3 py-2 border-b border-gray-200 dark:border-gray-700">
                                 <div className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2">{currentTexts.language}</div>
-                                <div className="grid grid-cols-2 gap-2">
+                                <div className="grid grid-cols-2 gap-2 max-h-60 overflow-y-auto">
                                     {languages.map((lang) => (
                                         <button
                                             key={lang.code}
                                             onClick={() => {
-                                                setLanguage(lang.code);
+                                                handleLanguageSelect(lang.code);
                                                 setMenuOpen(false);
                                             }}
-                                            className={`flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-colors duration-200 ${
-                                                language === lang.code 
-                                                    ? 'bg-red-500 text-white' 
+                                            className={`flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-colors duration-200 ${language === lang.code
+                                                    ? 'bg-red-500 text-white'
                                                     : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-red-900/10 hover:text-red-400'
-                                            }`}
+                                                }`}
                                         >
                                             <span>{lang.flag}</span>
-                                            <span>{lang.name}</span>
+                                            <span className="text-xs">{lang.name}</span>
                                         </button>
                                     ))}
                                 </div>

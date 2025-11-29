@@ -4,6 +4,30 @@ import { useNavigate } from 'react-router-dom';
 const BusinessDashboardContent: React.FC = () => {
   const navigate = useNavigate();
 
+  // Cores profissionais da aplicação
+  const COLOR_SCHEME = {
+    primary: {
+      50: '#FEF2F2',
+      100: '#FEE5E5',
+      200: '#FECACA',
+      300: '#FDA4A4',
+      400: '#FB7185',
+      500: '#F43F5E',
+      600: '#E11D48',
+      700: '#BE123C',
+      800: '#9F1239',
+      900: '#881337'
+    },
+    accent: {
+      green: '#10B981',
+      blue: '#3B82F6',
+      purple: '#8B5CF6',
+      orange: '#F59E0B',
+      teal: '#14B8A6',
+      pink: '#EC4899'
+    }
+  };
+
   const [quickActions] = useState([
     {
       title: 'Transferências',
@@ -125,7 +149,12 @@ const BusinessDashboardContent: React.FC = () => {
       </div>
 
       {/* Saldo Total Empresarial */}
-      <div className="bg-linear-to-r from-red-500 to-red-600 rounded-2xl shadow-lg p-6 text-white">
+      <div
+        className="rounded-2xl shadow-lg p-6 text-white"
+        style={{
+          background: `linear-gradient(135deg, ${COLOR_SCHEME.primary[600]}, ${COLOR_SCHEME.primary[800]})`
+        }}
+      >
         <div className="flex justify-between items-start">
           <div>
             <p className="text-red-100">Saldo Total Empresarial</p>
@@ -133,18 +162,21 @@ const BusinessDashboardContent: React.FC = () => {
             <p className="text-red-100 text-sm mt-1">Última atualização: hoje às 14:30</p>
           </div>
           <div className="flex space-x-2">
-            <button className="bg-white text-red-600 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-red-50 transition-colors">
+            <button
+              className="bg-white text-red-600 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-red-50 transition-colors"
+            >
               Extrato Detalhado
             </button>
             <button
-              onClick={() => navigate('/business/transfers')}
-              className="bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-red-800 transition-colors"
+              onClick={() => navigate('/business/transfers/multiple')}
+              className="bg-red-900 bg-opacity-50 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-opacity-70 transition-colors"
             >
               Nova Transferência
             </button>
           </div>
         </div>
       </div>
+
 
       {/* Visão Geral Financeira */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -217,8 +249,8 @@ const BusinessDashboardContent: React.FC = () => {
               <div key={index} className="flex items-center justify-between p-3 rounded-lg border border-gray-100 hover:bg-gray-50 transition-colors">
                 <div className="flex items-center space-x-3">
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center ${account.type === 'current' ? 'bg-red-100 text-red-600' :
-                      account.type === 'investment' ? 'bg-green-100 text-green-600' :
-                        'bg-orange-100 text-orange-600'
+                    account.type === 'investment' ? 'bg-green-100 text-green-600' :
+                      'bg-orange-100 text-orange-600'
                     }`}>
                     {account.type === 'current' ? '🏦' : account.type === 'investment' ? '📈' : '⚡'}
                   </div>
