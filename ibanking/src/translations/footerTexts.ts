@@ -1,13 +1,13 @@
 export const footerTexts = {
     PT: {
       description:
-        "O Your Bank é o seu parceiro financeiro de confiança, oferecendo soluções bancárias inovadoras para particulares e empresas.",
+        "O UBA Moçambique é o seu parceiro financeiro de confiança, oferecendo soluções bancárias inovadoras para particulares e empresas.",
       quickLinks: "Links Rápidos",
       services: "Serviços",
       contact: "Contactos",
       address: "JAT V-III, 14 Andar, Maputo",
       phone: "+258 21 123 4567",
-      email: "info@yourbank.co.mz",
+      email: "info@uba.co.mz",
       social: "Siga-nos",
       privacy: "Política de Privacidade",
       terms: "Termos e Condições",
@@ -24,7 +24,7 @@ export const footerTexts = {
   
     EN: {
       description:
-        "Your Bank is your trusted financial partner, offering innovative banking solutions for individuals and businesses.",
+        "UBA Moçambique is your trusted financial partner, offering innovative banking solutions for individuals and businesses.",
       quickLinks: "Quick Links",
       services: "Services",
       contact: "Contact",

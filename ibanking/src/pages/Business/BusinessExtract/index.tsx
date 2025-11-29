@@ -106,7 +106,7 @@ const BusinessExtract: React.FC<BusinessExtractProps> = ({ language }) => {
         },
         EN: {
             title: "Share Statement",
-            subtitle: "Share your bank statement with third parties securely",
+            subtitle: "Share Uba statement with third parties securely",
             date: "Date MOV",
             reference: "Reference",
             description: "Description",

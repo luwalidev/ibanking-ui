@@ -106,7 +106,7 @@ const ClientExtract: React.FC<ClientExtractProps> = ({ language }) => {
         },
         EN: {
             title: "Share Statement",
-            subtitle: "Share your bank statement with third parties securely",
+            subtitle: "Share UBA Moçambique statement with third parties securely",
             date: "Date MOV",
             reference: "Reference",
             description: "Description",

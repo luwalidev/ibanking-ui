@@ -6,8 +6,6 @@ export const navbarTexts = {
         about: "Sobre Nós",
         settings: 'Definições',
         language: 'Idioma',
-
-        // ... traduções existentes ...
         theme: 'Tema',
         light: 'Claro',
         dark: 'Escuro',
@@ -33,7 +31,7 @@ export const navbarTexts = {
         signup: "Abrir Conta",
         simulator: "Simulador",
         contact: "Contactos",
-        company: "Your Bank"
+        company: "Moçambique"
     },
 
     EN: {
@@ -43,9 +41,6 @@ export const navbarTexts = {
         about: "About Us",
         settings: 'Settings',
         language: 'Language',
-
-
-        // ... existing translations ...
         theme: 'Theme',
         light: 'Light',
         dark: 'Dark',
@@ -71,7 +66,7 @@ export const navbarTexts = {
         signup: "Open Account",
         simulator: "Simulator",
         contact: "Contact",
-        company: "Your Bank"
+        company: "Moçambique"
     },
 
     ES: {
@@ -81,8 +76,6 @@ export const navbarTexts = {
         about: "Sobre Nosotros",
         settings: 'Configuración',
         language: 'Idioma',
-
-        // ... traducciones existentes ...
         theme: 'Tema',
         light: 'Claro',
         dark: 'Oscuro',
@@ -108,7 +101,7 @@ export const navbarTexts = {
         signup: "Abrir Cuenta",
         simulator: "Simulador",
         contact: "Contacto",
-        company: "Your Bank"
+        company: "Moçambique"
     },
 
     FR: {
@@ -118,8 +111,6 @@ export const navbarTexts = {
         about: "À Propos",
         settings: 'Paramètres',
         language: 'Langue',
-
-        // ... traductions existantes ...
         theme: 'Thème',
         light: 'Clair',
         dark: 'Sombre',
@@ -145,7 +136,7 @@ export const navbarTexts = {
         signup: "Ouvrir un Compte",
         simulator: "Simulateur",
         contact: "Contact",
-        company: "Your Bank"
+        company: "Moçambique"
     },
 
     DE: {
@@ -155,8 +146,6 @@ export const navbarTexts = {
         about: "Über Uns",
         settings: 'Einstellungen',
         language: 'Sprache',
-
-        // ... bestehende Übersetzungen ...
         theme: 'Thema',
         light: 'Hell',
         dark: 'Dunkel',
@@ -182,7 +171,7 @@ export const navbarTexts = {
         signup: "Konto Eröffnen",
         simulator: "Simulator",
         contact: "Kontakt",
-        company: "Your Bank"
+        company: "Moçambique"
     },
 
     IT: {
@@ -192,8 +181,6 @@ export const navbarTexts = {
         about: "Chi Siamo",
         settings: 'Impostazioni',
         language: 'Lingua',
-
-        // ... traduzioni esistenti ...
         theme: 'Tema',
         light: 'Chiaro',
         dark: 'Scuro',
@@ -219,7 +206,7 @@ export const navbarTexts = {
         signup: "Apri Conto",
         simulator: "Simulatore",
         contact: "Contatti",
-        company: "Your Bank"
+        company: "Moçambique"
     },
 
     NL: {
@@ -229,8 +216,6 @@ export const navbarTexts = {
         about: "Over Ons",
         settings: 'Instellingen',
         language: 'Taal',
-
-        // ... bestaande vertalingen ...
         theme: 'Thema',
         light: 'Licht',
         dark: 'Donker',
@@ -256,6 +241,76 @@ export const navbarTexts = {
         signup: "Rekening Openen",
         simulator: "Simulator",
         contact: "Contact",
-        company: "Your Bank"
+        company: "Moçambique"
+    },
+
+    ZH: {
+        personal: "个人银行",
+        business: "企业银行",
+        private: "私人银行",
+        about: "关于我们",
+        settings: '设置',
+        language: '语言',
+        theme: '主题',
+        light: '浅色',
+        dark: '深色',
+        auto: '自动',
+
+        // 个人银行子菜单
+        accounts: "账户",
+        cards: "卡片",
+        loans: "贷款",
+        investments: "投资",
+        insurance: "保险",
+        digital: "数字银行",
+
+        // 企业银行子菜单
+        businessAccounts: "企业账户",
+        businessLoans: "融资",
+        treasury: "资金管理",
+        trade: "国际贸易",
+        cardsBusiness: "企业卡片",
+
+        // 操作
+        login: "网上银行",
+        signup: "开户",
+        simulator: "模拟器",
+        contact: "联系我们",
+        company: "莫桑比克"
+    },
+
+    AR: {
+        personal: "الأفراد",
+        business: "الشركات",
+        private: "الخدمات المصرفية الخاصة",
+        about: "من نحن",
+        settings: 'الإعدادات',
+        language: 'اللغة',
+        theme: 'المظهر',
+        light: 'فاتح',
+        dark: 'غامق',
+        auto: 'تلقائي',
+
+        // قائمة فرعية للأفراد
+        accounts: "الحسابات",
+        cards: "البطاقات",
+        loans: "القروض",
+        investments: "الاستثمارات",
+        insurance: "التأمين",
+        digital: "الخدمات المصرفية الرقمية",
+
+        // قائمة فرعية للشركات
+        businessAccounts: "الحسابات التجارية",
+        businessLoans: "التمويل",
+        treasury: "الخزينة",
+        trade: "التجارة الدولية",
+        cardsBusiness: "البطاقات التجارية",
+
+        // الإجراءات
+        login: "الخدمات المصرفية عبر الإنترنت",
+        signup: "فتح حساب",
+        simulator: "المحاكي",
+        contact: "اتصل بنا",
+        company: "موزمبيق"
     }
 };

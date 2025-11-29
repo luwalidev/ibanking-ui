@@ -27,7 +27,7 @@ import { navbarTexts } from '../../../translations/navbarTexts';
 
 // Interface para as props
 interface BusinessNavbarProps {
-  language: 'PT' | 'EN';
+  language: 'PT' | 'EN' | 'ES' | 'FR' | 'DE' | 'IT' | 'NL' | 'ZH' | 'AR';
   toggleLanguage: () => void;
   isOpen: boolean;
   onToggle: () => void;
@@ -112,6 +112,22 @@ const BusinessNavbar: React.FC<BusinessNavbarProps> = ({
     }
   };
 
+  // Função para obter traduções dinâmicas baseadas no idioma
+  const getDynamicText = (ptText: string, enText: string) => {
+    const translations: { [key: string]: string } = {
+      'PT': ptText,
+      'EN': enText,
+      'ES': ptText, // Usar Português como fallback para Espanhol
+      'FR': enText, // Usar Inglês como fallback para Francês
+      'DE': enText, // Usar Inglês como fallback para Alemão
+      'IT': ptText, // Usar Português como fallback para Italiano
+      'NL': enText, // Usar Inglês como fallback para Holandês
+      'ZH': enText, // Usar Inglês como fallback para Chinês
+      'AR': enText  // Usar Inglês como fallback para Árabe
+    };
+    return translations[language] || enText;
+  };
+
   // Menu Empresa
   const companyItems = [
     { path: '/business/company/management', icon: IoBusinessOutline, label: currentBusinessTexts.accountManagement },
@@ -121,14 +137,14 @@ const BusinessNavbar: React.FC<BusinessNavbarProps> = ({
   // Menu Transferências - ATUALIZADO COM NOVOS LINKS
   const transferItems = [
     { path: '/business/transfers/national', icon: TbTransfer, label: currentBusinessTexts.nationalTransfers },
-    { path: '/business/transfers/international', icon: TbTransfer, label: language === 'PT' ? 'Internacionais' : 'International' },
-    { path: '/business/transfers/same-bank', icon: TbTransfer, label: language === 'PT' ? 'Entre contas do mesmo banco' : 'Same Bank Transfers' },
-    { path: '/business/transfers/my-accounts', icon: TbTransfer, label: language === 'PT' ? 'Entre as minhas contas' : 'Between My Accounts' },
+    { path: '/business/transfers/international', icon: TbTransfer, label: getDynamicText('Internacionais', 'International') },
+    { path: '/business/transfers/same-bank', icon: TbTransfer, label: getDynamicText('Entre contas do mesmo banco', 'Same Bank Transfers') },
+    { path: '/business/transfers/my-accounts', icon: TbTransfer, label: getDynamicText('Entre as minhas contas', 'Between My Accounts') },
     { path: '/business/transfers/multiple', icon: TbTransfer, label: currentBusinessTexts.multipleTransfers },
     { path: '/business/transfers/digital-wallet', icon: FaWallet, label: currentBusinessTexts.digitalWallet },
     { path: '/business/transfers/debt-conversion', icon: FaMoneyCheckAlt, label: currentBusinessTexts.debtConversion },
     { path: '/business/scheduled-transfers', icon: CiCalendar, label: currentBusinessTexts.scheduledOperations },
-    { path: '/business/movements', icon: FaFileInvoice, label: currentBusinessTexts.movements || 'Movimentos' },
+    { path: '/business/movements', icon: FaFileInvoice, label: currentBusinessTexts.movements || getDynamicText('Movimentos', 'Movements') },
   ];
 
   // Menu Pagamentos
@@ -146,13 +162,13 @@ const BusinessNavbar: React.FC<BusinessNavbarProps> = ({
   // Outros serviços - AGORA COM GESTÃO DE CHECKS E CARTÕES Crédito
   const otherServicesItems = [
     { path: '/business/cards', icon: CiCreditCard1, label: currentBusinessTexts.cards },
-    { path: '/business/credit-cards', icon: TbCreditCard, label: language === 'PT' ? 'Gerir Cartões de Crédito' : 'Credit Cards' },
-    { path: '/business/check-management', icon: TbCheck, label: language === 'PT' ? 'Gestão de Checks' : 'Check Management' },
+    { path: '/business/credit-cards', icon: TbCreditCard, label: getDynamicText('Gerir Cartões de Crédito', 'Credit Cards') },
+    { path: '/business/check-management', icon: TbCheck, label: getDynamicText('Gestão de Checks', 'Check Management') },
     { path: '/business/savings', icon: MdOutlineSavings, label: currentBusinessTexts.savings },
     { path: '/business/financing', icon: BsPiggyBank, label: currentBusinessTexts.financing },
     { path: '/business/notifications', icon: CiBellOn, label: currentBusinessTexts.notifications },
     { path: '/business/authorization', icon: CiLogout, label: currentBusinessTexts.transactionAuthorization },
-    { path: '/business/extract', icon: CiShare1, label: currentBusinessTexts.shareExtract || 'Partilhar Extracto' },
+    { path: '/business/extract', icon: CiShare1, label: currentBusinessTexts.shareExtract || getDynamicText('Partilhar Extracto', 'Share Statement') },
   ];
 
   // Menu de configurações
@@ -161,6 +177,38 @@ const BusinessNavbar: React.FC<BusinessNavbarProps> = ({
     { path: '/business/security', icon: CiLock, label: currentBusinessTexts.security },
     { path: '/business/settings', icon: CiSettings, label: currentBusinessTexts.settings },
   ];
+
+  // Função para obter o texto do país baseado no idioma
+  const getCountryText = () => {
+    const countryTexts = {
+      'PT': 'Moçambique Business',
+      'EN': 'Mozambique Business',
+      'ES': 'Mozambique Business',
+      'FR': 'Mozambique Business',
+      'DE': 'Mosambik Business',
+      'IT': 'Mozambico Business',
+      'NL': 'Mozambique Business',
+      'ZH': '莫桑比克商业',
+      'AR': 'موزمبيق للأعمال'
+    };
+    return countryTexts[language] || 'Mozambique Business';
+  };
+
+  // Função para obter o texto do NUIT baseado no idioma
+  const getTaxIdText = () => {
+    const taxIdTexts = {
+      'PT': 'NUIT',
+      'EN': 'Tax ID',
+      'ES': 'NIF',
+      'FR': 'Numéro fiscal',
+      'DE': 'Steuernummer',
+      'IT': 'Codice fiscale',
+      'NL': 'BTW-nummer',
+      'ZH': '税号',
+      'AR': 'الرقم الضريبي'
+    };
+    return taxIdTexts[language] || 'Tax ID';
+  };
 
   return (
     <>
@@ -184,12 +232,12 @@ const BusinessNavbar: React.FC<BusinessNavbarProps> = ({
         <div className="flex items-center justify-between p-6 border-b border-gray-100">
           <div className="flex items-center space-x-3">
             <img
-              className="h-6 w-auto"
+              className="h-7 w-auto"
               src="/bank-logo.png"
-              alt="Your Bank"
+              alt="UBA Moçambique"
             />
             <span className="text-lg font-bold text-red-600">
-              Your Bank Business
+              {getCountryText()}
             </span>
           </div>
 
@@ -215,7 +263,7 @@ const BusinessNavbar: React.FC<BusinessNavbarProps> = ({
                 {companyName}
               </p>
               <p className="text-xs text-gray-500 truncate">
-                NUIT: {companyTaxId}
+                {getTaxIdText()}: {companyTaxId}
               </p>
               <p className="text-xs text-red-600 font-medium truncate">
                 {userName}
