@@ -34,11 +34,11 @@ export function SignIn() {
         <>
             <Navbar language={language} setLanguage={function (): void {
                 throw new Error('Function not implemented.');
-            } } />
+            }} />
             <div className="bg-linear-to-br from-gray-900 via-black to-gray-900 relative overflow-hidden min-h-screen flex items-center justify-center">
                 {/* Background com gradiente animado */}
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/30 to-red-900/20 animate-gradient-x"></div>
-                
+
                 {/* Partículas de fundo */}
                 <div className="absolute inset-0">
                     {[...Array(15)].map((_, i) => (
@@ -58,7 +58,7 @@ export function SignIn() {
                 {/* Main Content - Container mais compacto */}
                 <div className="relative z-10 w-full max-w-6xl mx-auto px-6 lg:px-8 py-8">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                        
+
                         {/* Text Content - Left Side */}
                         <div className="text-center lg:text-left">
                             <div className="space-y-6 max-w-lg mx-auto lg:mx-0">
@@ -74,8 +74,8 @@ export function SignIn() {
                                     <h1 className="text-4xl lg:text-5xl font-bold text-white leading-tight">
                                         {currentTexts.title}
                                         <span className="block text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-red-600">
-                                            {userType === 'business' ? 
-                                                (language === 'PT' ? 'Empresarial' : 'Business') : 
+                                            {userType === 'business' ?
+                                                (language === 'PT' ? 'Empresarial' : 'Business') :
                                                 (language === 'PT' ? 'Pessoal' : 'Personal')
                                             }
                                         </span>
@@ -112,8 +112,12 @@ export function SignIn() {
                                     <div className="p-6 text-center border-b border-white/10">
                                         <div className="flex justify-center mb-4">
                                             <div className="flex items-center space-x-3">
-                                                <div className="w-10 h-10 bg-gradient-to-br from-red-600 to-red-800 rounded-xl flex items-center justify-center shadow-lg">
-                                                    <span className="text-white font-bold text-md">YB</span>
+                                                <div className="w-14 h-14 rounded-xl flex items-center justify-center">
+                                                    <img
+                                                        src="/bank-logo.png"
+                                                        alt="UBA Moçambique"
+                                                        className="w-14 h-14 object-contain"
+                                                    />
                                                 </div>
                                                 <div className="text-left">
                                                     <div className="text-white font-bold text-lg">UBA Moçambique</div>
@@ -131,22 +135,20 @@ export function SignIn() {
                                             <button
                                                 type="button"
                                                 onClick={() => setUserType('individual')}
-                                                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${
-                                                    userType === 'individual'
-                                                        ? 'bg-white text-gray-900 shadow-md'
-                                                        : 'text-white/70 hover:text-white'
-                                                }`}
+                                                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${userType === 'individual'
+                                                    ? 'bg-white text-gray-900 shadow-md'
+                                                    : 'text-white/70 hover:text-white'
+                                                    }`}
                                             >
                                                 {language === 'PT' ? 'Particular' : 'Individual'}
                                             </button>
                                             <button
                                                 type="button"
                                                 onClick={() => setUserType('business')}
-                                                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${
-                                                    userType === 'business'
-                                                        ? 'bg-white text-gray-900 shadow-md'
-                                                        : 'text-white/70 hover:text-white'
-                                                }`}
+                                                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${userType === 'business'
+                                                    ? 'bg-white text-gray-900 shadow-md'
+                                                    : 'text-white/70 hover:text-white'
+                                                    }`}
                                             >
                                                 {language === 'PT' ? 'Empresa' : 'Business'}
                                             </button>
