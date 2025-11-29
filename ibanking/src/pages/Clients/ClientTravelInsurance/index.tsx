@@ -4,8 +4,6 @@ import {
     FaPlane,
     FaUmbrellaBeach,
     FaShieldAlt,
-    FaHeartbeat,
-    FaSuitcase,
     FaGlobeAmericas,
     FaHistory,
     FaCheckCircle,

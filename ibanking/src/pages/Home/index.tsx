@@ -6,7 +6,7 @@ import { BankValues } from "../../components/BankValues";
 import { BranchLocator } from "../../components/BranchLocator";
 
 export function Home() {
-  const [language, setLanguage] = useState<'PT' | 'EN' | 'ES' | 'FR' | 'DE' | 'IT' | 'NL'>('PT');
+  const [language, setLanguage] = useState<'PT' | 'EN' | 'ES' | 'FR' | 'DE' | 'IT' | 'NL' | 'ZH' | 'AR'>('PT');
 
   // Converte para apenas PT ou EN para componentes antigos
   const getCompatibleLanguage = (lang: string): 'PT' | 'EN' => {
