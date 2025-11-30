@@ -27,9 +27,11 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
 
-            # Build e deploy
-            docker compose build
-            docker compose up -d --remove-orphans
+            # Build e deploy SEM CACHE
+            docker compose build --no-cache
 
-            # Remover imagens antigas
+            # Subir recriando container obrigatoriamente
+            docker compose up -d --force-recreate --remove-orphans
+
+            # Limpar imagens antigas
             docker image prune -af

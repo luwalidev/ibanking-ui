@@ -4,6 +4,8 @@ services:
   ibanking-ui:
     build:
       context: .
+      dockerfile: Dockerfile
+    image: ibanking-ui:latest
     container_name: ibanking-ui
     ports:
       - "2000:80"

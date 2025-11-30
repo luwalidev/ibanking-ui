@@ -3,15 +3,12 @@
 
     WORKDIR /app
     
-    # Copiar arquivos de dependência primeiro (cache mais rápido)
+    # Copiar apenas dependências (melhora cache)
     COPY package.json yarn.lock ./
     RUN yarn install
     
-    # Copiar código
+    # Copiar resto do código
     COPY . .
-    
-    # Copiar .env (Vite só lê .env do root)
-    COPY .env .env
     
     # Build do frontend
     RUN yarn build
@@ -22,10 +19,10 @@
     # Limpar html antigo
     RUN rm -rf /usr/share/nginx/html/*
     
-    # Copiar build do stage anterior
+    # Copiar build
     COPY --from=builder /app/dist /usr/share/nginx/html/
     
-    # Copiar config personalizada
+    # Config Nginx
     COPY nginx.conf /etc/nginx/conf.d/default.conf
     
     EXPOSE 80
