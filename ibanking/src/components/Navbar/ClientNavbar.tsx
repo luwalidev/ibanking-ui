@@ -116,6 +116,7 @@ const ClientNavbar: React.FC<ClientNavbarProps> = ({
     { path: '/client/prepaid-cards', icon: MdOutlinePayments, label: currentClientTexts.prepaidCards },
     { path: '/client/beneficiaries', icon: FaUserFriends, label: language === 'PT' ? 'Beneficiários' : 'Beneficiaries' },
     { path: '/client/extract', icon: CiShare1, label: currentClientTexts.shareExtract || 'Partilhar Extracto' },
+    { path: '/client/notifications', icon: CiShare1, label: currentClientTexts.notifications || 'Partilhar Extracto' },
   ];
 
   // Menu de configurações
@@ -194,7 +195,7 @@ const ClientNavbar: React.FC<ClientNavbarProps> = ({
             </button>
 
             <button
-              onClick={() => setNotificationsOpen(!notificationsOpen)}
+              onClick={() => handleNavigation('/client/notifications')}
               className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors relative"
             >
               <CiBellOn size={18} />
