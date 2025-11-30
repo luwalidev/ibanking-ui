@@ -31,7 +31,7 @@ const COLOR_SCHEME = {
 // Componente para o conteúdo do dashboard
 const DashboardContent: React.FC = () => {
   const navigate = useNavigate();
-  
+
   const [selectedPeriod, setSelectedPeriod] = useState<'week' | 'month' | 'year'>('month');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
@@ -118,39 +118,39 @@ const DashboardContent: React.FC = () => {
   const currentSpendingData = useMemo(() => {
     const data = spendingData[selectedPeriod];
     const categories = [
-      { 
-        category: 'alimentacao', 
-        name: 'Alimentação', 
+      {
+        category: 'alimentacao',
+        name: 'Alimentação',
         color: COLOR_SCHEME.primary[500],
         icon: '🛒'
       },
-      { 
-        category: 'utilidades', 
-        name: 'Utilidades', 
+      {
+        category: 'utilidades',
+        name: 'Utilidades',
         color: COLOR_SCHEME.accent.blue,
         icon: '💡'
       },
-      { 
-        category: 'entretenimento', 
-        name: 'Entretenimento', 
+      {
+        category: 'entretenimento',
+        name: 'Entretenimento',
         color: COLOR_SCHEME.accent.purple,
         icon: '🎬'
       },
-      { 
-        category: 'transporte', 
-        name: 'Transporte', 
+      {
+        category: 'transporte',
+        name: 'Transporte',
         color: COLOR_SCHEME.accent.orange,
         icon: '🚗'
       },
-      { 
-        category: 'saude', 
-        name: 'Saúde', 
+      {
+        category: 'saude',
+        name: 'Saúde',
         color: COLOR_SCHEME.accent.teal,
         icon: '🏥'
       },
-      { 
-        category: 'outros', 
-        name: 'Outros', 
+      {
+        category: 'outros',
+        name: 'Outros',
         color: COLOR_SCHEME.primary[300],
         icon: '📦'
       }
@@ -191,8 +191,8 @@ const DashboardContent: React.FC = () => {
   };
 
   // Componente do gráfico de pizza interativo
-  const PieChart = ({ data, selectedCategory, onCategoryHover }: { 
-    data: typeof currentSpendingData; 
+  const PieChart = ({ data, selectedCategory, onCategoryHover }: {
+    data: typeof currentSpendingData;
     selectedCategory: string;
     onCategoryHover: (category: string | null) => void;
   }) => {
@@ -208,10 +208,10 @@ const DashboardContent: React.FC = () => {
             const percentage = item.percentage / 100;
             const angle = percentage * 360;
             const largeArcFlag = angle > 180 ? 1 : 0;
-            
+
             const x1 = center + totalRadius * Math.cos(currentAngle * Math.PI / 180);
             const y1 = center + totalRadius * Math.sin(currentAngle * Math.PI / 180);
-            
+
             const x2 = center + totalRadius * Math.cos((currentAngle + angle) * Math.PI / 180);
             const y2 = center + totalRadius * Math.sin((currentAngle + angle) * Math.PI / 180);
 
@@ -242,7 +242,7 @@ const DashboardContent: React.FC = () => {
             currentAngle += angle;
             return slice;
           })}
-          
+
           {/* Centro do gráfico */}
           <circle cx={center} cy={center} r="50" fill="#FFFFFF" />
           <text x={center} y={center - 10} textAnchor="middle" className="text-lg font-bold fill-gray-900">
@@ -268,11 +268,11 @@ const DashboardContent: React.FC = () => {
           <span className="text-gray-600">Taxa de Gastos: <strong className="text-red-600">{expensePercentage.toFixed(1)}%</strong></span>
         </div>
         <div className="flex h-3 rounded-full overflow-hidden bg-gray-200">
-          <div 
+          <div
             className="bg-green-500 transition-all duration-500 ease-out"
             style={{ width: `${savingsPercentage}%` }}
           />
-          <div 
+          <div
             className="bg-red-500 transition-all duration-500 ease-out"
             style={{ width: `${expensePercentage}%` }}
           />
@@ -309,9 +309,9 @@ const DashboardContent: React.FC = () => {
       </div>
 
       {/* Saldo Total */}
-      <div 
+      <div
         className="rounded-2xl shadow-lg p-6 text-white"
-        style={{ 
+        style={{
           background: `linear-gradient(135deg, ${COLOR_SCHEME.primary[600]}, ${COLOR_SCHEME.primary[800]})`
         }}
       >
@@ -322,8 +322,8 @@ const DashboardContent: React.FC = () => {
             <p className="text-red-100 text-sm mt-1">Última atualização: hoje às 08:30</p>
           </div>
           <div className="flex space-x-2">
-            <button 
-              onClick={() => navigate('/client/movements')} 
+            <button
+              onClick={() => navigate('/client/movements')}
               className="bg-white text-red-600 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-red-50 transition-colors"
             >
               Ver Movimentos
@@ -343,7 +343,7 @@ const DashboardContent: React.FC = () => {
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-lg font-semibold text-gray-900">Entradas vs Saídas</h2>
           <div className="flex space-x-2">
-            <select 
+            <select
               value={selectedPeriod}
               onChange={(e) => setSelectedPeriod(e.target.value as 'week' | 'month' | 'year')}
               className="text-sm border border-gray-300 rounded-lg px-3 py-1 focus:outline-none focus:ring-2 focus:ring-red-500"
@@ -354,7 +354,7 @@ const DashboardContent: React.FC = () => {
             </select>
           </div>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Entradas */}
           <div className="text-center p-6 rounded-xl border-2 border-green-200 bg-green-50 hover:shadow-md transition-all duration-300">
@@ -365,7 +365,6 @@ const DashboardContent: React.FC = () => {
             <p className="text-2xl font-bold text-green-600">
               MZN {currentFinancialData.income.toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
             </p>
-            <p className="text-xs text-green-500 mt-1 font-medium">+12% vs período anterior</p>
           </div>
 
           {/* Saídas */}
@@ -377,7 +376,6 @@ const DashboardContent: React.FC = () => {
             <p className="text-2xl font-bold text-red-600">
               MZN {currentFinancialData.expenses.toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
             </p>
-            <p className="text-xs text-red-500 mt-1 font-medium">-5% vs período anterior</p>
           </div>
 
           {/* Saldo */}
@@ -389,13 +387,12 @@ const DashboardContent: React.FC = () => {
             <p className="text-2xl font-bold text-blue-600">
               MZN {currentFinancialData.balance.toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
             </p>
-            <p className="text-xs text-blue-500 mt-1 font-medium">+8% vs período anterior</p>
           </div>
         </div>
 
-        <FinancialProgressBar 
-          income={currentFinancialData.income} 
-          expenses={currentFinancialData.expenses} 
+        <FinancialProgressBar
+          income={currentFinancialData.income}
+          expenses={currentFinancialData.expenses}
         />
       </div>
 
@@ -406,7 +403,7 @@ const DashboardContent: React.FC = () => {
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-semibold text-gray-900">Gastos por Categoria</h2>
             <div className="flex space-x-3">
-              <select 
+              <select
                 value={selectedPeriod}
                 onChange={(e) => setSelectedPeriod(e.target.value as 'week' | 'month' | 'year')}
                 className="text-sm border border-gray-300 rounded-lg px-3 py-1 focus:outline-none focus:ring-2 focus:ring-red-500"
@@ -415,7 +412,7 @@ const DashboardContent: React.FC = () => {
                 <option value="month">Mês</option>
                 <option value="year">Ano</option>
               </select>
-              <select 
+              <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
                 className="text-sm border border-gray-300 rounded-lg px-3 py-1 focus:outline-none focus:ring-2 focus:ring-red-500"
@@ -427,26 +424,25 @@ const DashboardContent: React.FC = () => {
               </select>
             </div>
           </div>
-          
-          <PieChart 
-            data={currentSpendingData} 
+
+          <PieChart
+            data={currentSpendingData}
             selectedCategory={selectedCategory}
             onCategoryHover={setHoveredCategory}
           />
-          
+
           {/* Legenda Interativa */}
           <div className="mt-6 space-y-3">
             {currentSpendingData.map((category, index) => {
               const isHighlighted = selectedCategory === 'all' || selectedCategory === category.category;
               const isHovered = hoveredCategory === category.category;
               const opacity = isHighlighted ? 1 : 0.4;
-              
+
               return (
-                <div 
+                <div
                   key={index}
-                  className={`flex items-center justify-between p-3 rounded-lg transition-all duration-300 cursor-pointer ${
-                    isHovered ? 'bg-gray-50 transform scale-105' : ''
-                  }`}
+                  className={`flex items-center justify-between p-3 rounded-lg transition-all duration-300 cursor-pointer ${isHovered ? 'bg-gray-50 transform scale-105' : ''
+                    }`}
                   style={{ opacity }}
                   onMouseEnter={() => setHoveredCategory(category.category)}
                   onMouseLeave={() => setHoveredCategory(null)}
@@ -456,7 +452,7 @@ const DashboardContent: React.FC = () => {
                 >
                   <div className="flex items-center space-x-3">
                     <div className="text-lg">{category.icon}</div>
-                    <div 
+                    <div
                       className="w-3 h-3 rounded-full"
                       style={{ backgroundColor: category.color }}
                     />
@@ -488,9 +484,9 @@ const DashboardContent: React.FC = () => {
                   onClick={() => handleQuickAction(action.path)}
                   className="flex flex-col items-center p-4 rounded-xl border-2 border-gray-100 hover:border-red-200 hover:bg-red-50 transition-all duration-300 group hover:shadow-md"
                 >
-                  <div 
+                  <div
                     className="w-12 h-12 rounded-lg flex items-center justify-center text-xl mb-3 transition-all duration-300 group-hover:scale-110"
-                    style={{ 
+                    style={{
                       backgroundColor: action.color.split(' ')[0].replace('bg-', ''),
                       color: 'inherit'
                     }}
@@ -518,16 +514,15 @@ const DashboardContent: React.FC = () => {
             </div>
             <div className="space-y-4">
               {accounts.map((account, index) => (
-                <div 
-                  key={index} 
+                <div
+                  key={index}
                   className="flex items-center justify-between p-4 rounded-xl border-2 border-gray-100 hover:border-red-200 hover:bg-red-50 transition-all duration-300 group"
                 >
                   <div className="flex items-center space-x-4">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                      account.type === 'current' ? 'bg-blue-100 text-blue-600' :
-                      account.type === 'savings' ? 'bg-green-100 text-green-600' :
-                      'bg-orange-100 text-orange-600'
-                    } group-hover:scale-110 transition-transform duration-300`}>
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${account.type === 'current' ? 'bg-blue-100 text-blue-600' :
+                        account.type === 'savings' ? 'bg-green-100 text-green-600' :
+                          'bg-orange-100 text-orange-600'
+                      } group-hover:scale-110 transition-transform duration-300`}>
                       {account.type === 'current' ? '🏦' : account.type === 'savings' ? '💰' : '📈'}
                     </div>
                     <div>
@@ -558,14 +553,13 @@ const DashboardContent: React.FC = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {recentTransactions.map((transaction) => (
-            <div 
-              key={transaction.id} 
+            <div
+              key={transaction.id}
               className="flex items-center justify-between p-4 rounded-xl border-2 border-gray-100 hover:border-red-200 hover:bg-red-50 transition-all duration-300 group"
             >
               <div className="flex items-center space-x-3">
-                <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110 ${
-                  transaction.type === 'credit' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'
-                }`}>
+                <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110 ${transaction.type === 'credit' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'
+                  }`}>
                   {transaction.type === 'credit' ? '↓' : '↑'}
                 </div>
                 <div>
@@ -573,9 +567,8 @@ const DashboardContent: React.FC = () => {
                   <p className="text-xs text-gray-500">{transaction.date}</p>
                 </div>
               </div>
-              <div className={`font-bold text-sm ${
-                transaction.type === 'credit' ? 'text-green-600' : 'text-red-600'
-              }`}>
+              <div className={`font-bold text-sm ${transaction.type === 'credit' ? 'text-green-600' : 'text-red-600'
+                }`}>
                 {transaction.type === 'credit' ? '+' : '-'}MZN {Math.abs(transaction.amount).toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
               </div>
             </div>
