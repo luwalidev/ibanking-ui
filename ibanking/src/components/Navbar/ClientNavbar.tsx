@@ -40,7 +40,6 @@ const ClientNavbar: React.FC<ClientNavbarProps> = ({
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({
     transferencias: false,
     pagamentos: false,
