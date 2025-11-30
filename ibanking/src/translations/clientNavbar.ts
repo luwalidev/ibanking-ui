@@ -25,6 +25,7 @@ export const clientTexts = {
     prepaidCards: "Cartões Pré-pagos",
     movements: "Movimentos",
     shareExtract: "Partilhar Extracto",
+    notifications: 'Notificações',
   },
   EN: {
     dashboard: "Dashboard",
@@ -51,5 +52,6 @@ export const clientTexts = {
     prepaidCards: "Prepaid Cards",
     movements: "Movements", 
     shareExtract: "Share Statement",
+    notifications: 'Notifications',
   }
 };

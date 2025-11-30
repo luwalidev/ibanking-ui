@@ -49,6 +49,7 @@ import ClientFixedDeposit from '../pages/Clients/ClientFixedDeposit';
 import ClientTravelInsurance from '../pages/Clients/ClientTravelInsurance';
 import ClientThirdPartyInsurance from '../pages/Clients/ClientThirdPartyInsurance';
 import ClientOtherInsurance from '../pages/Clients/ClientOtherInsurance';
+import ClientNotificationPreferences from '../pages/Clients/ClientNotificationPreferences';
 
 const AppRoutes: React.FC = () => {
     return (
@@ -183,6 +184,7 @@ const AppRoutes: React.FC = () => {
                 <Route path="/business/security" element={<BusinessGenericPage language="PT" />} />
                 <Route path="/business/settings" element={<BusinessGenericPage language="PT" />} />
                 <Route path="/business/notifications" element={<NotificationPreferences language="PT" />} />
+                <Route path="/client/notifications" element={<ClientNotificationPreferences language="PT" />} />
                 <Route path="/business/authorization" element={<TransactionAuthorization language="PT" />} />
 
                 {/* =========================================== */}
