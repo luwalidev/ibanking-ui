@@ -3,24 +3,31 @@
 
     WORKDIR /app
     
+    # Copiar arquivos de dependência primeiro (cache mais rápido)
     COPY package.json yarn.lock ./
     RUN yarn install
     
+    # Copiar código
     COPY . .
+    
+    # Copiar .env (Vite só lê .env do root)
+    COPY .env .env
+    
+    # Build do frontend
     RUN yarn build
     
-    # ---------- STAGE 2: Production ----------
+    # ---------- STAGE 2: Nginx ----------
     FROM nginx:stable-alpine
     
-    WORKDIR /usr/share/nginx/html
+    # Limpar html antigo
+    RUN rm -rf /usr/share/nginx/html/*
     
-    RUN rm -rf ./*
+    # Copiar build do stage anterior
+    COPY --from=builder /app/dist /usr/share/nginx/html/
     
-    COPY --from=builder /app/dist .
-    
+    # Copiar config personalizada
     COPY nginx.conf /etc/nginx/conf.d/default.conf
     
     EXPOSE 80
-    
     CMD ["nginx", "-g", "daemon off;"]
     
