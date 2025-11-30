@@ -1,6 +1,5 @@
 name: CI/CD - iBanking
 
-# Dispara o workflow apenas quando houver push na main
 on:
   push:
     branches:
@@ -11,11 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Pegar o código mais recente
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Deploy direto no VPS via SSH
       - name: Deploy to VPS
         uses: appleboy/ssh-action@v0.1.6
         with:
@@ -25,14 +22,14 @@ jobs:
           script: |
             cd /var/www/dev/ibanking-ui/ibanking
 
-            # Garantir que o VPS está sincronizado com a main
-            git fetch --all
+            # Atualizar repositório
+            git config --global --add safe.directory /var/www/dev/ibanking-ui/ibanking
+            git fetch origin main
             git reset --hard origin/main
 
-            # Build e deploy com Docker Compose
-            docker compose pull
+            # Build e deploy
             docker compose build
             docker compose up -d --remove-orphans
 
-            # Limpar imagens antigas
-            docker image prune -f
+            # Remover imagens antigas
+            docker image prune -af
