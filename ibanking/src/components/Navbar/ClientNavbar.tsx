@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { BsPiggyBank } from "react-icons/bs";
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
@@ -13,7 +13,7 @@ import {
   CiCalendar,
   CiShare1
 } from "react-icons/ci";
-import { IoStatsChart, IoCardOutline } from "react-icons/io5";
+import { IoStatsChart, IoCardOutline, IoLanguage } from "react-icons/io5";
 import { TbTransfer } from "react-icons/tb";
 import { FaWallet, FaMoneyCheckAlt, FaMobileAlt, FaFileInvoice, FaUserFriends, FaUmbrellaBeach, FaCar, FaShieldAlt } from "react-icons/fa";
 import { MdOutlinePayments } from "react-icons/md";
@@ -22,8 +22,8 @@ import { clientTexts } from '../../translations/clientNavbar';
 
 // Interface para as props
 interface ClientNavbarProps {
-  language: 'PT' | 'EN';
-  toggleLanguage: () => void;
+  language: 'PT' | 'EN' | 'ES' | 'FR' | 'DE' | 'IT' | 'NL' | 'ZH' | 'AR';
+  setLanguage: (language: 'PT' | 'EN' | 'ES' | 'FR' | 'DE' | 'IT' | 'NL' | 'ZH' | 'AR') => void;
   isOpen: boolean;
   onToggle: () => void;
   userName?: string;
@@ -32,7 +32,7 @@ interface ClientNavbarProps {
 
 const ClientNavbar: React.FC<ClientNavbarProps> = ({
   language,
-  toggleLanguage,
+  setLanguage,
   isOpen,
   onToggle,
   userName = "Darken Machava",
@@ -47,6 +47,10 @@ const ClientNavbar: React.FC<ClientNavbarProps> = ({
     poupanca: false,
     outrosServicos: false
   });
+
+  // Estado para dropdown de línguas
+  const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false);
+  const languageDropdownRef = useRef<HTMLDivElement>(null);
 
   const handleLogout = () => {
     navigate('/');
@@ -68,6 +72,42 @@ const ClientNavbar: React.FC<ClientNavbarProps> = ({
       onToggle();
     }
   };
+
+  // Lista completa de línguas
+  const languages = [
+    { code: 'PT' as const, name: 'Português', flag: '🇵🇹' },
+    { code: 'EN' as const, name: 'English', flag: '🇺🇸' },
+    { code: 'ES' as const, name: 'Español', flag: '🇪🇸' },
+    { code: 'FR' as const, name: 'Français', flag: '🇫🇷' },
+    { code: 'DE' as const, name: 'Deutsch', flag: '🇩🇪' },
+    { code: 'IT' as const, name: 'Italiano', flag: '🇮🇹' },
+    { code: 'NL' as const, name: 'Nederlands', flag: '🇳🇱' },
+    { code: 'ZH' as const, name: '中文', flag: '🇨🇳' },
+    { code: 'AR' as const, name: 'العربية', flag: '🇸🇦' }
+  ];
+
+  const toggleLanguageDropdown = () => {
+    setLanguageDropdownOpen(!languageDropdownOpen);
+  };
+
+  const handleLanguageSelect = (langCode: 'PT' | 'EN' | 'ES' | 'FR' | 'DE' | 'IT' | 'NL' | 'ZH' | 'AR') => {
+    setLanguage(langCode);
+    setLanguageDropdownOpen(false);
+  };
+
+  // Fechar dropdown quando clicar fora
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (languageDropdownRef.current && !languageDropdownRef.current.contains(event.target as Node)) {
+        setLanguageDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   // Ações Rápidas (itens principais sem dropdown)
   const quickActionsItems = [
@@ -115,7 +155,7 @@ const ClientNavbar: React.FC<ClientNavbarProps> = ({
     { path: '/client/prepaid-cards', icon: MdOutlinePayments, label: currentClientTexts.prepaidCards },
     { path: '/client/beneficiaries', icon: FaUserFriends, label: language === 'PT' ? 'Beneficiários' : 'Beneficiaries' },
     { path: '/client/extract', icon: CiShare1, label: currentClientTexts.shareExtract || 'Partilhar Extracto' },
-    { path: '/client/notifications', icon: CiShare1, label: currentClientTexts.notifications || 'Partilhar Extracto' },
+    { path: '/client/notifications', icon: CiShare1, label: currentClientTexts.notifications || 'Notificações' },
   ];
 
   // Menu de configurações
@@ -501,18 +541,57 @@ const ClientNavbar: React.FC<ClientNavbarProps> = ({
 
         {/* Footer com linguagem e logout */}
         <div className="p-4 border-t border-gray-100 space-y-3">
-          {/* Selector de Linguagem */}
-          <div className="flex items-center justify-between px-3 py-2">
-            <span className="text-sm text-gray-600">{currentTexts.language}</span>
+          {/* Dropdown de Linguagem */}
+          <div className="relative" ref={languageDropdownRef}>
             <button
-              onClick={toggleLanguage}
-              className="flex items-center space-x-2 text-sm font-medium text-gray-700 hover:text-red-600 transition-colors"
+              onClick={toggleLanguageDropdown}
+              className="flex items-center justify-between w-full px-3 py-3 text-sm text-gray-600 hover:bg-red-50 hover:text-red-600 rounded-lg transition-all duration-200"
             >
-              <span>{language}</span>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
+              <div className="flex items-center space-x-3">
+                <IoLanguage size={18} />
+                <span>{currentTexts.language}</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-xs font-medium bg-red-50 text-red-600 px-2 py-1 rounded">
+                  {languages.find(lang => lang.code === language)?.flag} {language}
+                </span>
+                <svg
+                  className={`w-4 h-4 transition-transform duration-200 ${languageDropdownOpen ? 'rotate-180' : ''}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
             </button>
+
+            {/* Language Dropdown Menu - POSICIONADO ABAIXO */}
+            {languageDropdownOpen && (
+              <div className="absolute bottom-0 left-0 right-0 mb-12 bg-white shadow-2xl border border-gray-200 rounded-lg z-50 max-h-80 overflow-y-auto">
+                <div className="py-2">
+                  {languages.map((lang) => (
+                    <button
+                      key={lang.code}
+                      onClick={() => handleLanguageSelect(lang.code)}
+                      className={`flex items-center space-x-3 w-full px-4 py-3 text-sm text-left transition-colors duration-200 ${
+                        language === lang.code
+                          ? 'bg-red-50 text-red-600'
+                          : 'text-gray-700 hover:bg-red-50 hover:text-red-600'
+                      }`}
+                    >
+                      <span className="text-base">{lang.flag}</span>
+                      <span className="flex-1">{lang.name}</span>
+                      {language === lang.code && (
+                        <svg className="w-4 h-4 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Botão de Logout */}
