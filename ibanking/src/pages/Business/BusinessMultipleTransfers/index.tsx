@@ -991,7 +991,7 @@ const BusinessMultipleTransfers: React.FC = () => {
                                             onClick={handleNewBatch}
                                             className="flex-1 bg-red-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-red-700 transition-colors"
                                         >
-                                            Novo Lote
+                                            Nova Transferência
                                         </button>
                                     </div>
                                 </div>

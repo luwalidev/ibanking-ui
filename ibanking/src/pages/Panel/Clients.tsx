@@ -361,7 +361,7 @@ const DashboardContent: React.FC = () => {
             <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
               <span className="text-2xl text-green-600">↓</span>
             </div>
-            <p className="text-sm text-gray-600 mb-2 font-medium">Entradas</p>
+            <p className="text-sm text-gray-600 mb-2 font-medium">Crédito</p>
             <p className="text-2xl font-bold text-green-600">
               MZN {currentFinancialData.income.toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
             </p>
@@ -372,20 +372,9 @@ const DashboardContent: React.FC = () => {
             <div className="w-14 h-14 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4">
               <span className="text-2xl text-red-600">↑</span>
             </div>
-            <p className="text-sm text-gray-600 mb-2 font-medium">Saídas</p>
+            <p className="text-sm text-gray-600 mb-2 font-medium">Débito</p>
             <p className="text-2xl font-bold text-red-600">
               MZN {currentFinancialData.expenses.toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
-            </p>
-          </div>
-
-          {/* Saldo */}
-          <div className="text-center p-6 rounded-xl border-2 border-blue-200 bg-blue-50 hover:shadow-md transition-all duration-300">
-            <div className="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-4">
-              <span className="text-2xl text-blue-600">⚖️</span>
-            </div>
-            <p className="text-sm text-gray-600 mb-2 font-medium">Saldo Líquido</p>
-            <p className="text-2xl font-bold text-blue-600">
-              MZN {currentFinancialData.balance.toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
             </p>
           </div>
         </div>
