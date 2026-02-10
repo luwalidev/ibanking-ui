@@ -308,7 +308,7 @@ const BusinessInternationalTransfers: React.FC = () => {
             ` : ''}
             
             ===========================================
-            UBA Moçambique Business - Luwali Technologies
+            UBA Moçambique Business - Energias renováveis, S.A
         `;
 
         const blob = new Blob([pdfContent], { type: 'application/pdf' });

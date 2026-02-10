@@ -307,7 +307,7 @@ const ClientInternationalTransfers: React.FC = () => {
             ` : ''}
             
             ===========================================
-            UBA Moçambique Business - Luwali Technologies
+            UBA Moçambique Business - Energias renováveis, S.A
         `;
 
         const blob = new Blob([pdfContent], { type: 'application/pdf' });
@@ -383,7 +383,7 @@ const ClientInternationalTransfers: React.FC = () => {
                             <p className="text-gray-600 mt-1">Execute transferências para contas no exterior</p>
                         </div>
                         <button
-                            onClick={() => navigate('/panel')}
+                            onClick={() => navigate('/mypanel')}
                             className="bg-red-50 text-red-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-100 transition-colors"
                         >
                             Voltar ao Dashboard
@@ -799,7 +799,7 @@ const ClientInternationalTransfers: React.FC = () => {
                                         {/* Botões de Navegação */}
                                         <div className="flex space-x-4 pt-6 border-t border-gray-200">
                                             <button
-                                                onClick={() => navigate('/panel')}
+                                                onClick={() => navigate('/mypanel')}
                                                 className="flex-1 bg-gray-200 text-gray-700 py-3 px-4 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
                                             >
                                                 Cancelar
@@ -1005,7 +1005,7 @@ const ClientInternationalTransfers: React.FC = () => {
 
                                     <div className="flex space-x-4">
                                         <button
-                                            onClick={() => navigate('/panel')}
+                                            onClick={() => navigate('/mypanel')}
                                             className="flex-1 bg-gray-200 text-gray-700 py-3 px-4 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
                                         >
                                             Voltar ao Dashboard

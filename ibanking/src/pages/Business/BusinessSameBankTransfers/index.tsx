@@ -246,7 +246,7 @@ const BusinessSameBankTransfers: React.FC = () => {
             VANTAGEM: Transferência Instantânea - Mesmo Banco
             
             ============================================
-            UBA Moçambique Business - Luwali Technologies
+            UBA Moçambique Business - Energias renováveis, S.A
         `;
 
         const blob = new Blob([pdfContent], { type: 'application/pdf' });

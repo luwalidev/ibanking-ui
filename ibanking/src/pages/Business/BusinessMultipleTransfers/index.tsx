@@ -304,7 +304,7 @@ const BusinessMultipleTransfers: React.FC = () => {
             Saldo Posterior: MZN ${((account?.balance || 0) - totalAmount).toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
             
             ===============================================
-            Your Bank Business - Luwali Technologies
+            Your Bank Business - Energias renováveis, S.A
             Sistema de Transferências Múltiplas
             Data de Emissão: ${new Date().toLocaleDateString('pt-PT')}
         `;
@@ -354,7 +354,7 @@ const BusinessMultipleTransfers: React.FC = () => {
                 ` : ''}
                 
                 ========================================
-                Your Bank Business - Luwali Technologies
+                Your Bank Business - Energias renováveis, S.A
                 Este documento serve como comprovativo oficial da transferência.
                 Em caso de dúvida, contacte o nosso apoio ao Businesse.
             `;
