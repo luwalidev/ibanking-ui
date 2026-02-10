@@ -53,6 +53,8 @@ import ClientNotificationPreferences from '../pages/Clients/ClientNotificationPr
 import BusinessDigitalWalletPayment from '../pages/Business/BusinessDigitalWalletPayment';
 import BusinessSalaryPayments from '../pages/Business/BusinessSalaryPayments';
 import BusinessSupplierPayments from '../pages/Business/BusinessSupplierPayments';
+import ClientAccountDetails from '../pages/Clients/ClientAccountDetails';
+import BusinessAccountDetails from '../pages/Business/BusinesstAccountDetails';
 
 const AppRoutes: React.FC = () => {
     return (
@@ -71,7 +73,7 @@ const AppRoutes: React.FC = () => {
                 <Route path="/mypanel" element={<ClientDashboard />} />
 
                 {/* Contas */}
-                <Route path="/client/accounts" element={<ClientGenericPage language="PT" />} />
+                <Route path="/client/accounts" element={<ClientAccountDetails language="PT" />} />
 
                 {/* Transferências */}
                 <Route path="/client/transfers/national" element={<ClientNationalTransfers />} />
@@ -138,7 +140,7 @@ const AppRoutes: React.FC = () => {
 
                 {/* Gestão da Empresa */}
                 <Route path="/business/company/management" element={<BusinessGenericPage language="PT" />} />
-                <Route path="/business/company/current-accounts" element={<BusinessGenericPage language="PT" />} />
+                <Route path="/business/company/current-accounts" element={<BusinessAccountDetails language="PT" />} />
 
                 {/* Transferências */}
                 <Route path="/business/transfers/national" element={<BusinessNationalTransfers />} />

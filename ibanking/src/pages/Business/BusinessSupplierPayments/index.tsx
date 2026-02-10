@@ -552,7 +552,7 @@ const BusinessSupplierPayments: React.FC = () => {
             Saldo Posterior: MZN ${((account?.balance || 0) - totalAmount).toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
             
             =================================================
-            UBA Moçambique Business - Luwali Technologies
+            UBA Moçambique Business - Energias renováveis, S.A
             Sistema de Pagamento a Fornecedores
             Data de Emissão: ${new Date().toLocaleDateString('pt-PT')}
         `;
@@ -629,7 +629,7 @@ const BusinessSupplierPayments: React.FC = () => {
                 ` : ''}
                 
                 =====================================
-                UBA Moçambique Business - Luwali Technologies
+                UBA Moçambique Business - Energias renováveis, S.A
                 Este documento serve como comprovante oficial do pagamento.
                 Para questões ou correções, contacte o departamento financeiro.
             `;

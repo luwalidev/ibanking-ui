@@ -304,7 +304,7 @@ const ClientMultipleTransfers: React.FC = () => {
             Saldo Posterior: MZN ${((account?.balance || 0) - totalAmount).toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
             
             ===============================================
-            Your Bank Business - Luwali Technologies
+            Your Bank Business - Energias renováveis, S.A
             Sistema de Transferências Múltiplas
             Data de Emissão: ${new Date().toLocaleDateString('pt-PT')}
         `;
@@ -354,7 +354,7 @@ const ClientMultipleTransfers: React.FC = () => {
                 ` : ''}
                 
                 ========================================
-                Your Bank Business - Luwali Technologies
+                Your Bank Business - Energias renováveis, S.A
                 Este documento serve como comprovativo oficial da transferência.
                 Em caso de dúvida, contacte o nosso apoio ao cliente.
             `;
@@ -498,7 +498,7 @@ const ClientMultipleTransfers: React.FC = () => {
                             <p className="text-gray-600 mt-1">Execute várias transferências de uma só vez</p>
                         </div>
                         <button
-                            onClick={() => navigate('/panel')}
+                            onClick={() => navigate('/mypanel')}
                             className="bg-red-50 text-red-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-100 transition-colors"
                         >
                             Voltar ao Dashboard
@@ -982,7 +982,7 @@ const ClientMultipleTransfers: React.FC = () => {
 
                                     <div className="flex space-x-4">
                                         <button
-                                            onClick={() => navigate('/panel')}
+                                            onClick={() => navigate('/mypanel')}
                                             className="flex-1 bg-gray-200 text-gray-700 py-3 px-4 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
                                         >
                                             Voltar ao Dashboard

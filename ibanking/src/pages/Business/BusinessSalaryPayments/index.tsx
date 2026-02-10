@@ -484,7 +484,7 @@ const BusinessSalaryPayments: React.FC = () => {
             Saldo Posterior: MZN ${((account?.balance || 0) - totalAmount).toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
             
             ================================================
-            UBA Moçambique Business - Luwali Technologies
+            UBA Moçambique Business - Energias renováveis, S.A
             Sistema de Pagamento de Salários
             Data de Emissão: ${new Date().toLocaleDateString('pt-PT')}
         `;
@@ -551,7 +551,7 @@ const BusinessSalaryPayments: React.FC = () => {
                 ` : ''}
                 
                 ========================================
-                UBA Moçambique Business - Luwali Technologies
+                UBA Moçambique Business - Energias renováveis, S.A
                 Este documento serve como holerite oficial do funcionário.
                 Para questões ou correções, contacte o departamento de Recursos Humanos.
             `;
