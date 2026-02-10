@@ -55,6 +55,9 @@ const BusinessNationalTransfers: React.FC = () => {
         numberOfOccurrences: 1
     });
 
+    // Estado para transferência em tempo real
+    const [isRealTimeTransfer, setIsRealTimeTransfer] = useState(false);
+
     const accounts = [
         { id: '1', name: 'Conta Principal Empresa', number: 'PT50 1234 5678 9012 3456 7890', balance: 25420.15 },
         { id: '2', name: 'Conta Operações', number: 'PT50 1234 5678 9012 3456 7891', balance: 125000.75 },
@@ -104,16 +107,22 @@ const BusinessNationalTransfers: React.FC = () => {
     };
 
     const validateStep1 = () => {
-        return transferData.fromAccount && 
-               transferData.toNIB && 
-               transferData.toName && 
-               transferData.amount && 
-               transferData.transferCategory &&
-               parseFloat(transferData.amount) > 0;
+        return transferData.fromAccount &&
+            transferData.toNIB &&
+            transferData.toName &&
+            transferData.amount &&
+            transferData.transferCategory &&
+            parseFloat(transferData.amount) > 0;
     };
 
+    // Retorna apenas o valor da transferência (sem taxas)
     const getTotalAmount = () => {
         return parseFloat(transferData.amount || '0');
+    };
+
+    // Calcula a taxa baseada no tipo de transferência
+    const getTransferFee = () => {
+        return isRealTimeTransfer ? 250 : 50;
     };
 
     const handleNext = () => {
@@ -143,6 +152,7 @@ const BusinessNationalTransfers: React.FC = () => {
             scheduled: false,
             scheduleDate: ''
         });
+        setIsRealTimeTransfer(false);
         setEmailSent(false);
         setEmailData({
             email: '',
@@ -170,7 +180,8 @@ const BusinessNationalTransfers: React.FC = () => {
     const downloadPDFExtract = () => {
         const transferRef = generateTransferReference();
         const totalAmount = getTotalAmount();
-        
+        const fee = getTransferFee();
+
         const pdfContent = `
             COMPROVATIVO DE TRANSFERÊNCIA NACIONAL
             ======================================
@@ -188,6 +199,10 @@ const BusinessNationalTransfers: React.FC = () => {
             
             VALOR DA TRANSFERÊNCIA:
             MZN ${totalAmount.toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
+            
+            TAXA DE SERVIÇO:
+            MZN ${fee.toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
+            ${isRealTimeTransfer ? '(Transferência em Tempo Real)' : '(Transferência Normal)'}
             
             CATEGORIA:
             ${getCategoryLabel(transferData.transferCategory)}
@@ -257,10 +272,10 @@ const BusinessNationalTransfers: React.FC = () => {
     };
 
     // Componente Modal Reutilizável
-    const Modal = ({ isOpen, onClose, title, children }: { 
-        isOpen: boolean; 
-        onClose: () => void; 
-        title: string; 
+    const Modal = ({ isOpen, onClose, title, children }: {
+        isOpen: boolean;
+        onClose: () => void;
+        title: string;
         children: React.ReactNode;
     }) => {
         if (!isOpen) return null;
@@ -293,7 +308,7 @@ const BusinessNationalTransfers: React.FC = () => {
 
     return (
         <BusinessLayout>
-           <div className="max-w-6xl mx-auto space-y-6">
+            <div className="max-w-6xl mx-auto space-y-6">
                 {/* Header */}
                 <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
                     <div className="flex items-center justify-between">
@@ -374,6 +389,8 @@ const BusinessNationalTransfers: React.FC = () => {
                                                         placeholder="PT50 XXXX XXXX XXXX XXXX XXXX"
                                                         className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
                                                     />
+
+                                                    
                                                 </div>
                                                 <div>
                                                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -389,6 +406,26 @@ const BusinessNationalTransfers: React.FC = () => {
                                                     />
                                                 </div>
                                             </div>
+                                            {/* Checkbox para Transferência em Tempo Real */}
+                                                    <div className="mt-4  p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                                        <label className="flex items-center space-x-3 cursor-pointer">
+                                                            <input
+                                                                type="checkbox"
+                                                                checked={isRealTimeTransfer}
+                                                                onChange={(e) => setIsRealTimeTransfer(e.target.checked)}
+                                                                className="w-4 h-4 text-red-600 rounded focus:ring-red-500"
+                                                            />
+                                                            <div>
+                                                                <span className="font-medium text-gray-900">Transferência em Tempo Real</span>
+                                                                <p className="text-xs text-gray-500 mt-1">
+                                                                    A transferência será processada imediatamente.
+                                                                    Taxa adicional: <span className="font-semibold">MZN 250,00</span>
+                                                                    <br />
+                                                                    <span className="text-red-600">(Taxa normal: MZN 50,00)</span>
+                                                                </p>
+                                                            </div>
+                                                        </label>
+                                                    </div>
 
                                             {/* Valor */}
                                             <div>
@@ -478,7 +515,7 @@ const BusinessNationalTransfers: React.FC = () => {
                                             </div>
                                         </div>
 
-                                        {/* Transferência Recorrente - POSICIONADA AQUI, APÓS O FORMULÁRIO */}
+                                        {/* Transferência Recorrente */}
                                         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                                             <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                                                 <CiRepeat className="mr-2 text-red-600" size={20} />
@@ -611,6 +648,15 @@ const BusinessNationalTransfers: React.FC = () => {
                                             </span>
                                         </div>
                                         <div className="flex justify-between items-center">
+                                            <span className="text-gray-600">Taxa de serviço:</span>
+                                            <span className="font-semibold">
+                                                MZN {getTransferFee().toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
+                                                {isRealTimeTransfer && (
+                                                    <span className="text-xs text-orange-600 ml-2">(Tempo Real)</span>
+                                                )}
+                                            </span>
+                                        </div>
+                                        <div className="flex justify-between items-center">
                                             <span className="text-gray-600">Categoria:</span>
                                             <span className="font-semibold">
                                                 {getCategoryLabel(transferData.transferCategory)}
@@ -695,6 +741,19 @@ const BusinessNationalTransfers: React.FC = () => {
                                             <span className="font-mono">{generateTransferReference()}</span>
                                         </div>
                                         <div className="flex justify-between">
+                                            <span className="text-gray-600">Valor transferido:</span>
+                                            <span className="font-semibold">
+                                                MZN {getTotalAmount().toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
+                                            </span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <span className="text-gray-600">Taxa de serviço:</span>
+                                            <span>
+                                                MZN {getTransferFee().toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
+                                                {isRealTimeTransfer && " (Tempo Real)"}
+                                            </span>
+                                        </div>
+                                        <div className="flex justify-between">
                                             <span className="text-gray-600">Data:</span>
                                             <span>{new Date().toLocaleDateString('pt-PT')} {new Date().toLocaleTimeString('pt-PT')}</span>
                                         </div>
@@ -717,7 +776,7 @@ const BusinessNationalTransfers: React.FC = () => {
                                     {/* Opções de Comprovativo */}
                                     <div className="bg-white border border-gray-200 rounded-xl p-6">
                                         <h3 className="text-lg font-semibold text-gray-900 mb-4">Opções de Comprovativo</h3>
-                                        
+
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             {/* Download PDF */}
                                             <button
@@ -814,6 +873,8 @@ const BusinessNationalTransfers: React.FC = () => {
                                 <p>• Horário de processamento: 24/7</p>
                                 <p>• Limite máximo por transferência: MZN 500.000,00</p>
                                 <p>• Taxas aplicáveis conforme tabela</p>
+                                <p>• Transferência normal: MZN 50,00</p>
+                                <p>• Transferência em tempo real: MZN 250,00</p>
                             </div>
                         </div>
 
@@ -828,6 +889,16 @@ const BusinessNationalTransfers: React.FC = () => {
                                             MZN {getTotalAmount().toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
                                         </span>
                                     </div>
+
+                                    {/* Mostrar a taxa separadamente */}
+                                    <div className="flex justify-between">
+                                        <span className="text-gray-600">Taxa:</span>
+                                        <span className="font-semibold">MZN {getTransferFee().toLocaleString('pt-PT', { minimumFractionDigits: 2 })}</span>
+                                        {isRealTimeTransfer && (
+                                            <span className="text-xs text-orange-600 ml-2">(Tempo Real)</span>
+                                        )}
+                                    </div>
+
                                     {transferData.transferCategory && (
                                         <div className="flex justify-between">
                                             <span className="text-gray-600">Categoria:</span>
@@ -836,6 +907,7 @@ const BusinessNationalTransfers: React.FC = () => {
                                             </span>
                                         </div>
                                     )}
+
                                     {recurringSettings.isRecurring && (
                                         <div className="bg-orange-50 border border-orange-200 rounded-lg p-2">
                                             <div className="text-xs text-orange-800 text-center">
@@ -843,16 +915,18 @@ const BusinessNationalTransfers: React.FC = () => {
                                             </div>
                                         </div>
                                     )}
-                                    <div className="flex justify-between">
-                                        <span className="text-gray-600">Taxa:</span>
-                                        <span className="font-semibold">MZN 50,00</span>
-                                    </div>
+
+                                    {/* NOTA IMPORTANTE: Não somamos as taxas ao valor total */}
                                     <div className="border-t pt-3">
                                         <div className="flex justify-between text-lg">
-                                            <span className="font-semibold">Total:</span>
+                                            <span className="font-semibold">Total a transferir:</span>
                                             <span className="font-bold text-red-600">
-                                                MZN {(getTotalAmount() + 50).toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
+                                                MZN {getTotalAmount().toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
                                             </span>
+                                        </div>
+                                        <div className="flex justify-between text-sm text-gray-500 mt-1">
+                                            <span>+ Taxa de serviço:</span>
+                                            <span>MZN {getTransferFee().toLocaleString('pt-PT', { minimumFractionDigits: 2 })}</span>
                                         </div>
                                     </div>
                                 </div>

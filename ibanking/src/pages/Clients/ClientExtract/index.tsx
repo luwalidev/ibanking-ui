@@ -176,14 +176,6 @@ const ClientExtract: React.FC<ClientExtractProps> = ({ language }) => {
         {
             id: '3',
             number: 'PT50 0000 0000 0000 0000 0003',
-            name: 'Conta Empresarial',
-            type: 'businessAccount',
-            balance: 75000,
-            currency: 'MT'
-        },
-        {
-            id: '4',
-            number: 'PT50 0000 0000 0000 0000 0004',
             name: 'Conta Salário',
             type: 'currentAccount',
             balance: 12000,

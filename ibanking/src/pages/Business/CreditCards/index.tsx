@@ -26,8 +26,8 @@ const CreditCards: React.FC<PrepaidCardsProps> = ({ language }) => {
 
   const texts = {
     PT: {
-      title: 'Gerir Cartões de Crédito',
-      subtitle: 'Gerencie os seus cartões de credito empresariais',
+      title: 'Gerir Cartões',
+      subtitle: 'Gerencie os seus cartões',
       allCards: 'Todos os Cartões',
       activeCards: 'Ativos',
       blockedCards: 'Bloqueados',

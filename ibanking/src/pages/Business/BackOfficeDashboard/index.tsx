@@ -301,7 +301,7 @@ const BackOfficeSystem: React.FC<BackOfficeSystemProps> = ({ language }) => {
       clearSearch: "Limpar",
       
       // Dashboard
-      welcome: "Bem-vindo, Operador",
+      welcome: "Gestor Carlos Manhiça",
       pendingApprovals: "Aprovações Pendentes",
       todaysActivities: "Atividades de Hoje",
       urgentAlerts: "Alertas Urgentes",
@@ -616,9 +616,9 @@ const BackOfficeSystem: React.FC<BackOfficeSystemProps> = ({ language }) => {
 
   // Dados do dashboard
   const dashboardMetrics = {
-    totalClients: 15427,
-    activeClients: 14892,
-    pendingApprovals: 23,
+    totalClients: 30,
+    activeClients: 25,
+    pendingApprovals: 10,
     todayAudits: 156,
     failedTransactions: 8,
     supportTickets: 12,

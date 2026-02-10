@@ -27,8 +27,8 @@ export const businessTexts = {
     statePayments: 'Pagamentos ao estado',
     paymentSchedule: 'Agenda de vencimento',
     directDebits: 'Debitos directos',
+    recharges: 'Recargas',
     forex: 'Cambios',
-    bulkPayments: 'Pagamentos em Massa',
 
     // Empresa
     company: 'Empresa',
@@ -107,8 +107,8 @@ export const businessTexts = {
     statePayments: 'State Payments',
     paymentSchedule: 'Payment Schedule',
     directDebits: 'Direct Debits',
+    recharges: 'Recharges',
     forex: 'Forex',
-    bulkPayments: 'Bulk Payments',
 
     // Empresa
     company: 'Company',
@@ -187,8 +187,8 @@ export const businessTexts = {
     statePayments: 'Pagos al estado',
     paymentSchedule: 'Agenda de vencimiento',
     directDebits: 'Débitos directos',
+recharges: 'Recharges',
     forex: 'Cambios',
-    bulkPayments: 'Pagos Masivos',
 
     // Empresa
     company: 'Empresa',
@@ -267,8 +267,8 @@ export const businessTexts = {
     statePayments: 'Paiements à l\'état',
     paymentSchedule: 'Calendrier d\'échéance',
     directDebits: 'Prélèvements automatiques',
+    recharges: 'Recharges',
     forex: 'Changes',
-    bulkPayments: 'Paiements en Masse',
 
     // Empresa
     company: 'Entreprise',
@@ -347,8 +347,8 @@ export const businessTexts = {
     statePayments: 'Staatszahlungen',
     paymentSchedule: 'Zahlungsplan',
     directDebits: 'Lastschriften',
+    recharges: 'Recharges',
     forex: 'Devisen',
-    bulkPayments: 'Massenbezahlungen',
 
     // Empresa
     company: 'Unternehmen',
@@ -427,8 +427,8 @@ export const businessTexts = {
     statePayments: 'Pagamenti allo stato',
     paymentSchedule: 'Agenda scadenze',
     directDebits: 'Addebiti diretti',
+    recharges: 'Recharges',
     forex: 'Cambi',
-    bulkPayments: 'Pagamenti di Massa',
 
     // Empresa
     company: 'Azienda',
@@ -507,8 +507,8 @@ export const businessTexts = {
     statePayments: 'Staatsbetalingen',
     paymentSchedule: 'Betalingsschema',
     directDebits: 'Incasso\'s',
+    recharges: 'Recharges',
     forex: 'Wisselkoersen',
-    bulkPayments: 'Bulkbetalingen',
 
     // Empresa
     company: 'Bedrijf',
@@ -586,9 +586,9 @@ export const businessTexts = {
     payServices: '服务付款',
     statePayments: '政府付款',
     paymentSchedule: '付款计划',
+    recharges: 'Recharges',
     directDebits: '直接扣款',
     forex: '外汇',
-    bulkPayments: '批量付款',
 
     // Empresa
     company: '公司',
@@ -667,8 +667,8 @@ export const businessTexts = {
     statePayments: 'المدفوعات الحكومية',
     paymentSchedule: 'جدول الاستحقاق',
     directDebits: 'الخصم المباشر',
+    recharges: 'Recharges',
     forex: 'العملات',
-    bulkPayments: 'المدفوعات الجماعية',
 
     // Empresa
     company: 'الشركة',

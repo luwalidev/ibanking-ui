@@ -27,7 +27,7 @@ const PrepaidCards: React.FC<PrepaidCardsProps> = ({ language }) => {
   const texts = {
     PT: {
       title: 'Gerir Cartões Pré-Pagos',
-      subtitle: 'Gerencie os seus cartões pré-pagos empresariais',
+      subtitle: 'Gerencie os seus cartões pré-pagos',
       allCards: 'Todos os Cartões',
       activeCards: 'Ativos',
       blockedCards: 'Bloqueados',
@@ -88,7 +88,7 @@ const PrepaidCards: React.FC<PrepaidCardsProps> = ({ language }) => {
     {
       id: '1',
       number: '**** **** **** 1234',
-      holderName: 'João Silva - Viagens',
+      holderName: 'Jõao Paulo',
       balance: 5000.00,
       currency: 'MZN',
       expiryDate: '2024-12-31',
@@ -99,35 +99,13 @@ const PrepaidCards: React.FC<PrepaidCardsProps> = ({ language }) => {
     {
       id: '2',
       number: '**** **** **** 5678',
-      holderName: 'Maria Santos - Despesas',
+      holderName: 'Jõao Paulo',
       balance: 2500.50,
       currency: 'MZN',
       expiryDate: '2024-11-30',
       status: 'active',
       type: 'physical',
       limit: 5000.00
-    },
-    {
-      id: '3',
-      number: '**** **** **** 9012',
-      holderName: 'Carlos Lima - Emergência',
-      balance: 0.00,
-      currency: 'MZN',
-      expiryDate: '2024-10-15',
-      status: 'blocked',
-      type: 'virtual',
-      limit: 2000.00
-    },
-    {
-      id: '4',
-      number: '**** **** **** 3456',
-      holderName: 'Ana Costa - Marketing',
-      balance: 750.00,
-      currency: 'MZN',
-      expiryDate: '2023-12-31',
-      status: 'expired',
-      type: 'physical',
-      limit: 3000.00
     }
   ]);
 

@@ -55,9 +55,9 @@ const ClientSameBankTransfers: React.FC = () => {
         numberOfOccurrences: 1
     });
 
-    // Contas da empresa
+    // Contas 
     const companyAccounts = [
-        { id: '1', name: 'Conta Principal Empresa', number: 'PT50 1234 5678 9012 3456 7890', balance: 25420.15 },
+        { id: '1', name: 'Conta Principal', number: 'PT50 1234 5678 9012 3456 7890', balance: 25420.15 },
         { id: '2', name: 'Conta Operações', number: 'PT50 1234 5678 9012 3456 7891', balance: 125000.75 },
         { id: '3', name: 'Conta Investimentos', number: 'PT50 1234 5678 9012 3456 7892', balance: 500000.00 },
     ];

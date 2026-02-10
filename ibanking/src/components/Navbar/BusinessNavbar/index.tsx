@@ -52,7 +52,7 @@ const BusinessNavbar: React.FC<BusinessNavbarProps> = ({
   toggleLanguage,
   isOpen,
   onToggle,
-  companyName = "Luwali Technologies, LDA",
+  companyName = "Energias renováveis, S.A",
   companyTaxId = "PT123456789",
   userName = "Gestor Principal"
 }) => {
@@ -155,14 +155,14 @@ const BusinessNavbar: React.FC<BusinessNavbarProps> = ({
     { path: '/business/payments/state', icon: CiCalendar, label: currentBusinessTexts.statePayments },
     { path: '/business/payments/schedule', icon: CiCalendar, label: currentBusinessTexts.paymentSchedule },
     { path: '/business/payments/direct-debits', icon: CiMoneyBill, label: currentBusinessTexts.directDebits },
+     { path: '/business/payments/recharges', icon: CiMoneyBill, label: currentBusinessTexts.recharges },
     { path: '/business/payments/forex', icon: CiMoneyBill, label: currentBusinessTexts.forex },
-    { path: '/business/payments/bulk', icon: MdOutlinePayments, label: currentBusinessTexts.bulkPayments },
   ];
 
   // Outros serviços - AGORA COM GESTÃO DE CHECKS E CARTÕES Crédito
   const otherServicesItems = [
     { path: '/business/cards', icon: CiCreditCard1, label: currentBusinessTexts.cards },
-    { path: '/business/credit-cards', icon: TbCreditCard, label: getDynamicText('Gerir Cartões de Crédito', 'Credit Cards') },
+    { path: '/business/credit-cards', icon: TbCreditCard, label: getDynamicText('Gerir Cartões', 'Credit Cards') },
     { path: '/business/check-management', icon: TbCheck, label: getDynamicText('Gestão de Checks', 'Check Management') },
     { path: '/business/savings', icon: MdOutlineSavings, label: currentBusinessTexts.savings },
     { path: '/business/financing', icon: BsPiggyBank, label: currentBusinessTexts.financing },

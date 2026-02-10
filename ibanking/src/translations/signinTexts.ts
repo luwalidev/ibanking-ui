@@ -3,7 +3,7 @@ export const texts = {
       title: "Bem-vindo de Volta",
       subtitle: "Ao Futuro do Banco Digital",
       description: "Conecte-se à sua conta com segurança e descubra um mundo de possibilidades financeiras.",
-      email: "Email",
+      email: "Username",
       password: "Senha",
       signIn: "Entrar na Minha Conta",
       signingIn: "Acessando...",

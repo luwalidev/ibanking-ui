@@ -50,6 +50,9 @@ import ClientTravelInsurance from '../pages/Clients/ClientTravelInsurance';
 import ClientThirdPartyInsurance from '../pages/Clients/ClientThirdPartyInsurance';
 import ClientOtherInsurance from '../pages/Clients/ClientOtherInsurance';
 import ClientNotificationPreferences from '../pages/Clients/ClientNotificationPreferences';
+import BusinessDigitalWalletPayment from '../pages/Business/BusinessDigitalWalletPayment';
+import BusinessSalaryPayments from '../pages/Business/BusinessSalaryPayments';
+import BusinessSupplierPayments from '../pages/Business/BusinessSupplierPayments';
 
 const AppRoutes: React.FC = () => {
     return (
@@ -153,12 +156,13 @@ const AppRoutes: React.FC = () => {
                 <Route path="/business/scheduled-transfers" element={<ScheduledTransfers language="PT" />} />
 
                 {/* Pagamentos */}
-                <Route path="/business/payments/suppliers" element={<BusinessGenericPage language="PT" />} />
-                <Route path="/business/payments/salaries" element={<BusinessGenericPage language="PT" />} />
+                <Route path="/business/payments/suppliers" element={<BusinessSupplierPayments />} />
+                <Route path="/business/payments/salaries" element={<BusinessSalaryPayments />} />
                 <Route path="/business/payments/services" element={<BusinessServicePayments language="PT" />} />
                 <Route path="/business/payments/state" element={<BusinessGenericPage language="PT" />} />
                 <Route path="/business/payments/schedule" element={<BusinessGenericPage language="PT" />} />
                 <Route path="/business/payments/direct-debits" element={<BusinessGenericPage language="PT" />} />
+                <Route path="/business/payments/recharges" element={<BusinessDigitalWalletPayment language="PT" />} />
                 <Route path="/business/payments/forex" element={<BusinessGenericPage language="PT" />} />
                 <Route path="/business/payments/bulk" element={<BusinessGenericPage language="PT" />} />
 
