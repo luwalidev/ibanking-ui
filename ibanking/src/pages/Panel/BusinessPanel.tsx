@@ -37,13 +37,6 @@ const BusinessDashboardContent: React.FC = () => {
       path: '/business/transfers/multiple'
     },
     {
-      title: 'Pagamentos',
-      description: 'Fornecedores e salários',
-      icon: '💰',
-      color: 'bg-green-50 text-green-600',
-      path: '/business/payments'
-    },
-    {
       title: 'Operadores',
       description: 'Gestão de utilizadores',
       icon: '👥',
@@ -90,14 +83,14 @@ const BusinessDashboardContent: React.FC = () => {
       description: 'Carregar contas',
       icon: '📱',
       color: 'bg-pink-50 text-pink-600',
-      path: '/business/topup'
+      path: '/business/payments/recharges'
     },
     {
       title: 'Cartões',
       description: 'Gestão de cartões',
       icon: '💳',
       color: 'bg-violet-50 text-violet-600',
-      path: '/business/cards'
+      path: '/business/credit-cards'
     }
   ]);
 
@@ -133,7 +126,7 @@ const BusinessDashboardContent: React.FC = () => {
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Bem-vindo, Luwali Technologies, LDA!</h1>
+            <h1 className="text-2xl font-bold text-gray-900">Bem-vindo, Energias renováveis, S.A!</h1>
             <p className="text-gray-600 mt-1">Visão geral das suas finanças empresariais</p>
           </div>
           <div className="mt-4 lg:mt-0 flex items-center space-x-3">

@@ -48,7 +48,7 @@ const DashboardContent: React.FC = () => {
       description: 'Pague serviços',
       icon: '💰',
       color: `bg-green-50 text-[${COLOR_SCHEME.accent.green}]`,
-      path: '/client/payments'
+      path: '/client/payments/services'
     },
     {
       title: 'Cartões',
@@ -580,13 +580,13 @@ const DashboardContent: React.FC = () => {
           <CreditCard
             type="primary"
             cardNumber="•••• •••• •••• 8588"
-            holderName="Darken Machava"
+            holderName="João Paulo"
             expiryDate="12/26"
           />
           <CreditCard
             type="credit"
             cardNumber="•••• •••• •••• 1284"
-            holderName="Darken Machava"
+            holderName="João Paulo"
             expiryDate="12/27"
             limit={5000}
             used={1245.30}

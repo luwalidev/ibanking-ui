@@ -22,7 +22,7 @@ export const ClientLayout: React.FC<ClientLayoutProps> = ({
         setLanguage={setLanguage}
         isOpen={sidebarOpen}
         onToggle={() => setSidebarOpen(!sidebarOpen)}
-        userName="Darken Machava"
+        userName="João Paulo"
         userAccount="PT50 1234 5678 9012 3456 7890"
       />
       

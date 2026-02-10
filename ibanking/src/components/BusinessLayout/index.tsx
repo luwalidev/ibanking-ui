@@ -25,9 +25,9 @@ export const BusinessLayout: React.FC<BusinessLayoutProps> = ({
         toggleLanguage={toggleLanguage}
         isOpen={sidebarOpen}
         onToggle={() => setSidebarOpen(!sidebarOpen)}
-        companyName="Luwali Technologies, LDA"
+        companyName="Energias renováveis, S.A"
         companyTaxId="501234567"
-        userName="John Due"
+        userName="Joaquim Armando"
       />
       
       {/* Conteúdo Principal */}

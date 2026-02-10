@@ -71,9 +71,8 @@ const ClientInternationalTransfers: React.FC = () => {
     });
 
     const accounts = [
-        { id: '1', name: 'Conta Principal Empresa USD', number: 'PT50 1234 5678 9012 3456 7890', balance: 125420.15, currency: 'USD' },
-        { id: '2', name: 'Conta Principal Empresa EUR', number: 'PT50 1234 5678 9012 3456 7891', balance: 89000.75, currency: 'EUR' },
-        { id: '3', name: 'Conta Operações USD', number: 'PT50 1234 5678 9012 3456 7892', balance: 250000.00, currency: 'USD' },
+        { id: '1', name: 'Conta Principal USD', number: 'PT50 1234 5678 9012 3456 7890', balance: 125420.15, currency: 'USD' },
+        { id: '2', name: 'Conta Operações USD', number: 'PT50 1234 5678 9012 3456 7892', balance: 250000.00, currency: 'USD' },
     ];
 
     // Moedas disponíveis

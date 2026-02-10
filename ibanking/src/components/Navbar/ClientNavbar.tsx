@@ -35,7 +35,7 @@ const ClientNavbar: React.FC<ClientNavbarProps> = ({
   setLanguage,
   isOpen,
   onToggle,
-  userName = "Darken Machava",
+  userName = "João Paulo",
   userAccount = "PT50 0000 0000 0000 0000 0000"
 }) => {
   const navigate = useNavigate();

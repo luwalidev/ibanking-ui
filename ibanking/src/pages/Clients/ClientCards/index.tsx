@@ -627,7 +627,7 @@ const ClientCards: React.FC<ClientCardsProps> = ({ language }) => {
                                         <div className="flex justify-between items-end">
                                             <div>
                                                 <p className="text-red-100 text-sm">{language === 'PT' ? 'Titular' : 'Cardholder'}</p>
-                                                <p className="font-medium">Darken Machava</p>
+                                                <p className="font-medium">João Paulo</p>
                                             </div>
                                             <div className="text-right">
                                                 <p className="text-red-100 text-sm">CVV</p>

@@ -90,7 +90,7 @@ const Signup: React.FC<SignupProps> = ({ language }) => {
             step6: 'Finalização',
             next: 'Próximo',
             previous: 'Anterior',
-            createAccount: 'Criar Conta',
+            createAccount: 'Submeter pedido',
             loading: 'Processando...',
             success: 'Conta criada com sucesso!',
 
@@ -207,7 +207,7 @@ const Signup: React.FC<SignupProps> = ({ language }) => {
             step6: 'Finalization',
             next: 'Next',
             previous: 'Previous',
-            createAccount: 'Create Account',
+            createAccount: 'Submit request',
             loading: 'Processing...',
             success: 'Account created successfully!',
 
@@ -319,19 +319,12 @@ const Signup: React.FC<SignupProps> = ({ language }) => {
     const provinces = Object.values(t.provinces);
 
     // Validações
-    const validateEmail = (email: string) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    };
 
     const validatePhone = (phone: string) => {
         const phoneRegex = /^8[2-7][0-9]{7}$/;
         return phoneRegex.test(phone.replace(/\s/g, ''));
     };
 
-    const validatenuib = (nuib: string) => {
-        return nuib.length === 9 && /^\d+$/.test(nuib);
-    };
 
     const validateNUIT = (nuit: string) => {
         return nuit.length === 9 && /^\d+$/.test(nuit);
@@ -387,26 +380,19 @@ const Signup: React.FC<SignupProps> = ({ language }) => {
                 return true;
 
             case 2:
-                if (!formData.firstName || !formData.lastName || !formData.email || !formData.phone || !formData.birthDate || !formData.nuib || !formData.nationality) {
+                if (!formData.firstName || !formData.lastName || !formData.phone || !formData.birthDate || !formData.nationality) {
                     alert(t.requiredField);
                     return false;
                 }
-                if (!validateEmail(formData.email)) {
-                    alert(t.invalidEmail);
-                    return false;
-                }
+
                 if (!validatePhone(formData.phone)) {
                     alert(t.invalidPhone);
-                    return false;
-                }
-                if (!validatenuib(formData.nuib)) {
-                    alert(t.invalidnuib);
                     return false;
                 }
                 return true;
 
             case 3:
-                if (!formData.address || !formData.city || !formData.province || !formData.postalCode) {
+                if (!formData.address || !formData.city || !formData.province) {
                     alert(t.requiredField);
                     return false;
                 }
@@ -671,7 +657,7 @@ const Signup: React.FC<SignupProps> = ({ language }) => {
 
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                {t.email} *
+                                                {t.email}
                                             </label>
                                             <div className="relative">
                                                 <CiMail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
@@ -717,7 +703,7 @@ const Signup: React.FC<SignupProps> = ({ language }) => {
 
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                {t.nuib} *
+                                                {t.nuib} 
                                             </label>
                                             <div className="relative">
                                                 <CiBank className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
@@ -803,7 +789,7 @@ const Signup: React.FC<SignupProps> = ({ language }) => {
 
                                             <div>
                                                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                    {t.postalCode} *
+                                                    {t.postalCode}
                                                 </label>
                                                 <input
                                                     type="text"

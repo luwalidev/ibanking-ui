@@ -169,8 +169,8 @@ const TransactionAuthorization: React.FC<TransactionAuthorizationProps> = ({ lan
     // Simular verificação de senha
     await new Promise(resolve => setTimeout(resolve, 1000));
 
-    // Senha de exemplo: "authorize123"
-    if (password === 'authorize123') {
+    // Senha de exemplo: "0123"
+    if (password === '0123') {
       setIsAuthenticated(true);
       localStorage.setItem('transactionAuth', 'authenticated');
       setShowAuthModal(false);

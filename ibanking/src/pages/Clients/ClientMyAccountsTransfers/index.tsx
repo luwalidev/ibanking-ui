@@ -49,45 +49,21 @@ const ClientMyAccountsTransfers: React.FC = () => {
     });
 
     const accounts = [
-        { 
-            id: '1', 
-            name: 'Conta Principal Empresa', 
-            number: 'PT50 1234 5678 9012 3456 7890', 
-            balance: 25420.15, 
+        {
+            id: '1',
+            name: 'Conta Operações',
+            number: 'PT50 1234 5678 9012 3456 7891',
+            balance: 125000.75,
             currency: 'MZN',
             type: 'current'
         },
-        { 
-            id: '2', 
-            name: 'Conta Operações', 
-            number: 'PT50 1234 5678 9012 3456 7891', 
-            balance: 125000.75, 
-            currency: 'MZN',
-            type: 'current'
-        },
-        { 
-            id: '3', 
-            name: 'Conta Poupança Empresa', 
-            number: 'PT50 1234 5678 9012 3456 7892', 
-            balance: 50000.00, 
+        {
+            id: '2',
+            name: 'Conta Poupança',
+            number: 'PT50 1234 5678 9012 3456 7892',
+            balance: 50000.00,
             currency: 'MZN',
             type: 'savings'
-        },
-        { 
-            id: '4', 
-            name: 'Conta USD Empresa', 
-            number: 'PT50 1234 5678 9012 3456 7893', 
-            balance: 25000.00, 
-            currency: 'USD',
-            type: 'foreign'
-        },
-        { 
-            id: '5', 
-            name: 'Conta EUR Empresa', 
-            number: 'PT50 1234 5678 9012 3456 7894', 
-            balance: 15000.00, 
-            currency: 'EUR',
-            type: 'foreign'
         },
     ];
 
@@ -116,11 +92,11 @@ const ClientMyAccountsTransfers: React.FC = () => {
     };
 
     const validateStep1 = () => {
-        return transferData.fromAccount && 
-               transferData.toAccount && 
-               transferData.amount && 
-               transferData.fromAccount !== transferData.toAccount &&
-               parseFloat(transferData.amount) > 0;
+        return transferData.fromAccount &&
+            transferData.toAccount &&
+            transferData.amount &&
+            transferData.fromAccount !== transferData.toAccount &&
+            parseFloat(transferData.amount) > 0;
     };
 
     const getTotalAmount = () => {
@@ -154,7 +130,7 @@ const ClientMyAccountsTransfers: React.FC = () => {
     const getConvertedAmount = () => {
         const fromAccount = getFromAccount();
         const toAccount = getToAccount();
-        
+
         if (!fromAccount || !toAccount || fromAccount.currency === toAccount.currency) {
             return getTotalAmount();
         }
@@ -223,7 +199,7 @@ const ClientMyAccountsTransfers: React.FC = () => {
         const totalAmount = getTotalAmount();
         const fromAccount = getFromAccount();
         const toAccount = getToAccount();
-        
+
         const pdfContent = `
             COMPROVATIVO DE TRANSFERÊNCIA ENTRE CONTAS
             ==========================================
@@ -300,10 +276,10 @@ const ClientMyAccountsTransfers: React.FC = () => {
     };
 
     // Componente Modal Reutilizável
-    const Modal = ({ isOpen, onClose, title, children }: { 
-        isOpen: boolean; 
-        onClose: () => void; 
-        title: string; 
+    const Modal = ({ isOpen, onClose, title, children }: {
+        isOpen: boolean;
+        onClose: () => void;
+        title: string;
         children: React.ReactNode;
     }) => {
         if (!isOpen) return null;
@@ -336,7 +312,7 @@ const ClientMyAccountsTransfers: React.FC = () => {
 
     return (
         <ClientLayout>
-           <div className="max-w-6xl mx-auto space-y-6">
+            <div className="max-w-6xl mx-auto space-y-6">
                 {/* Header */}
                 <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
                     <div className="flex items-center justify-between">
@@ -762,7 +738,7 @@ const ClientMyAccountsTransfers: React.FC = () => {
                                     {/* Opções de Comprovativo */}
                                     <div className="bg-white border border-gray-200 rounded-xl p-6">
                                         <h3 className="text-lg font-semibold text-gray-900 mb-4">Opções de Comprovativo</h3>
-                                        
+
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             {/* Download PDF */}
                                             <button
