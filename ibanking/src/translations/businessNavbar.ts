@@ -40,6 +40,7 @@ export const businessTexts = {
     cards: 'Cartões',
     savings: 'Poupança',
     financing: 'Financiamento',
+    beneficiaries: 'Beneficiários',
 
     // Configurações
     companyProfile: 'Perfil da Empresa',
@@ -96,7 +97,7 @@ export const businessTexts = {
     scheduledOperations: 'Scheduled Operations',
     debtConversion: 'Debt Conversion',
     digitalWallet: 'Digital Wallet',
-    movements: "Movements", 
+    movements: "Movements",
     shareExtract: "Share Statement",
 
     // Pagamentos
@@ -120,6 +121,7 @@ export const businessTexts = {
     cards: 'Cards',
     savings: 'Savings',
     financing: 'Financing',
+    beneficiaries: 'Beneficiaries',
 
     // Configurações
     companyProfile: 'Company Profile',
@@ -187,7 +189,7 @@ export const businessTexts = {
     statePayments: 'Pagos al estado',
     paymentSchedule: 'Agenda de vencimiento',
     directDebits: 'Débitos directos',
-recharges: 'Recharges',
+    recharges: 'Recharges',
     forex: 'Cambios',
 
     // Empresa
@@ -200,6 +202,7 @@ recharges: 'Recharges',
     cards: 'Tarjetas',
     savings: 'Ahorros',
     financing: 'Financiamiento',
+    beneficiaries: 'Beneficiaries',
 
     // Configurações
     companyProfile: 'Perfil de la Empresa',
@@ -280,6 +283,7 @@ recharges: 'Recharges',
     cards: 'Cartes',
     savings: 'Épargne',
     financing: 'Financement',
+    beneficiaries: 'Beneficiaries',
 
     // Configurações
     companyProfile: 'Profil de l\'Entreprise',
@@ -360,6 +364,7 @@ recharges: 'Recharges',
     cards: 'Karten',
     savings: 'Sparen',
     financing: 'Finanzierung',
+    beneficiaries: 'Beneficiaries',
 
     // Configurações
     companyProfile: 'Unternehmensprofil',
@@ -440,6 +445,7 @@ recharges: 'Recharges',
     cards: 'Carte',
     savings: 'Risparmio',
     financing: 'Finanziamento',
+    beneficiaries: 'Beneficiaries',
 
     // Configurações
     companyProfile: 'Profilo Azienda',
@@ -520,6 +526,7 @@ recharges: 'Recharges',
     cards: 'Kaarten',
     savings: 'Sparen',
     financing: 'Financiering',
+    beneficiaries: 'Beneficiaries',
 
     // Configurações
     companyProfile: 'Bedrijfsprofiel',
@@ -600,6 +607,7 @@ recharges: 'Recharges',
     cards: '卡片',
     savings: '储蓄',
     financing: '融资',
+    beneficiaries: 'Beneficiaries',
 
     // Configurações
     companyProfile: '公司资料',
@@ -680,6 +688,7 @@ recharges: 'Recharges',
     cards: 'البطاقات',
     savings: 'التوفير',
     financing: 'التمويل',
+    beneficiaries: 'Beneficiaries',
 
     // Configurações
     companyProfile: 'ملف الشركة',

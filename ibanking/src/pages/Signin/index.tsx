@@ -164,7 +164,7 @@ export function SignIn() {
                                             </label>
                                             <div className="relative">
                                                 <input
-                                                    type="email"
+                                                    type="text"
                                                     value={email}
                                                     onChange={(e) => setEmail(e.target.value)}
                                                     className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-red-500 focus:bg-white/10 transition-all duration-300 backdrop-blur-sm pr-12 text-sm"

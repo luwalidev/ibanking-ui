@@ -55,6 +55,7 @@ import BusinessSalaryPayments from '../pages/Business/BusinessSalaryPayments';
 import BusinessSupplierPayments from '../pages/Business/BusinessSupplierPayments';
 import ClientAccountDetails from '../pages/Clients/ClientAccountDetails';
 import BusinessAccountDetails from '../pages/Business/BusinesstAccountDetails';
+import BusinessBeneficiaries from '../pages/Business/BusinessBeneficiaries';
 
 const AppRoutes: React.FC = () => {
     return (
@@ -190,6 +191,7 @@ const AppRoutes: React.FC = () => {
                 <Route path="/business/security" element={<BusinessGenericPage language="PT" />} />
                 <Route path="/business/settings" element={<BusinessGenericPage language="PT" />} />
                 <Route path="/business/notifications" element={<NotificationPreferences language="PT" />} />
+                <Route path="/business/beneficiaries" element={<BusinessBeneficiaries language="PT" />} />
                 <Route path="/client/notifications" element={<ClientNotificationPreferences language="PT" />} />
                 <Route path="/business/authorization" element={<TransactionAuthorization language="PT" />} />
 

@@ -171,21 +171,7 @@ const BusinessSalaryPayments: React.FC = () => {
         { id: '2', name: 'Conta Operações', number: 'PT50 1234 5678 9012 3456 7891', balance: 25420.15 },
     ];
 
-    // Períodos salariais
-    const salaryPeriods = [
-        { value: 'january', label: 'Janeiro 2024' },
-        { value: 'february', label: 'Fevereiro 2024' },
-        { value: 'march', label: 'Março 2024' },
-        { value: 'april', label: 'Abril 2024' },
-        { value: 'may', label: 'Maio 2024' },
-        { value: 'june', label: 'Junho 2024' },
-        { value: 'july', label: 'Julho 2024' },
-        { value: 'august', label: 'Agosto 2024' },
-        { value: 'september', label: 'Setembro 2024' },
-        { value: 'october', label: 'Outubro 2024' },
-        { value: 'november', label: 'Novembro 2024' },
-        { value: 'december', label: 'Dezembro 2024' },
-    ];
+    // Períodos salariais (mantido para uso interno, mas removido da UI)
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value, type } = e.target;
@@ -225,7 +211,7 @@ const BusinessSalaryPayments: React.FC = () => {
             nib: beneficiary.nib,
             name: beneficiary.name,
             amount: beneficiary.baseSalary.toString(),
-            description: `Salário ${formData.salaryPeriod ? salaryPeriods.find(p => p.value === formData.salaryPeriod)?.label : 'Mensal'}`,
+            description: `Pagamento Mensal`,
             email: beneficiary.email,
             department: beneficiary.department,
             position: beneficiary.position,
@@ -248,7 +234,7 @@ const BusinessSalaryPayments: React.FC = () => {
             nib: '',
             name: '',
             amount: '',
-            description: `Salário ${formData.salaryPeriod ? salaryPeriods.find(p => p.value === formData.salaryPeriod)?.label : 'Mensal'}`,
+            description: `Pagamento Mensal`,
             email: '',
             department: '',
             position: '',
@@ -326,7 +312,7 @@ const BusinessSalaryPayments: React.FC = () => {
                 nib: 'PT50 9876 5432 1098 7654 3210',
                 name: 'João Carlos Silva',
                 amount: '85000.00',
-                description: `Salário ${formData.salaryPeriod || 'Mensal'}`,
+                description: `Pagamento Mensal`,
                 email: 'joao.silva@empresa.com',
                 department: 'TI',
                 position: 'Desenvolvedor Sênior',
@@ -337,7 +323,7 @@ const BusinessSalaryPayments: React.FC = () => {
                 nib: 'PT50 1111 2222 3333 4444 5555',
                 name: 'Maria Fernanda Santos',
                 amount: '75000.00',
-                description: `Salário ${formData.salaryPeriod || 'Mensal'}`,
+                description: `Pagamento Mensal`,
                 email: 'maria.santos@empresa.com',
                 department: 'Financeiro',
                 position: 'Contadora',
@@ -348,7 +334,7 @@ const BusinessSalaryPayments: React.FC = () => {
                 nib: 'PT50 6666 7777 8888 9999 0000',
                 name: 'Pedro Augusto Pereira',
                 amount: '95000.00',
-                description: `Salário ${formData.salaryPeriod || 'Mensal'}`,
+                description: `Pagamento Mensal`,
                 email: 'pedro.pereira@empresa.com',
                 department: 'Vendas',
                 position: 'Gerente Comercial',
@@ -378,7 +364,7 @@ const BusinessSalaryPayments: React.FC = () => {
     };
 
     const handleNext = () => {
-        if (step === 1 && transfers.length > 0 && getValidTransfers().length > 0 && formData.fromAccount && formData.salaryPeriod) {
+        if (step === 1 && transfers.length > 0 && getValidTransfers().length > 0 && formData.fromAccount) {
             setStep(2);
         } else if (step === 2) {
             setTimeout(() => {
@@ -424,7 +410,7 @@ const BusinessSalaryPayments: React.FC = () => {
     };
 
     const generateBatchReference = () => {
-        return `SAL_${formData.salaryPeriod.toUpperCase()}_${Date.now()}`;
+        return `SAL_${Date.now()}`;
     };
 
     // Gerar folha de pagamento consolidada
@@ -433,26 +419,20 @@ const BusinessSalaryPayments: React.FC = () => {
         const totalAmount = getTotalAmount();
         const validTransfers = getValidTransfers();
         const account = accounts.find(acc => acc.id === formData.fromAccount);
-        const periodLabel = salaryPeriods.find(p => p.value === formData.salaryPeriod)?.label || formData.salaryPeriod;
 
         const documentContent = `
-            FOLHA DE PAGAMENTO - ${periodLabel.toUpperCase()}
+            FOLHA DE PAGAMENTO
             ================================================
             
             DADOS DO PAGAMENTO:
             ------------------
             Referência: ${batchRef}
-            Período: ${periodLabel}
-            Data de Pagamento: ${new Date(formData.paymentDate).toLocaleDateString('pt-PT')}
             Data de Processamento: ${new Date().toLocaleDateString('pt-PT')} ${new Date().toLocaleTimeString('pt-PT')}
             Conta Origem: ${account?.name}
             Número da Conta: ${account?.number}
-            Total de Funcionários: ${validTransfers.length}
-            Valor Total da Folha: MZN ${totalAmount.toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
+            Total de Beneficiários: ${validTransfers.length}
+            Valor Total: MZN ${totalAmount.toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
             Tipo: ${recurringSettings.isRecurring ? `Pagamento Recorrente (${recurringSettings.frequency})` : 'Pagamento Único'}
-            
-            ${formData.includeTaxes ? `Inclui Retenção na Fonte: Sim` : 'Inclui Retenção na Fonte: Não'}
-            ${formData.includeBenefits ? `Inclui Benefícios: Sim` : 'Inclui Benefícios: Não'}
             
             ${recurringSettings.isRecurring ? `
             CONFIGURAÇÃO RECORRENTE:
@@ -463,23 +443,21 @@ const BusinessSalaryPayments: React.FC = () => {
             ${recurringSettings.endDate ? `Data de Fim: ${new Date(recurringSettings.endDate).toLocaleDateString('pt-PT')}` : ''}
             ` : ''}
             
-            LISTA DE FUNCIONÁRIOS:
-            ---------------------
+            LISTA DE BENEFICIÁRIOS:
+            ----------------------
             ${validTransfers.map((transfer, index) => `
             ${index + 1}. ${transfer.name}
                Departamento: ${transfer.department}
                Cargo: ${transfer.position}
                NIB: ${transfer.nib}
                Email: ${transfer.email || 'Não informado'}
-               Salário Líquido: MZN ${parseFloat(transfer.amount).toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
+               Montante: MZN ${parseFloat(transfer.amount).toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
                Status: ✅ Processado
             `).join('')}
             
             RESUMO FINANCEIRO:
             -----------------
-            Valor Total da Folha: MZN ${totalAmount.toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
-            ${formData.includeTaxes ? `Total Retenção na Fonte: MZN ${(totalAmount * 0.1).toLocaleString('pt-PT', { minimumFractionDigits: 2 })}\n` : ''}
-            ${formData.includeBenefits ? `Total Benefícios: MZN ${(totalAmount * 0.05).toLocaleString('pt-PT', { minimumFractionDigits: 2 })}\n` : ''}
+            Valor Total: MZN ${totalAmount.toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
             Saldo Anterior: MZN ${account?.balance.toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
             Saldo Posterior: MZN ${((account?.balance || 0) - totalAmount).toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
             
@@ -496,19 +474,15 @@ const BusinessSalaryPayments: React.FC = () => {
     const generateIndividualPayslips = () => {
         const batchRef = generateBatchReference();
         const account = accounts.find(acc => acc.id === formData.fromAccount);
-        const periodLabel = salaryPeriods.find(p => p.value === formData.salaryPeriod)?.label || formData.salaryPeriod;
         
         return getValidTransfers().map(transfer => {
-            const grossSalary = parseFloat(transfer.amount);
-            const tax = formData.includeTaxes ? grossSalary * 0.1 : 0;
-            const benefits = formData.includeBenefits ? grossSalary * 0.05 : 0;
-            const netSalary = grossSalary - tax + benefits;
+            const amount = parseFloat(transfer.amount);
 
             const documentContent = `
-                HOLERITE - ${periodLabel.toUpperCase()}
+                COMPROVATIVO DE PAGAMENTO
                 ========================================
                 
-                DADOS DO FUNCIONÁRIO:
+                DADOS DO BENEFICIÁRIO:
                 ---------------------
                 Nome: ${transfer.name}
                 Departamento: ${transfer.department}
@@ -518,10 +492,9 @@ const BusinessSalaryPayments: React.FC = () => {
                 
                 DADOS DO PAGAMENTO:
                 ------------------
-                Período: ${periodLabel}
-                Data de Pagamento: ${new Date(formData.paymentDate).toLocaleDateString('pt-PT')}
+                Data de Pagamento: ${new Date().toLocaleDateString('pt-PT')}
                 Referência: ${batchRef}
-                Comprovativo: HL${Date.now()}_${transfer.id}
+                Comprovativo: PAG${Date.now()}_${transfer.id}
                 
                 REMETENTE:
                 ----------
@@ -531,11 +504,7 @@ const BusinessSalaryPayments: React.FC = () => {
                 
                 DETALHAMENTO DE VALORES:
                 -----------------------
-                Salário Bruto: MZN ${grossSalary.toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
-                ${formData.includeTaxes ? `Retenção na Fonte (10%): MZN ${tax.toLocaleString('pt-PT', { minimumFractionDigits: 2 })}\n` : ''}
-                ${formData.includeBenefits ? `Benefícios (5%): MZN ${benefits.toLocaleString('pt-PT', { minimumFractionDigits: 2 })}\n` : ''}
-                ${formData.includeTaxes || formData.includeBenefits ? '--------------------------------------\n' : ''}
-                Salário Líquido: MZN ${netSalary.toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
+                Montante: MZN ${amount.toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
                 
                 INFORMAÇÕES:
                 ------------
@@ -552,14 +521,14 @@ const BusinessSalaryPayments: React.FC = () => {
                 
                 ========================================
                 UBA Moçambique Business - Energias renováveis, S.A
-                Este documento serve como holerite oficial do funcionário.
-                Para questões ou correções, contacte o departamento de Recursos Humanos.
+                Este documento serve como comprovativo oficial.
+                Para questões ou correções, contacte o departamento responsável.
             `;
 
             return {
                 transfer,
                 content: documentContent,
-                fileName: `holerite_${transfer.name.replace(/\s+/g, '_')}_${batchRef}.txt`
+                fileName: `comprovativo_${transfer.name.replace(/\s+/g, '_')}_${batchRef}.txt`
             };
         });
     };
@@ -597,13 +566,13 @@ const BusinessSalaryPayments: React.FC = () => {
             URL.revokeObjectURL(url);
         });
 
-        alert(`${individualPayslips.length} holerites individuais descarregados com sucesso!`);
+        alert(`${individualPayslips.length} comprovativos individuais descarregados com sucesso!`);
     };
 
     // Enviar documentos por email
     const handleSendDocuments = () => {
         if (!emailData.email && !documentOptions.sendToBeneficiaries) {
-            alert('Por favor, insira um endereço de email ou selecione "Enviar para funcionários".');
+            alert('Por favor, insira um endereço de email ou selecione "Enviar para Beneficiários".');
             return;
         }
 
@@ -619,12 +588,12 @@ const BusinessSalaryPayments: React.FC = () => {
             }
             
             if (documentOptions.includeIndividual && documentOptions.includePayslip) {
-                emailMessage += `• ${individualPayslips.length} Holerites Individuais\n`;
+                emailMessage += `• ${individualPayslips.length} Comprovativos Individuais\n`;
             }
             
             if (documentOptions.sendToBeneficiaries) {
                 const employeesWithEmail = individualPayslips.filter(payslip => payslip.transfer.email);
-                emailMessage += `• Enviado para ${employeesWithEmail.length} funcionários com email\n`;
+                emailMessage += `• Enviado para ${employeesWithEmail.length} Beneficiários com email\n`;
             }
 
             setEmailSent(true);
@@ -633,7 +602,7 @@ const BusinessSalaryPayments: React.FC = () => {
         }, 2000);
     };
 
-    // Enviar holerites para funcionários
+    // Enviar comprovativos para Beneficiários
     const sendToEmployees = () => {
         const individualPayslips = generateIndividualPayslips();
         const payslipsWithEmail = individualPayslips.filter(payslip => payslip.transfer.email);
@@ -643,9 +612,9 @@ const BusinessSalaryPayments: React.FC = () => {
             return;
         }
 
-        // Simular envio para funcionários
+        // Simular envio para Beneficiários
         setTimeout(() => {
-            alert(`Holerites enviados para ${payslipsWithEmail.length} funcionários!`);
+            alert(`Comprovativos enviados para ${payslipsWithEmail.length} Beneficiários!`);
         }, 2000);
     };
 
@@ -692,7 +661,7 @@ const BusinessSalaryPayments: React.FC = () => {
                     <div className="flex items-center justify-between">
                         <div>
                             <h1 className="text-2xl font-bold text-gray-900">Pagamento de Salários</h1>
-                            <p className="text-gray-600 mt-1">Execute pagamentos de salários para múltiplos funcionários</p>
+                            <p className="text-gray-600 mt-1">Execute pagamentos de salários para múltiplos Beneficiários</p>
                         </div>
                         <button
                             onClick={() => navigate('/panel')}
@@ -725,11 +694,11 @@ const BusinessSalaryPayments: React.FC = () => {
                                 ))}
                             </div>
 
-                            {/* Step 1: Adicionar Funcionários */}
+                            {/* Step 1: Adicionar Beneficiários */}
                             {step === 1 && (
                                 <div className="space-y-6">
                                     <div className="flex items-center justify-between">
-                                        <h2 className="text-lg font-semibold text-gray-900">Adicionar Funcionários</h2>
+                                        <h2 className="text-lg font-semibold text-gray-900">Adicionar Beneficiários</h2>
                                         <div className="flex space-x-2">
                                             <button
                                                 onClick={() => setShowBeneficiariesModal(true)}
@@ -738,7 +707,7 @@ const BusinessSalaryPayments: React.FC = () => {
                                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                                 </svg>
-                                                <span>Selecionar Funcionários</span>
+                                                <span>Selecionar Beneficiários</span>
                                             </button>
                                             <button
                                                 onClick={() => setShowImportModal(true)}
@@ -759,14 +728,14 @@ const BusinessSalaryPayments: React.FC = () => {
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                                 </svg>
                                             </div>
-                                            <h3 className="text-lg font-semibold text-gray-900 mb-2">Comece a adicionar funcionários</h3>
-                                            <p className="text-gray-600 mb-4">Selecione funcionários da lista ou importe de um ficheiro Excel</p>
+                                            <h3 className="text-lg font-semibold text-gray-900 mb-2">Comece a adicionar Beneficiários</h3>
+                                            <p className="text-gray-600 mb-4">Selecione Beneficiários da lista ou importe de um ficheiro Excel</p>
                                             <div className="flex justify-center space-x-4">
                                                 <button
                                                     onClick={() => setShowBeneficiariesModal(true)}
                                                     className="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
                                                 >
-                                                    Selecionar Funcionários
+                                                    Selecionar Beneficiários
                                                 </button>
                                                 <button
                                                     onClick={handleManualAdd}
@@ -778,7 +747,7 @@ const BusinessSalaryPayments: React.FC = () => {
                                         </div>
                                     ) : (
                                         <div className="space-y-6">
-                                            {/* Formulário de Funcionários */}
+                                            {/* Formulário de Beneficiários */}
                                             <div className="space-y-4">
                                                 {transfers.map((transfer, index) => (
                                                     <div
@@ -849,7 +818,7 @@ const BusinessSalaryPayments: React.FC = () => {
                                                                 />
                                                             </div>
                                                             <div>
-                                                                <label className="block text-sm font-medium text-gray-700 mb-1">Salário Líquido (MZN) *</label>
+                                                                <label className="block text-sm font-medium text-gray-700 mb-1">Montante (MZN) *</label>
                                                                 <input
                                                                     type="number"
                                                                     placeholder="0,00"
@@ -864,7 +833,7 @@ const BusinessSalaryPayments: React.FC = () => {
 
                                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
                                                             <div>
-                                                                <label className="block text-sm font-medium text-gray-700 mb-1">Email (para holerite)</label>
+                                                                <label className="block text-sm font-medium text-gray-700 mb-1">Email (para comprovativo)</label>
                                                                 <input
                                                                     type="email"
                                                                     placeholder="funcionario@empresa.com"
@@ -885,25 +854,6 @@ const BusinessSalaryPayments: React.FC = () => {
                                                                     className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
                                                                 />
                                                             </div>
-                                                        </div>
-
-                                                        {/* Seletor de beneficiário */}
-                                                        <div className="mt-3">
-                                                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                                                Selecionar de funcionários cadastrados
-                                                            </label>
-                                                            <select
-                                                                value={transfer.selectedBeneficiaryId || ''}
-                                                                onChange={(e) => handleTransferChange(transfer.id, 'selectedBeneficiaryId', e.target.value)}
-                                                                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
-                                                            >
-                                                                <option value="">Selecione um funcionário...</option>
-                                                                {staticBeneficiaries.map(beneficiary => (
-                                                                    <option key={beneficiary.id} value={beneficiary.id}>
-                                                                        {beneficiary.name} - {beneficiary.department} - MZN {beneficiary.baseSalary.toLocaleString('pt-PT')}
-                                                                    </option>
-                                                                ))}
-                                                            </select>
                                                         </div>
 
                                                         {transfer.error && (
@@ -1024,10 +974,10 @@ const BusinessSalaryPayments: React.FC = () => {
                                                 </button>
                                                 <button
                                                     onClick={handleNext}
-                                                    disabled={getValidTransfers().length === 0 || !formData.fromAccount || !formData.salaryPeriod}
+                                                    disabled={getValidTransfers().length === 0 || !formData.fromAccount}
                                                     className="flex-1 bg-red-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-red-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
                                                 >
-                                                    Continuar ({getValidTransfers().length} funcionários)
+                                                    Continuar ({getValidTransfers().length} Beneficiários)
                                                 </button>
                                             </div>
                                         </div>
@@ -1048,23 +998,11 @@ const BusinessSalaryPayments: React.FC = () => {
                                             </span>
                                         </div>
                                         <div className="flex justify-between items-center">
-                                            <span className="text-gray-600">Período:</span>
-                                            <span className="font-semibold">
-                                                {salaryPeriods.find(p => p.value === formData.salaryPeriod)?.label || formData.salaryPeriod}
-                                            </span>
-                                        </div>
-                                        <div className="flex justify-between items-center">
-                                            <span className="text-gray-600">Data de Pagamento:</span>
-                                            <span className="font-semibold">
-                                                {new Date(formData.paymentDate).toLocaleDateString('pt-PT')}
-                                            </span>
-                                        </div>
-                                        <div className="flex justify-between items-center">
-                                            <span className="text-gray-600">Número de Funcionários:</span>
+                                            <span className="text-gray-600">Número de Beneficiários:</span>
                                             <span className="font-semibold">{getValidTransfers().length}</span>
                                         </div>
                                         <div className="flex justify-between items-center">
-                                            <span className="text-gray-600">Valor Total da Folha:</span>
+                                            <span className="text-gray-600">Valor Total:</span>
                                             <span className="font-semibold text-red-600 text-lg">
                                                 MZN {getTotalAmount().toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
                                             </span>
@@ -1087,7 +1025,7 @@ const BusinessSalaryPayments: React.FC = () => {
                                     </div>
 
                                     <div className="space-y-3">
-                                        <h3 className="font-semibold text-gray-900">Funcionários a receber:</h3>
+                                        <h3 className="font-semibold text-gray-900">Beneficiários a receber:</h3>
                                         {getValidTransfers().map((transfer) => (
                                             <div key={transfer.id} className="flex justify-between items-center p-3 bg-white border border-gray-200 rounded-lg">
                                                 <div>
@@ -1132,7 +1070,7 @@ const BusinessSalaryPayments: React.FC = () => {
                                     <div>
                                         <h2 className="text-2xl font-bold text-gray-900 mb-2">Pagamentos Processados!</h2>
                                         <p className="text-gray-600">
-                                            O pagamento para <strong>{getValidTransfers().length} funcionários</strong> no valor total de{' '}
+                                            O pagamento para <strong>{getValidTransfers().length} Beneficiários</strong> no valor total de{' '}
                                             <strong>MZN {getTotalAmount().toLocaleString('pt-PT', { minimumFractionDigits: 2 })}</strong> foi processado com sucesso.
                                         </p>
                                         {recurringSettings.isRecurring && (
@@ -1149,10 +1087,6 @@ const BusinessSalaryPayments: React.FC = () => {
                                         <div className="flex justify-between">
                                             <span className="text-gray-600">Referência do Lote:</span>
                                             <span className="font-mono">{generateBatchReference()}</span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                            <span className="text-gray-600">Período:</span>
-                                            <span>{salaryPeriods.find(p => p.value === formData.salaryPeriod)?.label || formData.salaryPeriod}</span>
                                         </div>
                                         <div className="flex justify-between">
                                             <span className="text-gray-600">Data:</span>
@@ -1187,7 +1121,7 @@ const BusinessSalaryPayments: React.FC = () => {
                                                 </div>
                                             </button>
 
-                                            {/* Holerites Individuais */}
+                                            {/* Comprovativos Individuais */}
                                             <button
                                                 onClick={downloadAllIndividualPayslips}
                                                 className="flex items-center space-x-3 p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-colors text-left"
@@ -1198,8 +1132,8 @@ const BusinessSalaryPayments: React.FC = () => {
                                                     </svg>
                                                 </div>
                                                 <div>
-                                                    <div className="font-semibold text-gray-900">Holerites Individuais</div>
-                                                    <div className="text-sm text-gray-600">{getValidTransfers().length} holerites separados</div>
+                                                    <div className="font-semibold text-gray-900">Comprovativos Individuais</div>
+                                                    <div className="text-sm text-gray-600">{getValidTransfers().length} comprovativos separados</div>
                                                 </div>
                                             </button>
                                         </div>
@@ -1217,7 +1151,7 @@ const BusinessSalaryPayments: React.FC = () => {
                                             </button>
                                         </div>
 
-                                        {/* Enviar para Funcionários */}
+                                        {/* Enviar para Beneficiários */}
                                         {getValidTransfers().some(t => t.email) && (
                                             <div className="mt-4">
                                                 <button
@@ -1227,10 +1161,10 @@ const BusinessSalaryPayments: React.FC = () => {
                                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                     </svg>
-                                                    <span>Enviar Holerites para Funcionários</span>
+                                                    <span>Enviar Comprovativos para Beneficiários</span>
                                                 </button>
                                                 <p className="text-xs text-gray-500 text-center mt-2">
-                                                    {getValidTransfers().filter(t => t.email).length} funcionários receberão o holerite por email
+                                                    {getValidTransfers().filter(t => t.email).length} Beneficiários receberão o comprovativo por email
                                                 </p>
                                             </div>
                                         )}
@@ -1255,13 +1189,13 @@ const BusinessSalaryPayments: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* Sidebar */}
+                    {/* Sidebar - APENAS Conta de Origem */}
                     <div className="lg:col-span-1 space-y-6">
                         {/* Configurações do Pagamento */}
                         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
                             <h3 className="text-lg font-semibold text-gray-900 mb-4">Configurações do Pagamento</h3>
                             
-                            {/* Conta de Origem */}
+                            {/* Conta de Origem - ÚNICO CAMPO QUE RESTA */}
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Conta de Origem *
@@ -1281,68 +1215,8 @@ const BusinessSalaryPayments: React.FC = () => {
                                 </select>
                             </div>
 
-                            {/* Período Salarial */}
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Período Salarial *
-                                </label>
-                                <select
-                                    name="salaryPeriod"
-                                    value={formData.salaryPeriod}
-                                    onChange={handleInputChange}
-                                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
-                                >
-                                    <option value="">Selecione o período</option>
-                                    {salaryPeriods.map(period => (
-                                        <option key={period.value} value={period.value}>
-                                            {period.label}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-
-                            {/* Data de Pagamento */}
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Data de Pagamento
-                                </label>
-                                <input
-                                    type="date"
-                                    name="paymentDate"
-                                    value={formData.paymentDate}
-                                    onChange={handleInputChange}
-                                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
-                                />
-                            </div>
-
-                            {/* Opções Adicionais */}
+                            {/* Programar pagamento - Mantido */}
                             <div className="space-y-3">
-                                <label className="flex items-center space-x-3">
-                                    <input
-                                        type="checkbox"
-                                        name="includeTaxes"
-                                        checked={formData.includeTaxes}
-                                        onChange={handleInputChange}
-                                        className="w-4 h-4 text-red-600 rounded focus:ring-red-500"
-                                    />
-                                    <span className="text-sm text-gray-700">
-                                        Incluir retenção na fonte
-                                    </span>
-                                </label>
-
-                                <label className="flex items-center space-x-3">
-                                    <input
-                                        type="checkbox"
-                                        name="includeBenefits"
-                                        checked={formData.includeBenefits}
-                                        onChange={handleInputChange}
-                                        className="w-4 h-4 text-red-600 rounded focus:ring-red-500"
-                                    />
-                                    <span className="text-sm text-gray-700">
-                                        Incluir benefícios
-                                    </span>
-                                </label>
-
                                 <label className="flex items-center space-x-3">
                                     <input
                                         type="checkbox"
@@ -1380,7 +1254,7 @@ const BusinessSalaryPayments: React.FC = () => {
                                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Resumo da Folha</h3>
                                 <div className="space-y-3">
                                     <div className="flex justify-between">
-                                        <span className="text-gray-600">Total de Funcionários:</span>
+                                        <span className="text-gray-600">Total de Beneficiários:</span>
                                         <span className="font-semibold">{transfers.length}</span>
                                     </div>
                                     <div className="flex justify-between">
@@ -1399,16 +1273,6 @@ const BusinessSalaryPayments: React.FC = () => {
                                             {transfers.filter(t => t.email).length}
                                         </span>
                                     </div>
-                                    {formData.includeTaxes && (
-                                        <div className="text-sm text-gray-500">
-                                            • Retenção na fonte: 10%
-                                        </div>
-                                    )}
-                                    {formData.includeBenefits && (
-                                        <div className="text-sm text-gray-500">
-                                            • Benefícios: 5%
-                                        </div>
-                                    )}
                                     {recurringSettings.isRecurring && (
                                         <div className="bg-orange-50 border border-orange-200 rounded-lg p-2">
                                             <div className="text-xs text-orange-800 text-center">
@@ -1418,7 +1282,7 @@ const BusinessSalaryPayments: React.FC = () => {
                                     )}
                                     <div className="border-t pt-3">
                                         <div className="flex justify-between text-lg">
-                                            <span className="font-semibold">Total da Folha:</span>
+                                            <span className="font-semibold">Total:</span>
                                             <span className="font-bold text-red-600">
                                                 MZN {getTotalAmount().toLocaleString('pt-PT', { minimumFractionDigits: 2 })}
                                             </span>
@@ -1461,7 +1325,7 @@ const BusinessSalaryPayments: React.FC = () => {
                     <div className="bg-red-50 rounded-lg p-3">
                         <h4 className="font-semibold text-red-900 text-sm mb-1">Formato esperado:</h4>
                         <p className="text-red-700 text-xs">
-                            Colunas: Nome, NIB (25 caracteres), Email, Departamento, Cargo, Salário Líquido
+                            Colunas: Nome, NIB (25 caracteres), Email, Departamento, Cargo, Montante
                         </p>
                     </div>
 
@@ -1484,8 +1348,8 @@ const BusinessSalaryPayments: React.FC = () => {
                 </div>
             </Modal>
 
-            {/* Modal de Seleção de Funcionários */}
-            <Modal isOpen={showBeneficiariesModal} onClose={() => setShowBeneficiariesModal(false)} title="Selecionar Funcionários">
+            {/* Modal de Seleção de Beneficiários */}
+            <Modal isOpen={showBeneficiariesModal} onClose={() => setShowBeneficiariesModal(false)} title="Selecionar Beneficiários">
                 <div className="space-y-4">
                     <div className="max-h-96 overflow-y-auto space-y-2">
                         {staticBeneficiaries.map(beneficiary => (
@@ -1520,7 +1384,7 @@ const BusinessSalaryPayments: React.FC = () => {
 
                     <div className="bg-blue-50 rounded-lg p-3">
                         <p className="text-blue-700 text-sm">
-                            <strong>Total de funcionários:</strong> {staticBeneficiaries.length}
+                            <strong>Total de Beneficiários:</strong> {staticBeneficiaries.length}
                             <br />
                             <span className="text-xs">Clique em um funcionário para adicionar à lista de pagamentos</span>
                         </p>
@@ -1535,7 +1399,7 @@ const BusinessSalaryPayments: React.FC = () => {
                         </button>
                         <button
                             onClick={() => {
-                                // Adicionar todos os funcionários
+                                // Adicionar todos os Beneficiários
                                 staticBeneficiaries.forEach(beneficiary => addBeneficiaryFromList(beneficiary));
                                 setShowBeneficiariesModal(false);
                             }}
@@ -1619,8 +1483,8 @@ const BusinessSalaryPayments: React.FC = () => {
                                 className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
                             />
                             <div>
-                                <span className="font-medium text-gray-900">Holerites Individuais</span>
-                                <p className="text-xs text-gray-500">{getValidTransfers().length} holerites separados</p>
+                                <span className="font-medium text-gray-900">Comprovativos Individuais</span>
+                                <p className="text-xs text-gray-500">{getValidTransfers().length} comprovativos separados</p>
                             </div>
                         </label>
 
@@ -1633,9 +1497,9 @@ const BusinessSalaryPayments: React.FC = () => {
                                     className="w-4 h-4 text-green-600 rounded focus:ring-green-500"
                                 />
                                 <div>
-                                    <span className="font-medium text-gray-900">Enviar para Funcionários</span>
+                                    <span className="font-medium text-gray-900">Enviar para Beneficiários</span>
                                     <p className="text-xs text-gray-500">
-                                        {getValidTransfers().filter(t => t.email).length} funcionários receberão holerite
+                                        {getValidTransfers().filter(t => t.email).length} Beneficiários receberão comprovativo
                                     </p>
                                 </div>
                             </label>
