@@ -18,11 +18,12 @@ interface BusinessBeneficiariesProps {
 interface Beneficiary {
     id: string;
     name: string;
-    accountNumber: string;
     nib: string;
-    bank: string;
-    email?: string;
-    phone?: string;
+    email: string;
+    department: string;
+    position: string;
+    baseSalary: number;
+    bankName: string;
     createdAt: string;
     lastUsed?: string;
 }
@@ -35,30 +36,32 @@ const BusinessBeneficiaries: React.FC<BusinessBeneficiariesProps> = ({ language 
     const [copiedField, setCopiedField] = useState<string>('');
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-    // Estado para o formulário
+    // Estado para o formulário - Campos alinhados com BusinessSalaryPayments
     const [formData, setFormData] = useState({
         name: '',
-        accountNumber: '',
         nib: '',
-        bank: 'UBA Moçambique',
         email: '',
-        phone: ''
+        department: '',
+        position: '',
+        baseSalary: '',
+        bankName: 'UBA Moçambique'
     });
 
     const currentTexts = {
         PT: {
             title: "Beneficiários",
-            subtitle: "Gerir a sua lista de beneficiários para transferências rápidas",
+            subtitle: "Gerir a sua lista de beneficiários para pagamentos de salários",
             searchPlaceholder: "Pesquisar beneficiários...",
             addBeneficiary: "Adicionar Beneficiário",
             editBeneficiary: "Editar Beneficiário",
             deleteBeneficiary: "Eliminar Beneficiário",
             name: "Nome Completo",
-            accountNumber: "Número da Conta",
             nib: "NIB",
+            email: "Email",
+            department: "Departamento",
+            position: "Cargo",
+            baseSalary: "Salário Base (MZN)",
             bank: "Banco",
-            email: "Email (Opcional)",
-            phone: "Telefone (Opcional)",
             save: "Guardar",
             cancel: "Cancelar",
             delete: "Eliminar",
@@ -71,15 +74,15 @@ const BusinessBeneficiaries: React.FC<BusinessBeneficiariesProps> = ({ language 
             created: "Adicionado em",
             actions: "Ações",
             requiredField: "Campo obrigatório",
-            invalidNIB: "NIB deve ter 21 dígitos",
-            invalidAccount: "Número de conta inválido",
+            invalidNIB: "NIB deve ter pelo menos 20 caracteres",
+            invalidEmail: "Email inválido",
             successAdd: "Beneficiário adicionado com sucesso!",
             successEdit: "Beneficiário atualizado com sucesso!",
             successDelete: "Beneficiário eliminado com sucesso!",
             banks: {
                 uba: "UBA Moçambique",
-                bci: "BCI",
                 standard: "Standard Bank",
+                bci: "BCI",
                 millennium: "Millennium BIM",
                 absa: "Absa Bank",
                 other: "Outro Banco"
@@ -87,17 +90,18 @@ const BusinessBeneficiaries: React.FC<BusinessBeneficiariesProps> = ({ language 
         },
         EN: {
             title: "Beneficiaries",
-            subtitle: "Manage your beneficiaries list for quick transfers",
+            subtitle: "Manage your beneficiaries list for salary payments",
             searchPlaceholder: "Search beneficiaries...",
             addBeneficiary: "Add Beneficiary",
             editBeneficiary: "Edit Beneficiary",
             deleteBeneficiary: "Delete Beneficiary",
             name: "Full Name",
-            accountNumber: "Account Number",
             nib: "NIB",
+            email: "Email",
+            department: "Department",
+            position: "Position",
+            baseSalary: "Base Salary (MZN)",
             bank: "Bank",
-            email: "Email (Optional)",
-            phone: "Phone (Optional)",
             save: "Save",
             cancel: "Cancel",
             delete: "Delete",
@@ -110,15 +114,15 @@ const BusinessBeneficiaries: React.FC<BusinessBeneficiariesProps> = ({ language 
             created: "Added on",
             actions: "Actions",
             requiredField: "Required field",
-            invalidNIB: "NIB must have 21 digits",
-            invalidAccount: "Invalid account number",
+            invalidNIB: "NIB must have at least 20 characters",
+            invalidEmail: "Invalid email",
             successAdd: "Beneficiary added successfully!",
             successEdit: "Beneficiary updated successfully!",
             successDelete: "Beneficiary deleted successfully!",
             banks: {
                 uba: "UBA Mozambique",
-                bci: "BCI",
                 standard: "Standard Bank",
+                bci: "BCI",
                 millennium: "Millennium BIM",
                 absa: "Absa Bank",
                 other: "Other Bank"
@@ -126,44 +130,72 @@ const BusinessBeneficiaries: React.FC<BusinessBeneficiariesProps> = ({ language 
         }
     }[language];
 
-    // Dados de exemplo
+    // Dados de exemplo - Alinhados com BusinessSalaryPayments
     const [beneficiaries, setBeneficiaries] = useState<Beneficiary[]>([
         {
             id: '1',
-            name: 'Maria Santos',
-            accountNumber: '1234567890123',
-            nib: '000800000123456789012',
-            bank: 'UBA Moçambique',
-            email: 'maria.santos@email.com',
-            phone: '+258841234567',
+            name: 'João Carlos Silva',
+            nib: 'PT50 1234 5678 9012 3456 7890',
+            email: 'joao.silva@empresa.com',
+            department: 'TI',
+            position: 'Desenvolvedor Sênior',
+            baseSalary: 85000,
+            bankName: 'UBA Moçambique',
             createdAt: '2024-01-15',
             lastUsed: '2024-01-18'
         },
         {
             id: '2',
-            name: 'João Silva',
-            accountNumber: '9876543210987',
-            nib: '000800000987654321098',
-            bank: 'BCI',
-            phone: '+258821234567',
+            name: 'Maria Fernanda Santos',
+            nib: 'PT50 9876 5432 1098 7654 3210',
+            email: 'maria.santos@empresa.com',
+            department: 'Financeiro',
+            position: 'Contadora',
+            baseSalary: 75000,
+            bankName: 'Standard Bank',
             createdAt: '2024-01-10',
             lastUsed: '2024-01-17'
         },
         {
             id: '3',
-            name: 'Ana Pereira',
-            accountNumber: '4567890123456',
-            nib: '000800000456789012345',
-            bank: 'Millennium BIM',
-            email: 'ana.pereira@email.com',
-            createdAt: '2024-01-05'
+            name: 'Pedro Augusto Pereira',
+            nib: 'PT50 1111 2222 3333 4444 5555',
+            email: 'pedro.pereira@empresa.com',
+            department: 'Vendas',
+            position: 'Gerente Comercial',
+            baseSalary: 95000,
+            bankName: 'BCI',
+            createdAt: '2024-01-05',
+            lastUsed: '2024-01-16'
+        },
+        {
+            id: '4',
+            name: 'Ana Beatriz Costa',
+            nib: 'PT50 6666 7777 8888 9999 0000',
+            email: 'ana.costa@empresa.com',
+            department: 'RH',
+            position: 'Especialista em RH',
+            baseSalary: 65000,
+            bankName: 'UBA Moçambique',
+            createdAt: '2024-01-20'
+        },
+        {
+            id: '5',
+            name: 'Carlos Eduardo Lima',
+            nib: 'PT50 5555 4444 3333 2222 1111',
+            email: 'carlos.lima@empresa.com',
+            department: 'Marketing',
+            position: 'Gestor de Marketing',
+            baseSalary: 70000,
+            bankName: 'Standard Bank',
+            createdAt: '2024-01-18'
         }
     ]);
 
     const banks = [
         { value: 'UBA Moçambique', label: currentTexts.banks.uba },
-        { value: 'BCI', label: currentTexts.banks.bci },
         { value: 'Standard Bank', label: currentTexts.banks.standard },
+        { value: 'BCI', label: currentTexts.banks.bci },
         { value: 'Millennium BIM', label: currentTexts.banks.millennium },
         { value: 'Absa Bank', label: currentTexts.banks.absa },
         { value: 'Other', label: currentTexts.banks.other }
@@ -171,8 +203,10 @@ const BusinessBeneficiaries: React.FC<BusinessBeneficiariesProps> = ({ language 
 
     const filteredBeneficiaries = beneficiaries.filter(beneficiary =>
         beneficiary.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        beneficiary.accountNumber.includes(searchTerm) ||
-        beneficiary.nib.includes(searchTerm)
+        beneficiary.nib.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        beneficiary.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        beneficiary.department.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        beneficiary.position.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     const handleCopy = (text: string, field: string) => {
@@ -185,11 +219,12 @@ const BusinessBeneficiaries: React.FC<BusinessBeneficiariesProps> = ({ language 
         setSelectedBeneficiary(null);
         setFormData({
             name: '',
-            accountNumber: '',
             nib: '',
-            bank: 'UBA Moçambique',
             email: '',
-            phone: ''
+            department: '',
+            position: '',
+            baseSalary: '',
+            bankName: 'UBA Moçambique'
         });
         setShowAddModal(true);
     };
@@ -198,11 +233,12 @@ const BusinessBeneficiaries: React.FC<BusinessBeneficiariesProps> = ({ language 
         setSelectedBeneficiary(beneficiary);
         setFormData({
             name: beneficiary.name,
-            accountNumber: beneficiary.accountNumber,
             nib: beneficiary.nib,
-            bank: beneficiary.bank,
-            email: beneficiary.email || '',
-            phone: beneficiary.phone || ''
+            email: beneficiary.email,
+            department: beneficiary.department,
+            position: beneficiary.position,
+            baseSalary: beneficiary.baseSalary.toString(),
+            bankName: beneficiary.bankName
         });
         setShowAddModal(true);
     };
@@ -217,9 +253,14 @@ const BusinessBeneficiaries: React.FC<BusinessBeneficiariesProps> = ({ language 
             setBeneficiaries(prev => prev.filter(b => b.id !== selectedBeneficiary.id));
             setShowDeleteModal(false);
             setSelectedBeneficiary(null);
-            // Em uma aplicação real, aqui faria a chamada à API
             alert(currentTexts.successDelete);
         }
+    };
+
+    const validateEmail = (email: string): boolean => {
+        if (!email) return true;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -227,14 +268,20 @@ const BusinessBeneficiaries: React.FC<BusinessBeneficiariesProps> = ({ language 
         setIsSubmitting(true);
 
         // Validações
-        if (!formData.name.trim() || !formData.accountNumber.trim() || !formData.nib.trim()) {
+        if (!formData.name.trim() || !formData.nib.trim() || !formData.email.trim()) {
             alert(currentTexts.requiredField);
             setIsSubmitting(false);
             return;
         }
 
-        if (formData.nib.length !== 21) {
+        if (formData.nib.length < 20) {
             alert(currentTexts.invalidNIB);
+            setIsSubmitting(false);
+            return;
+        }
+
+        if (!validateEmail(formData.email)) {
+            alert(currentTexts.invalidEmail);
             setIsSubmitting(false);
             return;
         }
@@ -247,7 +294,13 @@ const BusinessBeneficiaries: React.FC<BusinessBeneficiariesProps> = ({ language 
                     b.id === selectedBeneficiary.id
                         ? {
                             ...b,
-                            ...formData,
+                            name: formData.name,
+                            nib: formData.nib,
+                            email: formData.email,
+                            department: formData.department,
+                            position: formData.position,
+                            baseSalary: parseFloat(formData.baseSalary) || 0,
+                            bankName: formData.bankName,
                             lastUsed: new Date().toISOString().split('T')[0]
                         }
                         : b
@@ -257,7 +310,13 @@ const BusinessBeneficiaries: React.FC<BusinessBeneficiariesProps> = ({ language 
                 // Adicionar novo
                 const newBeneficiary: Beneficiary = {
                     id: Date.now().toString(),
-                    ...formData,
+                    name: formData.name,
+                    nib: formData.nib,
+                    email: formData.email,
+                    department: formData.department,
+                    position: formData.position,
+                    baseSalary: parseFloat(formData.baseSalary) || 0,
+                    bankName: formData.bankName,
                     createdAt: new Date().toISOString().split('T')[0]
                 };
                 setBeneficiaries(prev => [...prev, newBeneficiary]);
@@ -284,6 +343,13 @@ const BusinessBeneficiaries: React.FC<BusinessBeneficiariesProps> = ({ language 
             day: 'numeric' 
         };
         return new Date(dateString).toLocaleDateString(language === 'PT' ? 'pt-PT' : 'en-US', options);
+    };
+
+    const formatCurrency = (amount: number) => {
+        return new Intl.NumberFormat(language === 'PT' ? 'pt-PT' : 'en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }).format(amount);
     };
 
     return (
@@ -337,10 +403,16 @@ const BusinessBeneficiaries: React.FC<BusinessBeneficiariesProps> = ({ language 
                                                 {currentTexts.name}
                                             </th>
                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                {currentTexts.accountNumber}
+                                                {currentTexts.nib}
                                             </th>
                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                {currentTexts.nib}
+                                                {currentTexts.department}
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                {currentTexts.position}
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                {currentTexts.baseSalary}
                                             </th>
                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                 {currentTexts.bank}
@@ -361,28 +433,9 @@ const BusinessBeneficiaries: React.FC<BusinessBeneficiariesProps> = ({ language 
                                                         <div className="text-sm font-medium text-gray-900">
                                                             {beneficiary.name}
                                                         </div>
-                                                        {beneficiary.email && (
-                                                            <div className="text-sm text-gray-500">
-                                                                {beneficiary.email}
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <div className="flex items-center space-x-2">
-                                                        <span className="text-sm text-gray-900 font-mono">
-                                                            {beneficiary.accountNumber}
-                                                        </span>
-                                                        <button
-                                                            onClick={() => handleCopy(beneficiary.accountNumber, `account-${beneficiary.id}`)}
-                                                            className="text-gray-400 hover:text-gray-600 transition-colors"
-                                                        >
-                                                            {copiedField === `account-${beneficiary.id}` ? (
-                                                                <FaCheck className="text-green-500" size={14} />
-                                                            ) : (
-                                                                <FaCopy size={14} />
-                                                            )}
-                                                        </button>
+                                                        <div className="text-sm text-gray-500">
+                                                            {beneficiary.email}
+                                                        </div>
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
@@ -403,7 +456,16 @@ const BusinessBeneficiaries: React.FC<BusinessBeneficiariesProps> = ({ language 
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                    {beneficiary.bank}
+                                                    {beneficiary.department}
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                    {beneficiary.position}
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
+                                                    MZN {formatCurrency(beneficiary.baseSalary)}
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                    {beneficiary.bankName}
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                     {beneficiary.lastUsed ? formatDate(beneficiary.lastUsed) : '-'}
@@ -451,15 +513,15 @@ const BusinessBeneficiaries: React.FC<BusinessBeneficiariesProps> = ({ language 
                 {/* Add/Edit Modal */}
                 {showAddModal && (
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                        <div className="bg-white rounded-lg max-w-md w-full p-6">
+                        <div className="bg-white rounded-lg max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto">
                             <h3 className="text-lg font-semibold text-gray-900 mb-4">
                                 {selectedBeneficiary ? currentTexts.editBeneficiary : currentTexts.addBeneficiary}
                             </h3>
 
                             <form onSubmit={handleSubmit}>
-                                <div className="space-y-4">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {/* Name */}
-                                    <div>
+                                    <div className="md:col-span-2">
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             {currentTexts.name} *
                                         </label>
@@ -468,20 +530,7 @@ const BusinessBeneficiaries: React.FC<BusinessBeneficiariesProps> = ({ language 
                                             value={formData.name}
                                             onChange={(e) => handleInputChange('name', e.target.value)}
                                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                                            required
-                                        />
-                                    </div>
-
-                                    {/* Account Number */}
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            {currentTexts.accountNumber} *
-                                        </label>
-                                        <input
-                                            type="text"
-                                            value={formData.accountNumber}
-                                            onChange={(e) => handleInputChange('accountNumber', e.target.value)}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                                            placeholder="João Carlos Silva"
                                             required
                                         />
                                     </div>
@@ -496,11 +545,75 @@ const BusinessBeneficiaries: React.FC<BusinessBeneficiariesProps> = ({ language 
                                             value={formData.nib}
                                             onChange={(e) => handleInputChange('nib', e.target.value)}
                                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                                            placeholder="000800000123456789012"
-                                            maxLength={21}
+                                            placeholder="PT50 1234 5678 9012 3456 7890"
+                                            minLength={20}
                                             required
                                         />
-                                        <p className="text-xs text-gray-500 mt-1">21 dígitos</p>
+                                        <p className="text-xs text-gray-500 mt-1">
+                                            {language === 'PT' ? 'Mínimo 20 caracteres' : 'Minimum 20 characters'}
+                                        </p>
+                                    </div>
+
+                                    {/* Email */}
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            {currentTexts.email} *
+                                        </label>
+                                        <input
+                                            type="email"
+                                            value={formData.email}
+                                            onChange={(e) => handleInputChange('email', e.target.value)}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                                            placeholder="funcionario@empresa.com"
+                                            required
+                                        />
+                                    </div>
+
+                                    {/* Department */}
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            {currentTexts.department} *
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={formData.department}
+                                            onChange={(e) => handleInputChange('department', e.target.value)}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                                            placeholder="TI"
+                                            required
+                                        />
+                                    </div>
+
+                                    {/* Position */}
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            {currentTexts.position} *
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={formData.position}
+                                            onChange={(e) => handleInputChange('position', e.target.value)}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                                            placeholder="Desenvolvedor Sênior"
+                                            required
+                                        />
+                                    </div>
+
+                                    {/* Base Salary */}
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            {currentTexts.baseSalary} *
+                                        </label>
+                                        <input
+                                            type="number"
+                                            value={formData.baseSalary}
+                                            onChange={(e) => handleInputChange('baseSalary', e.target.value)}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                                            placeholder="85000.00"
+                                            step="0.01"
+                                            min="0"
+                                            required
+                                        />
                                     </div>
 
                                     {/* Bank */}
@@ -509,9 +622,10 @@ const BusinessBeneficiaries: React.FC<BusinessBeneficiariesProps> = ({ language 
                                             {currentTexts.bank} *
                                         </label>
                                         <select
-                                            value={formData.bank}
-                                            onChange={(e) => handleInputChange('bank', e.target.value)}
+                                            value={formData.bankName}
+                                            onChange={(e) => handleInputChange('bankName', e.target.value)}
                                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                                            required
                                         >
                                             {banks.map(bank => (
                                                 <option key={bank.value} value={bank.value}>
@@ -519,32 +633,6 @@ const BusinessBeneficiaries: React.FC<BusinessBeneficiariesProps> = ({ language 
                                                 </option>
                                             ))}
                                         </select>
-                                    </div>
-
-                                    {/* Email */}
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            {currentTexts.email}
-                                        </label>
-                                        <input
-                                            type="email"
-                                            value={formData.email}
-                                            onChange={(e) => handleInputChange('email', e.target.value)}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                                        />
-                                    </div>
-
-                                    {/* Phone */}
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            {currentTexts.phone}
-                                        </label>
-                                        <input
-                                            type="tel"
-                                            value={formData.phone}
-                                            onChange={(e) => handleInputChange('phone', e.target.value)}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                                        />
                                     </div>
                                 </div>
 
@@ -583,8 +671,14 @@ const BusinessBeneficiaries: React.FC<BusinessBeneficiariesProps> = ({ language 
 
                             <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
                                 <p className="font-medium text-gray-900">{selectedBeneficiary.name}</p>
-                                <p className="text-sm text-gray-600">{selectedBeneficiary.accountNumber}</p>
-                                <p className="text-sm text-gray-600">{selectedBeneficiary.bank}</p>
+                                <p className="text-sm text-gray-600">
+                                    {selectedBeneficiary.department} • {selectedBeneficiary.position}
+                                </p>
+                                <p className="text-sm text-gray-600">{selectedBeneficiary.nib}</p>
+                                <p className="text-sm text-gray-600">{selectedBeneficiary.email}</p>
+                                <p className="text-sm text-gray-600 font-medium">
+                                    MZN {formatCurrency(selectedBeneficiary.baseSalary)}
+                                </p>
                             </div>
 
                             <div className="flex space-x-3">
