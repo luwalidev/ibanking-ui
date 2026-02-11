@@ -60,7 +60,7 @@ const BusinessBeneficiaries: React.FC<BusinessBeneficiariesProps> = ({ language 
             email: "Email",
             department: "Departamento",
             position: "Cargo",
-            baseSalary: "Salário Base (MZN)",
+            baseSalary: "Montante (MZN)",
             bank: "Banco",
             save: "Guardar",
             cancel: "Cancelar",
@@ -268,7 +268,7 @@ const BusinessBeneficiaries: React.FC<BusinessBeneficiariesProps> = ({ language 
         setIsSubmitting(true);
 
         // Validações
-        if (!formData.name.trim() || !formData.nib.trim() || !formData.email.trim()) {
+        if (!formData.name.trim() || !formData.nib.trim()) {
             alert(currentTexts.requiredField);
             setIsSubmitting(false);
             return;
@@ -337,10 +337,10 @@ const BusinessBeneficiaries: React.FC<BusinessBeneficiariesProps> = ({ language 
     };
 
     const formatDate = (dateString: string) => {
-        const options: Intl.DateTimeFormatOptions = { 
-            year: 'numeric', 
-            month: 'short', 
-            day: 'numeric' 
+        const options: Intl.DateTimeFormatOptions = {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
         };
         return new Date(dateString).toLocaleDateString(language === 'PT' ? 'pt-PT' : 'en-US', options);
     };
@@ -557,7 +557,7 @@ const BusinessBeneficiaries: React.FC<BusinessBeneficiariesProps> = ({ language 
                                     {/* Email */}
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            {currentTexts.email} *
+                                            {currentTexts.email}
                                         </label>
                                         <input
                                             type="email"
@@ -565,14 +565,13 @@ const BusinessBeneficiaries: React.FC<BusinessBeneficiariesProps> = ({ language 
                                             onChange={(e) => handleInputChange('email', e.target.value)}
                                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
                                             placeholder="funcionario@empresa.com"
-                                            required
                                         />
                                     </div>
 
                                     {/* Department */}
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            {currentTexts.department} *
+                                            {currentTexts.department}
                                         </label>
                                         <input
                                             type="text"
@@ -580,14 +579,13 @@ const BusinessBeneficiaries: React.FC<BusinessBeneficiariesProps> = ({ language 
                                             onChange={(e) => handleInputChange('department', e.target.value)}
                                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
                                             placeholder="TI"
-                                            required
                                         />
                                     </div>
 
                                     {/* Position */}
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            {currentTexts.position} *
+                                            {currentTexts.position} 
                                         </label>
                                         <input
                                             type="text"
@@ -595,14 +593,13 @@ const BusinessBeneficiaries: React.FC<BusinessBeneficiariesProps> = ({ language 
                                             onChange={(e) => handleInputChange('position', e.target.value)}
                                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
                                             placeholder="Desenvolvedor Sênior"
-                                            required
                                         />
                                     </div>
 
                                     {/* Base Salary */}
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            {currentTexts.baseSalary} *
+                                            {currentTexts.baseSalary}
                                         </label>
                                         <input
                                             type="number"
@@ -612,20 +609,18 @@ const BusinessBeneficiaries: React.FC<BusinessBeneficiariesProps> = ({ language 
                                             placeholder="85000.00"
                                             step="0.01"
                                             min="0"
-                                            required
                                         />
                                     </div>
 
                                     {/* Bank */}
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            {currentTexts.bank} *
+                                            {currentTexts.bank}
                                         </label>
                                         <select
                                             value={formData.bankName}
                                             onChange={(e) => handleInputChange('bankName', e.target.value)}
                                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                                            required
                                         >
                                             {banks.map(bank => (
                                                 <option key={bank.value} value={bank.value}>
