@@ -269,7 +269,7 @@ const Signup: React.FC<SignupProps> = ({ language }) => {
             declaracaoBairro: 'Neighborhood Declaration',
             nuit: 'NUIT Card',
             declaracaoRendimento: 'Income Declaration',
-            uploadDocument: 'Upload Document',
+            uploadDocument: 'Upload de Documento',
             dragDrop: 'Drag and drop file here or',
             browse: 'browse',
             supportedFormats: 'Supported formats: PDF, JPG, PNG (Max. 5MB)',

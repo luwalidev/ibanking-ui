@@ -160,6 +160,8 @@ const BusinessNavbar: React.FC<BusinessNavbarProps> = ({
   ];
 
   // Outros serviços - AGORA COM GESTÃO DE CHECKS E CARTÕES Crédito
+  const uploadDocumentLabel = (currentBusinessTexts as { uploadText?: string }).uploadText || getDynamicText('Upload de Documento', 'Upload de Documento');
+
   const otherServicesItems = [
     { path: '/business/cards', icon: CiCreditCard1, label: currentBusinessTexts.cards },
     { path: '/business/credit-cards', icon: TbCreditCard, label: getDynamicText('Gerir Cartões', 'Credit Cards') },
@@ -170,6 +172,7 @@ const BusinessNavbar: React.FC<BusinessNavbarProps> = ({
     { path: '/business/beneficiaries', icon: FaUserFriends, label: currentBusinessTexts.beneficiaries },
     { path: '/business/authorization', icon: CiLogout, label: currentBusinessTexts.transactionAuthorization },
     { path: '/business/extract', icon: CiShare1, label: currentBusinessTexts.shareExtract || getDynamicText('Partilhar Extracto', 'Share Statement') },
+    { path: '/business/upload-document', icon: CiShare1, label: uploadDocumentLabel },
   ];
 
   // Menu de configurações
