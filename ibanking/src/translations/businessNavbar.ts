@@ -41,6 +41,7 @@ export const businessTexts = {
     savings: 'Poupança',
     financing: 'Financiamento',
     beneficiaries: 'Beneficiários',
+    uploadText: 'Upload de Documento',
 
     // Configurações
     companyProfile: 'Perfil da Empresa',

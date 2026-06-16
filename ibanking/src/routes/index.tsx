@@ -56,6 +56,7 @@ import BusinessSupplierPayments from '../pages/Business/BusinessSupplierPayments
 import ClientAccountDetails from '../pages/Clients/ClientAccountDetails';
 import BusinessAccountDetails from '../pages/Business/BusinesstAccountDetails';
 import BusinessBeneficiaries from '../pages/Business/BusinessBeneficiaries';
+import BusinessDocumentUpload from '../pages/Clients/BusinessUploadDocument';
 
 const AppRoutes: React.FC = () => {
     return (
@@ -105,7 +106,7 @@ const AppRoutes: React.FC = () => {
                 {/* Outros Serviços */}
                 <Route path="/client/prepaid-cards" element={<PrepaidCards language="PT" />} />
                 <Route path="/client/extract" element={<ClientExtract language="PT" />} />
-                <Route path="/business/extract" element={<BusinessExtract language="PT" />} />
+                <Route path="/business/upload-document" element={<BusinessDocumentUpload />} />
 
 
                 {/* Movimentos e Extratos */}

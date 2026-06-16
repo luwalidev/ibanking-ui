@@ -2,7 +2,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { CiCreditCard1 } from "react-icons/ci";
-import { ClientLayout } from '../../../components/ClientLayout';
+import { BusinessLayout } from '../../../components/BusinessLayout';
 
 interface ClientGenericPageProps {
   language: 'PT' | 'EN';
@@ -118,7 +118,7 @@ const ClientGenericPage: React.FC<ClientGenericPageProps> = ({ language }) => {
   }[language];
 
   return (
-    <ClientLayout>
+    <BusinessLayout>
       <div className="max-w-7xl mx-auto space-y-6">
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
           {/* Header da Página */}
@@ -158,7 +158,7 @@ const ClientGenericPage: React.FC<ClientGenericPageProps> = ({ language }) => {
           </div>
         </div>
       </div>
-    </ClientLayout>
+    </BusinessLayout>
   );
 };
 
