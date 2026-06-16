@@ -261,10 +261,6 @@ const BusinessDocumentUpload: React.FC = () => {
         return cat ? cat.label : category;
     };
 
-    const getCategoryColor = (category: DocumentCategory) => {
-        const cat = documentCategories.find(c => c.value === category);
-        return cat ? cat.color : 'gray';
-    };
 
     const getFilteredDocuments = () => {
         let filtered = documents;

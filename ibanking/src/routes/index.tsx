@@ -33,7 +33,6 @@ import BusinessGenericPage from '../pages/Business/BusinessComingSoon';
 import BusinessServicePayments from '../pages/Business/BusinessServicePayments';
 import ClientDigitalWalletPayment from '../pages/Clients/ClientDigitalWalletPayment';
 import BusinessMovements from '../pages/Business/BusinessMovements';
-import BusinessExtract from '../pages/Business/BusinessExtract';
 import ClientCards from '../pages/Clients/ClientCards';
 import ClientInvestments from '../pages/Clients/ClientInvestments';
 import BusinessInternationalTransfers from '../pages/Business/BusinessInternationalTransfers';
