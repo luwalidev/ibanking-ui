@@ -261,7 +261,6 @@ const BusinessDocumentUpload: React.FC = () => {
         return cat ? cat.label : category;
     };
 
-
     const getFilteredDocuments = () => {
         let filtered = documents;
         
@@ -553,7 +552,7 @@ const BusinessDocumentUpload: React.FC = () => {
                             </div>
                         </div>
 
-                        {/* Categorias Rápidas */}
+                        {/* Categorias Rápidas - CORRIGIDO */}
                         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
                             <h3 className="text-lg font-semibold text-gray-900 mb-4">Categorias</h3>
                             <div className="space-y-2">
@@ -566,11 +565,17 @@ const BusinessDocumentUpload: React.FC = () => {
                                         }}
                                         className="w-full text-left p-3 rounded-lg hover:bg-gray-50 transition-colors border border-gray-100"
                                     >
-                                        <div className="flex items-center gap-3">
-                                            {cat.icon}
-                                            <div>
-                                                <p className="text-sm font-medium text-gray-900">{cat.label}</p>
-                                                <p className="text-xs text-gray-500 truncate">{cat.description}</p>
+                                        <div className="flex items-start gap-3">
+                                            <div className="flex-shrink-0 mt-1">
+                                                {cat.icon}
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <p className="text-sm font-medium text-gray-900 truncate">
+                                                    {cat.label}
+                                                </p>
+                                                <p className="text-xs text-gray-500 line-clamp-2 break-words">
+                                                    {cat.description}
+                                                </p>
                                             </div>
                                         </div>
                                     </button>
@@ -748,14 +753,14 @@ const BusinessDocumentUpload: React.FC = () => {
 
                         {selectedDocument.status === 'approved' && (
                             <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                                    <div className="flex items-center gap-2 text-green-800">
-                                        <AiOutlineCheck size={20} />
-                                        <p className="font-medium">Documento Aprovado</p>
-                                    </div>
-                                    <p className="text-sm text-green-700 mt-1">
-                                        O documento foi validado e aprovado pela nossa equipa.
-                                    </p>
+                                <div className="flex items-center gap-2 text-green-800">
+                                    <AiOutlineCheck size={20} />
+                                    <p className="font-medium">Documento Aprovado</p>
                                 </div>
+                                <p className="text-sm text-green-700 mt-1">
+                                    O documento foi validado e aprovado pela nossa equipa.
+                                </p>
+                            </div>
                         )}
 
                         <div className="flex space-x-3 pt-4 border-t">
